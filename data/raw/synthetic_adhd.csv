@@ -1,0 +1,501 @@
+id,teacher_prompt,student_response,response_latency_seconds,attention_label
+1,What is the formula for calculating the area of a circle?,"The area of a circle is calculated using the formula A equals pi times r squared, where r is the radius.",3.98,Focused
+2,Can you explain Newton's first law of motion?,Objects stay put!,1.36,Impulsive
+3,Describe the plot of the story we read yesterday.,"The story followed a young girl who discovered a hidden garden and slowly brought it back to life, which paralleled her own emotional healing.",5.82,Focused
+4,How does the human digestive system work?,"The digestive system breaks down food through mechanical and chemical processes starting in the mouth, continuing through the stomach, and nutrients are absorbed in the small intestine.",11.86,Focused
+5,What does photosynthesis mean?,"Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",6.47,Focused
+6,What is the difference between weather and climate?,"Weather refers to short-term atmospheric conditions, while climate describes the long-term average weather patterns of a region.",4.71,Focused
+7,What is the formula for calculating the area of a circle?,"I know it has pi in it... my older brother is studying engineering and he uses pi a lot. Wait, is pi 3.14 or something? I think it's a circle thing.",20.05,Distracted
+8,Can you tell me what the main cause of World War I was?,"I think it was something about an assassination... oh, speaking of which, did you watch that new documentary? It was really good. Anyway, there were some countries involved.",16.84,Distracted
+9,Describe the plot of the story we read yesterday.,"The story followed a young girl who discovered a hidden garden and slowly brought it back to life, which paralleled her own emotional healing.",7.85,Focused
+10,How do vaccines work?,Vaccines have something that fights the disease. My mum made me get a flu shot last year and I really didn't want to go. But I didn't get flu so maybe it worked.,23.98,Distracted
+11,How do vaccines work?,Trains your immune system!,2.18,Impulsive
+12,What do you know about the Civil Rights Movement?,Marches and protests!,1.58,Impulsive
+13,Can you explain what a prime number is?,"A prime number is a number greater than one that has no positive divisors other than one and itself, like 2, 3, 5, 7, and 11.",11.29,Focused
+14,How does the human digestive system work?,Food goes in your mouth and gets broken down. I was thinking about how weird it is that we eat every day. What did people do before farms existed?,13.34,Distracted
+15,Can you explain what a food chain is?,Producers and consumers!,0.81,Impulsive
+16,What is the difference between conduction and convection?,"Conduction transfers heat through direct contact between objects, while convection transfers heat through the movement of fluids or gases.",5.7,Focused
+17,What is the difference between a simile and a metaphor?,Simile has 'like'!,2.17,Impulsive
+18,Can you describe what happens during mitosis?,"During mitosis, the cell duplicates its chromosomes and then divides into two identical daughter cells through phases called prophase, metaphase, anaphase, and telophase.",6.62,Focused
+19,What is the difference between a simile and a metaphor?,"Similes use 'like' I think... or is it 'as'? Metaphors are different. Wait, which one is 'her smile was like sunshine'? I can never remember the difference.",17.43,Distracted
+20,Can you explain what a metaphor is and give me an example?,A metaphor is like... a comparison? I think? We did this last week and I had it written down but I left my notebook at home today.,15.15,Distracted
+21,How do we find the greatest common factor of two numbers?,Common factors!,2.19,Impulsive
+22,What is the difference between conduction and convection?,"Conduction is when things touch, right? Convection I'm less sure. Is that why the sea breeze happens at the beach? I love the beach actually.",10.96,Distracted
+23,What is the difference between weather and climate?,Weather changes every day like rain and sun. Climate is more... permanent? My mum was saying the weather has been strange lately. Is that climate change?,13.12,Distracted
+24,Can you name the layers of the Earth?,"Crust, mantle, core, inner core!",2.58,Impulsive
+25,What is the difference between a simile and a metaphor?,"A simile uses 'like' or 'as' to compare two things, while a metaphor states one thing is another without those connecting words.",5.58,Focused
+26,Can you explain Newton's first law of motion?,Objects stay put!,2.46,Impulsive
+27,How does the human digestive system work?,Food goes in your mouth and gets broken down. I was thinking about how weird it is that we eat every day. What did people do before farms existed?,19.13,Distracted
+28,What is the significance of the Magna Carta?,"It was a really old document. It had something to do with rights. I was thinking about how old paper gets all yellow, like the documents in museums.",15.51,Distracted
+29,Can you explain what a prime number is?,Prime numbers are special numbers that can only be divided by themselves and one. Is one a prime number? I always forget. Also is zero a number or not?,11.63,Distracted
+30,Describe the process of erosion in your own words.,"Water moves rocks around and stuff like that. Oh, is this why the Grand Canyon exists? I saw pictures of it and it looked incredible. I want to go there.",21.49,Distracted
+31,Describe the plot of the story we read yesterday.,"The story followed a young girl who discovered a hidden garden and slowly brought it back to life, which paralleled her own emotional healing.",9.62,Focused
+32,Can you explain what a prime number is?,"A prime number is a number greater than one that has no positive divisors other than one and itself, like 2, 3, 5, 7, and 11.",3.76,Focused
+33,What are the properties of a parallelogram?,"It has parallel sides... I think four sides. Wait, is a rectangle a parallelogram? I always get confused between all the different quadrilateral names.",19.29,Distracted
+34,How does the human digestive system work?,"The digestive system breaks down food through mechanical and chemical processes starting in the mouth, continuing through the stomach, and nutrients are absorbed in the small intestine.",6.02,Focused
+35,What is the Pythagorean theorem?,It's something with triangles. A squared plus B squared... I think. We used this last month. Can you draw it on the board? I understand better with pictures.,24.18,Distracted
+36,What are the three branches of government?,"The three branches of government are the legislative branch, which makes laws, the executive branch, which enforces laws, and the judicial branch, which interprets laws.",9.06,Focused
+37,What are the three branches of government?,"President, Congress, judges!",2.52,Impulsive
+38,How do you solve a two-step equation?,"To solve a two-step equation, I first isolate the variable by undoing addition or subtraction, then deal with multiplication or division.",3.22,Focused
+39,What are the three branches of government?,"There's a president and some other parts. Oh wait, is this about America? Because I was thinking about how I want to visit Washington D.C. someday.",24.73,Distracted
+40,How does the human digestive system work?,"The digestive system breaks down food through mechanical and chemical processes starting in the mouth, continuing through the stomach, and nutrients are absorbed in the small intestine.",10.65,Focused
+41,Can you summarise the water cycle in your own words?,Rain!,1.64,Impulsive
+42,What is the difference between conduction and convection?,"Conduction is when things touch, right? Convection I'm less sure. Is that why the sea breeze happens at the beach? I love the beach actually.",18.71,Distracted
+43,Can you explain what a metaphor is and give me an example?,"A metaphor is a figure of speech that describes something by saying it is something else. For example, saying 'life is a journey' is a metaphor.",9.47,Focused
+44,How do we find the greatest common factor of two numbers?,You find numbers that both go into... I think? I remember doing factor trees but then I get confused. Can we do an example? I like when we do examples.,16.4,Distracted
+45,What are the three branches of government?,"President, Congress, judges!",0.87,Impulsive
+46,What caused the fall of the Roman Empire?,"The fall of the Roman Empire was caused by military pressures from barbarian invasions, economic troubles, political instability, and the overextension of the empire.",3.05,Focused
+47,What is the role of the mitochondria in a cell?,"The mitochondria is the powerhouse of the cell, responsible for producing ATP through cellular respiration to fuel all cell activities.",10.74,Focused
+48,What is the difference between conduction and convection?,"Conduction is when things touch, right? Convection I'm less sure. Is that why the sea breeze happens at the beach? I love the beach actually.",9.81,Distracted
+49,Can you explain Newton's first law of motion?,"An object stays still unless something pushes it? I was thinking, is this why cars need engines? Because otherwise they just stay parked forever?",11.72,Distracted
+50,Describe the plot of the story we read yesterday.,There was a character who found something and it changed things. I don't remember all of it. I was kind of distracted during the reading part. Can you remind me?,24.29,Distracted
+51,What are the properties of a parallelogram?,"A parallelogram has two pairs of parallel sides, opposite sides that are equal in length, and opposite angles that are equal.",7.18,Focused
+52,Can you name the layers of the Earth?,"The Earth has four main layers: the inner core, outer core, mantle, and crust.",5.24,Focused
+53,Can you explain what a food chain is?,Producers and consumers!,0.8,Impulsive
+54,How do you solve a two-step equation?,You add something and then divide maybe? I forgot what we did yesterday because I was thinking about lunch. Can we use a calculator for this?,21.62,Distracted
+55,Can you explain what a prime number is?,"A prime number is a number greater than one that has no positive divisors other than one and itself, like 2, 3, 5, 7, and 11.",7.78,Focused
+56,Can you name the layers of the Earth?,"There's the crust where we live, and then there's the core which is really hot. I was wondering, could you dig to the centre of the Earth theoretically?",18.12,Distracted
+57,What is the role of the mitochondria in a cell?,"Mitochondria produces energy. Oh, is that the powerhouse of the cell thing? I saw that as a meme once. It's funny that a meme taught me biology.",23.15,Distracted
+58,How does the human digestive system work?,"The digestive system breaks down food through mechanical and chemical processes starting in the mouth, continuing through the stomach, and nutrients are absorbed in the small intestine.",10.34,Focused
+59,What is the difference between conduction and convection?,"Conduction transfers heat through direct contact between objects, while convection transfers heat through the movement of fluids or gases.",7.54,Focused
+60,What is the Pythagorean theorem?,A squared plus B squared equals C squared!,2.77,Impulsive
+61,What is the significance of the Magna Carta?,"It was a really old document. It had something to do with rights. I was thinking about how old paper gets all yellow, like the documents in museums.",23.25,Distracted
+62,How do vaccines work?,Trains your immune system!,2.65,Impulsive
+63,What is the significance of the Magna Carta?,"The Magna Carta was significant because it limited the power of the king and established that everyone, including rulers, was subject to the law.",5.33,Focused
+64,What are the three branches of government?,"The three branches of government are the legislative branch, which makes laws, the executive branch, which enforces laws, and the judicial branch, which interprets laws.",10.56,Focused
+65,How does gravity affect the motion of planets?,Gravity causes planets to follow elliptical orbits around the Sun because the Sun's gravitational pull continuously curves their path.,9.89,Focused
+66,What are the properties of a parallelogram?,"A parallelogram has two pairs of parallel sides, opposite sides that are equal in length, and opposite angles that are equal.",7.36,Focused
+67,What are the three branches of government?,"There's a president and some other parts. Oh wait, is this about America? Because I was thinking about how I want to visit Washington D.C. someday.",12.67,Distracted
+68,Can you summarise the water cycle in your own words?,"Water goes up and then it comes back down. Oh wait, is this the same as what we did in science class? I was thinking about the experiment with the cups.",20.13,Distracted
+69,What are the three branches of government?,"President, Congress, judges!",1.18,Impulsive
+70,Can you describe what happens during mitosis?,The cell splits!,2.73,Impulsive
+71,Can you summarise the water cycle in your own words?,"The water cycle involves evaporation of water from oceans, condensation into clouds, and precipitation back to Earth as rain or snow.",4.25,Focused
+72,What are the three branches of government?,"President, Congress, judges!",1.46,Impulsive
+73,How do you solve a two-step equation?,You add something and then divide maybe? I forgot what we did yesterday because I was thinking about lunch. Can we use a calculator for this?,20.01,Distracted
+74,Can you summarise the water cycle in your own words?,Rain!,1.54,Impulsive
+75,Can you describe what happens during mitosis?,The cell splits!,1.86,Impulsive
+76,Can you explain Newton's first law of motion?,Objects stay put!,0.66,Impulsive
+77,What is the Pythagorean theorem?,It's something with triangles. A squared plus B squared... I think. We used this last month. Can you draw it on the board? I understand better with pictures.,15.14,Distracted
+78,What is the difference between conduction and convection?,"Conduction is when things touch, right? Convection I'm less sure. Is that why the sea breeze happens at the beach? I love the beach actually.",21.09,Distracted
+79,What caused the fall of the Roman Empire?,"Too many invaders came I think. And it was very big. Empires that are too big fall apart, right? Like, how big was the Roman Empire actually?",8.33,Distracted
+80,What is the difference between conduction and convection?,"Conduction transfers heat through direct contact between objects, while convection transfers heat through the movement of fluids or gases.",9.89,Focused
+81,How do we find the greatest common factor of two numbers?,"To find the greatest common factor, I list the factors of each number and then identify the largest factor they share.",7.29,Focused
+82,What do you know about the Civil Rights Movement?,"The Civil Rights Movement was a struggle for racial equality in the United States, led by figures like Martin Luther King Jr., fighting against segregation and discrimination.",5.69,Focused
+83,How do we find the greatest common factor of two numbers?,Common factors!,2.63,Impulsive
+84,What is the Pythagorean theorem?,It's something with triangles. A squared plus B squared... I think. We used this last month. Can you draw it on the board? I understand better with pictures.,15.12,Distracted
+85,How do vaccines work?,Trains your immune system!,2.34,Impulsive
+86,Describe the plot of the story we read yesterday.,A garden and a girl!,2.01,Impulsive
+87,What are the three branches of government?,"President, Congress, judges!",1.72,Impulsive
+88,How does gravity affect the motion of planets?,Gravity causes planets to follow elliptical orbits around the Sun because the Sun's gravitational pull continuously curves their path.,6.92,Focused
+89,Can you tell me what the main cause of World War I was?,The assassination!,1.47,Impulsive
+90,Can you explain what a prime number is?,"A prime number is a number greater than one that has no positive divisors other than one and itself, like 2, 3, 5, 7, and 11.",9.11,Focused
+91,How do we find the greatest common factor of two numbers?,"To find the greatest common factor, I list the factors of each number and then identify the largest factor they share.",9.52,Focused
+92,What is the Pythagorean theorem?,It's something with triangles. A squared plus B squared... I think. We used this last month. Can you draw it on the board? I understand better with pictures.,15.95,Distracted
+93,How do you solve a two-step equation?,You add something and then divide maybe? I forgot what we did yesterday because I was thinking about lunch. Can we use a calculator for this?,24.67,Distracted
+94,Can you name the layers of the Earth?,"There's the crust where we live, and then there's the core which is really hot. I was wondering, could you dig to the centre of the Earth theoretically?",8.46,Distracted
+95,How do we find the greatest common factor of two numbers?,You find numbers that both go into... I think? I remember doing factor trees but then I get confused. Can we do an example? I like when we do examples.,18.06,Distracted
+96,Can you explain what a prime number is?,"A prime number is a number greater than one that has no positive divisors other than one and itself, like 2, 3, 5, 7, and 11.",3.24,Focused
+97,What is osmosis?,Osmosis is the movement of water molecules through a semi-permeable membrane from an area of lower solute concentration to higher solute concentration.,6.86,Focused
+98,Can you explain what a food chain is?,Producers and consumers!,1.65,Impulsive
+99,What is the formula for calculating the area of a circle?,Pi r squared!,1.15,Impulsive
+100,Can you describe what happens during mitosis?,"During mitosis, the cell duplicates its chromosomes and then divides into two identical daughter cells through phases called prophase, metaphase, anaphase, and telophase.",4.9,Focused
+101,Can you describe what happens during mitosis?,"The cell splits and makes copies... I think. Is mitosis the same as meiosis? I always mix those two up. Also, when does meiosis happen again?",13.74,Distracted
+102,What is the difference between conduction and convection?,Contact versus movement!,1.45,Impulsive
+103,What is the role of the mitochondria in a cell?,"Mitochondria produces energy. Oh, is that the powerhouse of the cell thing? I saw that as a meme once. It's funny that a meme taught me biology.",24.17,Distracted
+104,Can you explain Newton's first law of motion?,Objects stay put!,1.13,Impulsive
+105,Can you summarise the water cycle in your own words?,"The water cycle involves evaporation of water from oceans, condensation into clouds, and precipitation back to Earth as rain or snow.",7.23,Focused
+106,How do vaccines work?,Vaccines have something that fights the disease. My mum made me get a flu shot last year and I really didn't want to go. But I didn't get flu so maybe it worked.,17.17,Distracted
+107,What do you know about the Civil Rights Movement?,"It was in America and there were marches and Martin Luther King, and I watched a video about it once. There was a bus thing too, I think.",11.81,Distracted
+108,Can you summarise the water cycle in your own words?,Rain!,2.45,Impulsive
+109,What is osmosis?,Osmosis is the movement of water molecules through a semi-permeable membrane from an area of lower solute concentration to higher solute concentration.,3.36,Focused
+110,Can you tell me what the main cause of World War I was?,"I think it was something about an assassination... oh, speaking of which, did you watch that new documentary? It was really good. Anyway, there were some countries involved.",24.14,Distracted
+111,Can you explain what a metaphor is and give me an example?,"A metaphor is a figure of speech that describes something by saying it is something else. For example, saying 'life is a journey' is a metaphor.",10.55,Focused
+112,How does the human digestive system work?,Breaks down food!,0.88,Impulsive
+113,How do you solve a two-step equation?,"To solve a two-step equation, I first isolate the variable by undoing addition or subtraction, then deal with multiplication or division.",7.26,Focused
+114,What does photosynthesis mean?,"Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",8.08,Focused
+115,Can you explain what a metaphor is and give me an example?,It's a comparison!,1.66,Impulsive
+116,How does gravity affect the motion of planets?,It pulls things!,2.42,Impulsive
+117,What was the significance of the Industrial Revolution?,Factories!,2.01,Impulsive
+118,How do vaccines work?,"Vaccines work by introducing a weakened or inactive form of a pathogen, training the immune system to recognise and fight the real disease in the future.",9.47,Focused
+119,What is the role of the mitochondria in a cell?,"The mitochondria is the powerhouse of the cell, responsible for producing ATP through cellular respiration to fuel all cell activities.",10.37,Focused
+120,What is the difference between a simile and a metaphor?,"Similes use 'like' I think... or is it 'as'? Metaphors are different. Wait, which one is 'her smile was like sunshine'? I can never remember the difference.",9.84,Distracted
+121,Can you tell me what the main cause of World War I was?,"World War I was mainly caused by a combination of nationalism, imperialism, militarism, and the alliance system, triggered by the assassination of Archduke Franz Ferdinand.",11.36,Focused
+122,What is the difference between weather and climate?,Weather changes every day like rain and sun. Climate is more... permanent? My mum was saying the weather has been strange lately. Is that climate change?,19.51,Distracted
+123,How do we find the greatest common factor of two numbers?,Common factors!,1.49,Impulsive
+124,What caused the fall of the Roman Empire?,"Too many invaders came I think. And it was very big. Empires that are too big fall apart, right? Like, how big was the Roman Empire actually?",11.37,Distracted
+125,What is the difference between weather and climate?,Weather changes every day like rain and sun. Climate is more... permanent? My mum was saying the weather has been strange lately. Is that climate change?,19.74,Distracted
+126,What is osmosis?,Water through a membrane!,1.11,Impulsive
+127,What caused the fall of the Roman Empire?,"Too many invaders came I think. And it was very big. Empires that are too big fall apart, right? Like, how big was the Roman Empire actually?",21.13,Distracted
+128,Can you explain what a food chain is?,"Animals eat other animals? And plants are at the bottom? Oh, are humans at the top? What would be above humans in a food chain if something existed?",19.63,Distracted
+129,Describe the plot of the story we read yesterday.,"The story followed a young girl who discovered a hidden garden and slowly brought it back to life, which paralleled her own emotional healing.",4.09,Focused
+130,What is the difference between weather and climate?,Weather changes every day like rain and sun. Climate is more... permanent? My mum was saying the weather has been strange lately. Is that climate change?,21.3,Distracted
+131,What do you know about the Civil Rights Movement?,"It was in America and there were marches and Martin Luther King, and I watched a video about it once. There was a bus thing too, I think.",17.06,Distracted
+132,Can you explain what a prime number is?,"A prime number is a number greater than one that has no positive divisors other than one and itself, like 2, 3, 5, 7, and 11.",6.34,Focused
+133,What are the properties of a parallelogram?,"A parallelogram has two pairs of parallel sides, opposite sides that are equal in length, and opposite angles that are equal.",8.83,Focused
+134,Can you tell me what the main cause of World War I was?,The assassination!,2.62,Impulsive
+135,What is the Pythagorean theorem?,It's something with triangles. A squared plus B squared... I think. We used this last month. Can you draw it on the board? I understand better with pictures.,16.33,Distracted
+136,Can you explain Newton's first law of motion?,Newton's first law states that an object at rest stays at rest and an object in motion stays in motion unless acted upon by an external force.,11.65,Focused
+137,What is osmosis?,"Water goes through a membrane? I think we did an experiment. Oh wait, that was with the egg in vinegar. Was that osmosis or something different?",23.16,Distracted
+138,What is the significance of the Magna Carta?,"It was a really old document. It had something to do with rights. I was thinking about how old paper gets all yellow, like the documents in museums.",20.02,Distracted
+139,Can you explain Newton's first law of motion?,Objects stay put!,0.94,Impulsive
+140,What are the properties of a parallelogram?,It has parallel sides!,2.91,Impulsive
+141,How does gravity affect the motion of planets?,Gravity causes planets to follow elliptical orbits around the Sun because the Sun's gravitational pull continuously curves their path.,8.54,Focused
+142,How does democracy differ from monarchy?,People vote in democracy!,1.85,Impulsive
+143,Describe the process of erosion in your own words.,"Erosion is the process where wind, water, or ice gradually wears away and transports rock and soil from one place to another.",7.18,Focused
+144,What is the Pythagorean theorem?,It's something with triangles. A squared plus B squared... I think. We used this last month. Can you draw it on the board? I understand better with pictures.,20.43,Distracted
+145,How does gravity affect the motion of planets?,Gravity causes planets to follow elliptical orbits around the Sun because the Sun's gravitational pull continuously curves their path.,5.9,Focused
+146,What are the three branches of government?,"The three branches of government are the legislative branch, which makes laws, the executive branch, which enforces laws, and the judicial branch, which interprets laws.",10.48,Focused
+147,Can you summarise the water cycle in your own words?,Rain!,1.2,Impulsive
+148,What is the significance of the Magna Carta?,"It was a really old document. It had something to do with rights. I was thinking about how old paper gets all yellow, like the documents in museums.",12.15,Distracted
+149,What is the significance of the Magna Carta?,"It was a really old document. It had something to do with rights. I was thinking about how old paper gets all yellow, like the documents in museums.",17.69,Distracted
+150,Can you explain what a prime number is?,Only divisible by one and itself!,1.45,Impulsive
+151,Can you tell me what the main cause of World War I was?,"I think it was something about an assassination... oh, speaking of which, did you watch that new documentary? It was really good. Anyway, there were some countries involved.",16.4,Distracted
+152,Can you describe what happens during mitosis?,"During mitosis, the cell duplicates its chromosomes and then divides into two identical daughter cells through phases called prophase, metaphase, anaphase, and telophase.",4.64,Focused
+153,Can you explain what a metaphor is and give me an example?,It's a comparison!,1.39,Impulsive
+154,How does gravity affect the motion of planets?,"Gravity pulls things down, right? I always think about the moon when we talk about gravity. Also, is it true astronauts float in space because of gravity?",13.79,Distracted
+155,What is the difference between conduction and convection?,Contact versus movement!,1.99,Impulsive
+156,What is the difference between conduction and convection?,Contact versus movement!,1.19,Impulsive
+157,Can you tell me what the main cause of World War I was?,"I think it was something about an assassination... oh, speaking of which, did you watch that new documentary? It was really good. Anyway, there were some countries involved.",16.78,Distracted
+158,Can you explain what a metaphor is and give me an example?,"A metaphor is a figure of speech that describes something by saying it is something else. For example, saying 'life is a journey' is a metaphor.",3.77,Focused
+159,How do vaccines work?,Trains your immune system!,1.52,Impulsive
+160,Can you name the layers of the Earth?,"The Earth has four main layers: the inner core, outer core, mantle, and crust.",9.82,Focused
+161,What caused the fall of the Roman Empire?,"The fall of the Roman Empire was caused by military pressures from barbarian invasions, economic troubles, political instability, and the overextension of the empire.",7.28,Focused
+162,What caused the fall of the Roman Empire?,"Too many invaders came I think. And it was very big. Empires that are too big fall apart, right? Like, how big was the Roman Empire actually?",16.34,Distracted
+163,Describe the plot of the story we read yesterday.,There was a character who found something and it changed things. I don't remember all of it. I was kind of distracted during the reading part. Can you remind me?,8.29,Distracted
+164,What is the difference between a simile and a metaphor?,"Similes use 'like' I think... or is it 'as'? Metaphors are different. Wait, which one is 'her smile was like sunshine'? I can never remember the difference.",11.77,Distracted
+165,What caused the fall of the Roman Empire?,Too many invaders!,1.11,Impulsive
+166,Can you explain what a prime number is?,Prime numbers are special numbers that can only be divided by themselves and one. Is one a prime number? I always forget. Also is zero a number or not?,17.89,Distracted
+167,Describe the process of erosion in your own words.,"Erosion is the process where wind, water, or ice gradually wears away and transports rock and soil from one place to another.",7.98,Focused
+168,What do you know about the Civil Rights Movement?,"It was in America and there were marches and Martin Luther King, and I watched a video about it once. There was a bus thing too, I think.",15.23,Distracted
+169,How do vaccines work?,Trains your immune system!,1.88,Impulsive
+170,What do you know about the Civil Rights Movement?,Marches and protests!,2.26,Impulsive
+171,How does gravity affect the motion of planets?,"Gravity pulls things down, right? I always think about the moon when we talk about gravity. Also, is it true astronauts float in space because of gravity?",13.21,Distracted
+172,What are the three branches of government?,"There's a president and some other parts. Oh wait, is this about America? Because I was thinking about how I want to visit Washington D.C. someday.",10.05,Distracted
+173,Can you explain what a metaphor is and give me an example?,It's a comparison!,1.29,Impulsive
+174,How do vaccines work?,"Vaccines work by introducing a weakened or inactive form of a pathogen, training the immune system to recognise and fight the real disease in the future.",7.82,Focused
+175,What is the role of the mitochondria in a cell?,"The mitochondria is the powerhouse of the cell, responsible for producing ATP through cellular respiration to fuel all cell activities.",9.21,Focused
+176,Can you explain what a metaphor is and give me an example?,"A metaphor is a figure of speech that describes something by saying it is something else. For example, saying 'life is a journey' is a metaphor.",4.95,Focused
+177,Describe the process of erosion in your own words.,"Water moves rocks around and stuff like that. Oh, is this why the Grand Canyon exists? I saw pictures of it and it looked incredible. I want to go there.",12.7,Distracted
+178,What is the difference between weather and climate?,"Weather refers to short-term atmospheric conditions, while climate describes the long-term average weather patterns of a region.",11.79,Focused
+179,What are the properties of a parallelogram?,It has parallel sides!,1.99,Impulsive
+180,What does photosynthesis mean?,Sunlight makes food!,2.58,Impulsive
+181,What is the difference between a simile and a metaphor?,"Similes use 'like' I think... or is it 'as'? Metaphors are different. Wait, which one is 'her smile was like sunshine'? I can never remember the difference.",11.87,Distracted
+182,What was the significance of the Industrial Revolution?,"There were lots of factories and smoke and stuff. My grandmother talks about how things used to be made by hand. She knits sweaters, did I mention that?",13.14,Distracted
+183,What caused the fall of the Roman Empire?,"Too many invaders came I think. And it was very big. Empires that are too big fall apart, right? Like, how big was the Roman Empire actually?",17.08,Distracted
+184,How does gravity affect the motion of planets?,It pulls things!,0.61,Impulsive
+185,What is the formula for calculating the area of a circle?,Pi r squared!,1.88,Impulsive
+186,What caused the fall of the Roman Empire?,"The fall of the Roman Empire was caused by military pressures from barbarian invasions, economic troubles, political instability, and the overextension of the empire.",11.5,Focused
+187,What is osmosis?,Osmosis is the movement of water molecules through a semi-permeable membrane from an area of lower solute concentration to higher solute concentration.,10.82,Focused
+188,Describe the process of erosion in your own words.,Wind and water move rocks!,0.76,Impulsive
+189,Can you tell me what the main cause of World War I was?,"World War I was mainly caused by a combination of nationalism, imperialism, militarism, and the alliance system, triggered by the assassination of Archduke Franz Ferdinand.",8.17,Focused
+190,Describe the process of erosion in your own words.,"Water moves rocks around and stuff like that. Oh, is this why the Grand Canyon exists? I saw pictures of it and it looked incredible. I want to go there.",16.14,Distracted
+191,Can you describe what happens during mitosis?,The cell splits!,0.96,Impulsive
+192,What is the formula for calculating the area of a circle?,"I know it has pi in it... my older brother is studying engineering and he uses pi a lot. Wait, is pi 3.14 or something? I think it's a circle thing.",12.29,Distracted
+193,Can you explain what a food chain is?,"Animals eat other animals? And plants are at the bottom? Oh, are humans at the top? What would be above humans in a food chain if something existed?",16.12,Distracted
+194,What is the Pythagorean theorem?,A squared plus B squared equals C squared!,0.66,Impulsive
+195,Describe the process of erosion in your own words.,"Erosion is the process where wind, water, or ice gradually wears away and transports rock and soil from one place to another.",3.67,Focused
+196,What is osmosis?,"Water goes through a membrane? I think we did an experiment. Oh wait, that was with the egg in vinegar. Was that osmosis or something different?",19.67,Distracted
+197,How do you solve a two-step equation?,"To solve a two-step equation, I first isolate the variable by undoing addition or subtraction, then deal with multiplication or division.",4.34,Focused
+198,What is the difference between weather and climate?,"Weather refers to short-term atmospheric conditions, while climate describes the long-term average weather patterns of a region.",11.54,Focused
+199,Can you summarise the water cycle in your own words?,"Water goes up and then it comes back down. Oh wait, is this the same as what we did in science class? I was thinking about the experiment with the cups.",24.9,Distracted
+200,What does photosynthesis mean?,Sunlight makes food!,1.9,Impulsive
+201,Can you explain Newton's first law of motion?,"An object stays still unless something pushes it? I was thinking, is this why cars need engines? Because otherwise they just stay parked forever?",18.31,Distracted
+202,Describe the plot of the story we read yesterday.,There was a character who found something and it changed things. I don't remember all of it. I was kind of distracted during the reading part. Can you remind me?,18.51,Distracted
+203,What is the role of the mitochondria in a cell?,Energy production!,1.81,Impulsive
+204,What is the significance of the Magna Carta?,It gave people rights!,2.77,Impulsive
+205,What is the difference between a simile and a metaphor?,"Similes use 'like' I think... or is it 'as'? Metaphors are different. Wait, which one is 'her smile was like sunshine'? I can never remember the difference.",22.62,Distracted
+206,Can you explain Newton's first law of motion?,Objects stay put!,1.26,Impulsive
+207,How does the human digestive system work?,"The digestive system breaks down food through mechanical and chemical processes starting in the mouth, continuing through the stomach, and nutrients are absorbed in the small intestine.",3.54,Focused
+208,How do vaccines work?,"Vaccines work by introducing a weakened or inactive form of a pathogen, training the immune system to recognise and fight the real disease in the future.",3.89,Focused
+209,What is the role of the mitochondria in a cell?,"Mitochondria produces energy. Oh, is that the powerhouse of the cell thing? I saw that as a meme once. It's funny that a meme taught me biology.",11.53,Distracted
+210,Can you explain what a metaphor is and give me an example?,"A metaphor is a figure of speech that describes something by saying it is something else. For example, saying 'life is a journey' is a metaphor.",5.38,Focused
+211,Can you summarise the water cycle in your own words?,Rain!,0.89,Impulsive
+212,What was the significance of the Industrial Revolution?,Factories!,1.88,Impulsive
+213,What was the significance of the Industrial Revolution?,Factories!,0.51,Impulsive
+214,What is the significance of the Magna Carta?,"It was a really old document. It had something to do with rights. I was thinking about how old paper gets all yellow, like the documents in museums.",19.72,Distracted
+215,Describe the process of erosion in your own words.,Wind and water move rocks!,1.23,Impulsive
+216,What are the three branches of government?,"President, Congress, judges!",1.22,Impulsive
+217,What is the difference between a simile and a metaphor?,"Similes use 'like' I think... or is it 'as'? Metaphors are different. Wait, which one is 'her smile was like sunshine'? I can never remember the difference.",19.95,Distracted
+218,What is the significance of the Magna Carta?,It gave people rights!,0.68,Impulsive
+219,What are the three branches of government?,"President, Congress, judges!",2.81,Impulsive
+220,Describe the plot of the story we read yesterday.,"The story followed a young girl who discovered a hidden garden and slowly brought it back to life, which paralleled her own emotional healing.",10.12,Focused
+221,What is the difference between weather and climate?,Weather changes every day like rain and sun. Climate is more... permanent? My mum was saying the weather has been strange lately. Is that climate change?,19.24,Distracted
+222,How does democracy differ from monarchy?,People vote in democracy!,0.99,Impulsive
+223,What does photosynthesis mean?,"Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",7.9,Focused
+224,What is osmosis?,Water through a membrane!,0.87,Impulsive
+225,How does gravity affect the motion of planets?,Gravity causes planets to follow elliptical orbits around the Sun because the Sun's gravitational pull continuously curves their path.,10.44,Focused
+226,Can you summarise the water cycle in your own words?,Rain!,0.65,Impulsive
+227,Describe the plot of the story we read yesterday.,"The story followed a young girl who discovered a hidden garden and slowly brought it back to life, which paralleled her own emotional healing.",5.77,Focused
+228,How do vaccines work?,Vaccines have something that fights the disease. My mum made me get a flu shot last year and I really didn't want to go. But I didn't get flu so maybe it worked.,22.01,Distracted
+229,How does democracy differ from monarchy?,"Democracy gives power to the people through elected representatives, while in a monarchy, power is held by a single ruler who usually inherits the position.",5.6,Focused
+230,What does photosynthesis mean?,Sunlight makes food!,1.67,Impulsive
+231,What is the difference between a simile and a metaphor?,Simile has 'like'!,2.25,Impulsive
+232,How does gravity affect the motion of planets?,It pulls things!,1.75,Impulsive
+233,Describe the process of erosion in your own words.,"Water moves rocks around and stuff like that. Oh, is this why the Grand Canyon exists? I saw pictures of it and it looked incredible. I want to go there.",15.44,Distracted
+234,How does the human digestive system work?,Breaks down food!,0.6,Impulsive
+235,Can you explain Newton's first law of motion?,Newton's first law states that an object at rest stays at rest and an object in motion stays in motion unless acted upon by an external force.,9.61,Focused
+236,How does the human digestive system work?,Breaks down food!,1.13,Impulsive
+237,Can you summarise the water cycle in your own words?,"The water cycle involves evaporation of water from oceans, condensation into clouds, and precipitation back to Earth as rain or snow.",5.06,Focused
+238,Can you explain what a prime number is?,Only divisible by one and itself!,2.59,Impulsive
+239,What is the difference between weather and climate?,"Weather refers to short-term atmospheric conditions, while climate describes the long-term average weather patterns of a region.",8.28,Focused
+240,Can you tell me what the main cause of World War I was?,"I think it was something about an assassination... oh, speaking of which, did you watch that new documentary? It was really good. Anyway, there were some countries involved.",24.99,Distracted
+241,Can you explain what a prime number is?,Only divisible by one and itself!,2.55,Impulsive
+242,What is the difference between weather and climate?,"Weather refers to short-term atmospheric conditions, while climate describes the long-term average weather patterns of a region.",3.36,Focused
+243,What is the role of the mitochondria in a cell?,"The mitochondria is the powerhouse of the cell, responsible for producing ATP through cellular respiration to fuel all cell activities.",4.58,Focused
+244,What are the properties of a parallelogram?,"It has parallel sides... I think four sides. Wait, is a rectangle a parallelogram? I always get confused between all the different quadrilateral names.",19.08,Distracted
+245,How does democracy differ from monarchy?,Democracy means voting. A monarchy has a king or queen. Britain has both I think? That's confusing. Does the queen actually make laws in Britain?,12.73,Distracted
+246,What is the difference between weather and climate?,Weather changes every day like rain and sun. Climate is more... permanent? My mum was saying the weather has been strange lately. Is that climate change?,15.41,Distracted
+247,What is the Pythagorean theorem?,"The Pythagorean theorem states that in a right triangle, the square of the hypotenuse equals the sum of the squares of the other two sides, or a squared plus b squared equals c squared.",7.43,Focused
+248,Can you summarise the water cycle in your own words?,Rain!,1.68,Impulsive
+249,Can you explain Newton's first law of motion?,Newton's first law states that an object at rest stays at rest and an object in motion stays in motion unless acted upon by an external force.,6.0,Focused
+250,Can you explain what a prime number is?,"A prime number is a number greater than one that has no positive divisors other than one and itself, like 2, 3, 5, 7, and 11.",3.94,Focused
+251,What was the significance of the Industrial Revolution?,"There were lots of factories and smoke and stuff. My grandmother talks about how things used to be made by hand. She knits sweaters, did I mention that?",13.61,Distracted
+252,What caused the fall of the Roman Empire?,Too many invaders!,1.74,Impulsive
+253,Can you explain what a prime number is?,Only divisible by one and itself!,2.86,Impulsive
+254,What is the Pythagorean theorem?,A squared plus B squared equals C squared!,2.4,Impulsive
+255,What is the formula for calculating the area of a circle?,Pi r squared!,1.64,Impulsive
+256,Can you describe what happens during mitosis?,"During mitosis, the cell duplicates its chromosomes and then divides into two identical daughter cells through phases called prophase, metaphase, anaphase, and telophase.",5.27,Focused
+257,What does photosynthesis mean?,"Plants make their own food, right? I was wondering, do cacti also do photosynthesis? Because they are in the desert. And I saw a cactus once on a trip.",24.49,Distracted
+258,How do we find the greatest common factor of two numbers?,Common factors!,2.66,Impulsive
+259,What is the Pythagorean theorem?,"The Pythagorean theorem states that in a right triangle, the square of the hypotenuse equals the sum of the squares of the other two sides, or a squared plus b squared equals c squared.",11.89,Focused
+260,Can you explain what a prime number is?,Prime numbers are special numbers that can only be divided by themselves and one. Is one a prime number? I always forget. Also is zero a number or not?,22.78,Distracted
+261,What is the significance of the Magna Carta?,"The Magna Carta was significant because it limited the power of the king and established that everyone, including rulers, was subject to the law.",6.72,Focused
+262,Can you explain what a metaphor is and give me an example?,It's a comparison!,1.8,Impulsive
+263,How does the human digestive system work?,"The digestive system breaks down food through mechanical and chemical processes starting in the mouth, continuing through the stomach, and nutrients are absorbed in the small intestine.",9.81,Focused
+264,What is osmosis?,"Water goes through a membrane? I think we did an experiment. Oh wait, that was with the egg in vinegar. Was that osmosis or something different?",15.51,Distracted
+265,What is the formula for calculating the area of a circle?,"The area of a circle is calculated using the formula A equals pi times r squared, where r is the radius.",4.83,Focused
+266,Can you name the layers of the Earth?,"Crust, mantle, core, inner core!",0.83,Impulsive
+267,What is the difference between a simile and a metaphor?,Simile has 'like'!,1.6,Impulsive
+268,What caused the fall of the Roman Empire?,Too many invaders!,1.71,Impulsive
+269,Can you tell me what the main cause of World War I was?,The assassination!,2.93,Impulsive
+270,How does the human digestive system work?,"The digestive system breaks down food through mechanical and chemical processes starting in the mouth, continuing through the stomach, and nutrients are absorbed in the small intestine.",10.19,Focused
+271,What caused the fall of the Roman Empire?,"Too many invaders came I think. And it was very big. Empires that are too big fall apart, right? Like, how big was the Roman Empire actually?",10.69,Distracted
+272,Can you name the layers of the Earth?,"Crust, mantle, core, inner core!",0.53,Impulsive
+273,Can you explain Newton's first law of motion?,Newton's first law states that an object at rest stays at rest and an object in motion stays in motion unless acted upon by an external force.,3.84,Focused
+274,What is the Pythagorean theorem?,A squared plus B squared equals C squared!,2.78,Impulsive
+275,What is the significance of the Magna Carta?,"The Magna Carta was significant because it limited the power of the king and established that everyone, including rulers, was subject to the law.",11.52,Focused
+276,What is osmosis?,"Water goes through a membrane? I think we did an experiment. Oh wait, that was with the egg in vinegar. Was that osmosis or something different?",22.15,Distracted
+277,Describe the process of erosion in your own words.,"Water moves rocks around and stuff like that. Oh, is this why the Grand Canyon exists? I saw pictures of it and it looked incredible. I want to go there.",23.86,Distracted
+278,What is the difference between a simile and a metaphor?,"Similes use 'like' I think... or is it 'as'? Metaphors are different. Wait, which one is 'her smile was like sunshine'? I can never remember the difference.",16.65,Distracted
+279,How does gravity affect the motion of planets?,"Gravity pulls things down, right? I always think about the moon when we talk about gravity. Also, is it true astronauts float in space because of gravity?",15.06,Distracted
+280,Describe the process of erosion in your own words.,Wind and water move rocks!,2.95,Impulsive
+281,What are the three branches of government?,"The three branches of government are the legislative branch, which makes laws, the executive branch, which enforces laws, and the judicial branch, which interprets laws.",7.11,Focused
+282,How do you solve a two-step equation?,"To solve a two-step equation, I first isolate the variable by undoing addition or subtraction, then deal with multiplication or division.",6.45,Focused
+283,How does democracy differ from monarchy?,Democracy means voting. A monarchy has a king or queen. Britain has both I think? That's confusing. Does the queen actually make laws in Britain?,18.19,Distracted
+284,How do vaccines work?,Trains your immune system!,2.7,Impulsive
+285,Can you explain what a food chain is?,Producers and consumers!,0.67,Impulsive
+286,What is the role of the mitochondria in a cell?,Energy production!,2.48,Impulsive
+287,Can you explain Newton's first law of motion?,Objects stay put!,1.35,Impulsive
+288,Describe the plot of the story we read yesterday.,"The story followed a young girl who discovered a hidden garden and slowly brought it back to life, which paralleled her own emotional healing.",7.57,Focused
+289,What is the Pythagorean theorem?,It's something with triangles. A squared plus B squared... I think. We used this last month. Can you draw it on the board? I understand better with pictures.,8.04,Distracted
+290,How do vaccines work?,Vaccines have something that fights the disease. My mum made me get a flu shot last year and I really didn't want to go. But I didn't get flu so maybe it worked.,13.08,Distracted
+291,What is the difference between weather and climate?,"Weather refers to short-term atmospheric conditions, while climate describes the long-term average weather patterns of a region.",8.22,Focused
+292,Can you explain what a prime number is?,"A prime number is a number greater than one that has no positive divisors other than one and itself, like 2, 3, 5, 7, and 11.",7.41,Focused
+293,How do you solve a two-step equation?,You add something and then divide maybe? I forgot what we did yesterday because I was thinking about lunch. Can we use a calculator for this?,15.59,Distracted
+294,Describe the process of erosion in your own words.,Wind and water move rocks!,1.36,Impulsive
+295,Can you name the layers of the Earth?,"There's the crust where we live, and then there's the core which is really hot. I was wondering, could you dig to the centre of the Earth theoretically?",20.97,Distracted
+296,How do we find the greatest common factor of two numbers?,"To find the greatest common factor, I list the factors of each number and then identify the largest factor they share.",7.1,Focused
+297,Can you describe what happens during mitosis?,The cell splits!,2.67,Impulsive
+298,What caused the fall of the Roman Empire?,Too many invaders!,1.1,Impulsive
+299,How do we find the greatest common factor of two numbers?,"To find the greatest common factor, I list the factors of each number and then identify the largest factor they share.",5.1,Focused
+300,What is the role of the mitochondria in a cell?,"The mitochondria is the powerhouse of the cell, responsible for producing ATP through cellular respiration to fuel all cell activities.",6.7,Focused
+301,Can you describe what happens during mitosis?,"During mitosis, the cell duplicates its chromosomes and then divides into two identical daughter cells through phases called prophase, metaphase, anaphase, and telophase.",9.7,Focused
+302,What caused the fall of the Roman Empire?,"The fall of the Roman Empire was caused by military pressures from barbarian invasions, economic troubles, political instability, and the overextension of the empire.",11.22,Focused
+303,How do we find the greatest common factor of two numbers?,Common factors!,1.47,Impulsive
+304,Can you explain what a prime number is?,Prime numbers are special numbers that can only be divided by themselves and one. Is one a prime number? I always forget. Also is zero a number or not?,21.47,Distracted
+305,What is osmosis?,Osmosis is the movement of water molecules through a semi-permeable membrane from an area of lower solute concentration to higher solute concentration.,11.83,Focused
+306,Describe the process of erosion in your own words.,"Water moves rocks around and stuff like that. Oh, is this why the Grand Canyon exists? I saw pictures of it and it looked incredible. I want to go there.",24.4,Distracted
+307,How do you solve a two-step equation?,"To solve a two-step equation, I first isolate the variable by undoing addition or subtraction, then deal with multiplication or division.",7.52,Focused
+308,What is the difference between weather and climate?,Weather changes every day like rain and sun. Climate is more... permanent? My mum was saying the weather has been strange lately. Is that climate change?,13.64,Distracted
+309,What does photosynthesis mean?,"Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",10.87,Focused
+310,What is the significance of the Magna Carta?,"It was a really old document. It had something to do with rights. I was thinking about how old paper gets all yellow, like the documents in museums.",9.7,Distracted
+311,How does democracy differ from monarchy?,Democracy means voting. A monarchy has a king or queen. Britain has both I think? That's confusing. Does the queen actually make laws in Britain?,15.77,Distracted
+312,How do vaccines work?,"Vaccines work by introducing a weakened or inactive form of a pathogen, training the immune system to recognise and fight the real disease in the future.",4.3,Focused
+313,Can you explain what a food chain is?,"Animals eat other animals? And plants are at the bottom? Oh, are humans at the top? What would be above humans in a food chain if something existed?",19.13,Distracted
+314,How do you solve a two-step equation?,Add then divide!,0.69,Impulsive
+315,Describe the plot of the story we read yesterday.,A garden and a girl!,2.92,Impulsive
+316,Can you describe what happens during mitosis?,The cell splits!,2.06,Impulsive
+317,How do we find the greatest common factor of two numbers?,You find numbers that both go into... I think? I remember doing factor trees but then I get confused. Can we do an example? I like when we do examples.,19.05,Distracted
+318,Can you explain what a food chain is?,"A food chain shows how energy passes from one organism to another, starting with a producer like a plant and moving through herbivores and carnivores.",5.96,Focused
+319,Can you explain what a prime number is?,"A prime number is a number greater than one that has no positive divisors other than one and itself, like 2, 3, 5, 7, and 11.",10.73,Focused
+320,How do we find the greatest common factor of two numbers?,You find numbers that both go into... I think? I remember doing factor trees but then I get confused. Can we do an example? I like when we do examples.,24.22,Distracted
+321,What is osmosis?,Osmosis is the movement of water molecules through a semi-permeable membrane from an area of lower solute concentration to higher solute concentration.,9.47,Focused
+322,What is the role of the mitochondria in a cell?,"Mitochondria produces energy. Oh, is that the powerhouse of the cell thing? I saw that as a meme once. It's funny that a meme taught me biology.",16.3,Distracted
+323,Can you name the layers of the Earth?,"Crust, mantle, core, inner core!",0.59,Impulsive
+324,Can you summarise the water cycle in your own words?,"The water cycle involves evaporation of water from oceans, condensation into clouds, and precipitation back to Earth as rain or snow.",5.11,Focused
+325,Can you explain what a prime number is?,Only divisible by one and itself!,2.8,Impulsive
+326,What are the three branches of government?,"The three branches of government are the legislative branch, which makes laws, the executive branch, which enforces laws, and the judicial branch, which interprets laws.",9.72,Focused
+327,Can you explain Newton's first law of motion?,"An object stays still unless something pushes it? I was thinking, is this why cars need engines? Because otherwise they just stay parked forever?",24.63,Distracted
+328,What is the role of the mitochondria in a cell?,Energy production!,2.08,Impulsive
+329,Can you explain what a food chain is?,Producers and consumers!,0.75,Impulsive
+330,What was the significance of the Industrial Revolution?,Factories!,2.24,Impulsive
+331,What is the difference between conduction and convection?,"Conduction is when things touch, right? Convection I'm less sure. Is that why the sea breeze happens at the beach? I love the beach actually.",8.49,Distracted
+332,Can you describe what happens during mitosis?,The cell splits!,2.49,Impulsive
+333,What is the difference between a simile and a metaphor?,Simile has 'like'!,1.4,Impulsive
+334,Can you explain Newton's first law of motion?,Newton's first law states that an object at rest stays at rest and an object in motion stays in motion unless acted upon by an external force.,4.31,Focused
+335,What are the properties of a parallelogram?,"A parallelogram has two pairs of parallel sides, opposite sides that are equal in length, and opposite angles that are equal.",6.71,Focused
+336,Can you explain what a prime number is?,Prime numbers are special numbers that can only be divided by themselves and one. Is one a prime number? I always forget. Also is zero a number or not?,21.47,Distracted
+337,What was the significance of the Industrial Revolution?,"The Industrial Revolution transformed society by shifting from agricultural economies to industrial manufacturing, leading to urbanisation and new labour systems.",4.58,Focused
+338,How does the human digestive system work?,Food goes in your mouth and gets broken down. I was thinking about how weird it is that we eat every day. What did people do before farms existed?,22.8,Distracted
+339,How does the human digestive system work?,Food goes in your mouth and gets broken down. I was thinking about how weird it is that we eat every day. What did people do before farms existed?,19.61,Distracted
+340,Describe the process of erosion in your own words.,Wind and water move rocks!,2.78,Impulsive
+341,How do you solve a two-step equation?,You add something and then divide maybe? I forgot what we did yesterday because I was thinking about lunch. Can we use a calculator for this?,11.95,Distracted
+342,What is osmosis?,"Water goes through a membrane? I think we did an experiment. Oh wait, that was with the egg in vinegar. Was that osmosis or something different?",12.32,Distracted
+343,How does gravity affect the motion of planets?,Gravity causes planets to follow elliptical orbits around the Sun because the Sun's gravitational pull continuously curves their path.,9.0,Focused
+344,What is the difference between conduction and convection?,"Conduction is when things touch, right? Convection I'm less sure. Is that why the sea breeze happens at the beach? I love the beach actually.",21.68,Distracted
+345,What is the difference between conduction and convection?,Contact versus movement!,1.22,Impulsive
+346,Can you name the layers of the Earth?,"Crust, mantle, core, inner core!",0.89,Impulsive
+347,What is the significance of the Magna Carta?,It gave people rights!,2.86,Impulsive
+348,What is the difference between weather and climate?,"Weather refers to short-term atmospheric conditions, while climate describes the long-term average weather patterns of a region.",5.69,Focused
+349,Can you explain Newton's first law of motion?,Newton's first law states that an object at rest stays at rest and an object in motion stays in motion unless acted upon by an external force.,9.21,Focused
+350,What is the significance of the Magna Carta?,"The Magna Carta was significant because it limited the power of the king and established that everyone, including rulers, was subject to the law.",10.61,Focused
+351,Can you explain what a metaphor is and give me an example?,"A metaphor is a figure of speech that describes something by saying it is something else. For example, saying 'life is a journey' is a metaphor.",11.99,Focused
+352,Can you explain what a food chain is?,"Animals eat other animals? And plants are at the bottom? Oh, are humans at the top? What would be above humans in a food chain if something existed?",16.21,Distracted
+353,What are the three branches of government?,"There's a president and some other parts. Oh wait, is this about America? Because I was thinking about how I want to visit Washington D.C. someday.",14.48,Distracted
+354,What do you know about the Civil Rights Movement?,"The Civil Rights Movement was a struggle for racial equality in the United States, led by figures like Martin Luther King Jr., fighting against segregation and discrimination.",8.17,Focused
+355,What caused the fall of the Roman Empire?,Too many invaders!,1.24,Impulsive
+356,What is the Pythagorean theorem?,A squared plus B squared equals C squared!,2.15,Impulsive
+357,How does gravity affect the motion of planets?,"Gravity pulls things down, right? I always think about the moon when we talk about gravity. Also, is it true astronauts float in space because of gravity?",8.14,Distracted
+358,Can you explain what a food chain is?,"Animals eat other animals? And plants are at the bottom? Oh, are humans at the top? What would be above humans in a food chain if something existed?",19.66,Distracted
+359,How do vaccines work?,Vaccines have something that fights the disease. My mum made me get a flu shot last year and I really didn't want to go. But I didn't get flu so maybe it worked.,24.55,Distracted
+360,How does democracy differ from monarchy?,Democracy means voting. A monarchy has a king or queen. Britain has both I think? That's confusing. Does the queen actually make laws in Britain?,18.31,Distracted
+361,Describe the process of erosion in your own words.,"Erosion is the process where wind, water, or ice gradually wears away and transports rock and soil from one place to another.",10.5,Focused
+362,What is the difference between conduction and convection?,"Conduction is when things touch, right? Convection I'm less sure. Is that why the sea breeze happens at the beach? I love the beach actually.",12.87,Distracted
+363,Describe the plot of the story we read yesterday.,A garden and a girl!,1.08,Impulsive
+364,Describe the plot of the story we read yesterday.,"The story followed a young girl who discovered a hidden garden and slowly brought it back to life, which paralleled her own emotional healing.",6.17,Focused
+365,What is osmosis?,Water through a membrane!,0.98,Impulsive
+366,How does gravity affect the motion of planets?,It pulls things!,2.19,Impulsive
+367,How do vaccines work?,"Vaccines work by introducing a weakened or inactive form of a pathogen, training the immune system to recognise and fight the real disease in the future.",9.91,Focused
+368,Can you explain what a prime number is?,Prime numbers are special numbers that can only be divided by themselves and one. Is one a prime number? I always forget. Also is zero a number or not?,22.25,Distracted
+369,What is osmosis?,"Water goes through a membrane? I think we did an experiment. Oh wait, that was with the egg in vinegar. Was that osmosis or something different?",9.65,Distracted
+370,What is osmosis?,"Water goes through a membrane? I think we did an experiment. Oh wait, that was with the egg in vinegar. Was that osmosis or something different?",18.99,Distracted
+371,What is the difference between a simile and a metaphor?,"Similes use 'like' I think... or is it 'as'? Metaphors are different. Wait, which one is 'her smile was like sunshine'? I can never remember the difference.",21.41,Distracted
+372,What is the formula for calculating the area of a circle?,Pi r squared!,1.95,Impulsive
+373,How do vaccines work?,Trains your immune system!,0.83,Impulsive
+374,How does democracy differ from monarchy?,People vote in democracy!,1.24,Impulsive
+375,How do vaccines work?,Trains your immune system!,1.54,Impulsive
+376,Can you explain what a metaphor is and give me an example?,A metaphor is like... a comparison? I think? We did this last week and I had it written down but I left my notebook at home today.,10.25,Distracted
+377,Can you name the layers of the Earth?,"The Earth has four main layers: the inner core, outer core, mantle, and crust.",10.89,Focused
+378,What do you know about the Civil Rights Movement?,"The Civil Rights Movement was a struggle for racial equality in the United States, led by figures like Martin Luther King Jr., fighting against segregation and discrimination.",7.78,Focused
+379,How does democracy differ from monarchy?,"Democracy gives power to the people through elected representatives, while in a monarchy, power is held by a single ruler who usually inherits the position.",5.45,Focused
+380,What was the significance of the Industrial Revolution?,"There were lots of factories and smoke and stuff. My grandmother talks about how things used to be made by hand. She knits sweaters, did I mention that?",12.37,Distracted
+381,What is the Pythagorean theorem?,"The Pythagorean theorem states that in a right triangle, the square of the hypotenuse equals the sum of the squares of the other two sides, or a squared plus b squared equals c squared.",11.5,Focused
+382,Describe the plot of the story we read yesterday.,A garden and a girl!,1.24,Impulsive
+383,Can you explain what a food chain is?,"A food chain shows how energy passes from one organism to another, starting with a producer like a plant and moving through herbivores and carnivores.",6.05,Focused
+384,What does photosynthesis mean?,"Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",7.21,Focused
+385,Can you summarise the water cycle in your own words?,"The water cycle involves evaporation of water from oceans, condensation into clouds, and precipitation back to Earth as rain or snow.",4.27,Focused
+386,What are the three branches of government?,"President, Congress, judges!",2.65,Impulsive
+387,How do vaccines work?,Trains your immune system!,2.19,Impulsive
+388,How do we find the greatest common factor of two numbers?,You find numbers that both go into... I think? I remember doing factor trees but then I get confused. Can we do an example? I like when we do examples.,24.44,Distracted
+389,Describe the plot of the story we read yesterday.,A garden and a girl!,1.89,Impulsive
+390,Can you summarise the water cycle in your own words?,Rain!,2.48,Impulsive
+391,Can you tell me what the main cause of World War I was?,"World War I was mainly caused by a combination of nationalism, imperialism, militarism, and the alliance system, triggered by the assassination of Archduke Franz Ferdinand.",5.38,Focused
+392,What does photosynthesis mean?,Sunlight makes food!,1.64,Impulsive
+393,Can you explain what a prime number is?,Prime numbers are special numbers that can only be divided by themselves and one. Is one a prime number? I always forget. Also is zero a number or not?,20.73,Distracted
+394,How does gravity affect the motion of planets?,It pulls things!,1.96,Impulsive
+395,What is the Pythagorean theorem?,A squared plus B squared equals C squared!,2.1,Impulsive
+396,What do you know about the Civil Rights Movement?,Marches and protests!,0.77,Impulsive
+397,What are the three branches of government?,"There's a president and some other parts. Oh wait, is this about America? Because I was thinking about how I want to visit Washington D.C. someday.",16.02,Distracted
+398,How does the human digestive system work?,"The digestive system breaks down food through mechanical and chemical processes starting in the mouth, continuing through the stomach, and nutrients are absorbed in the small intestine.",10.96,Focused
+399,Can you name the layers of the Earth?,"Crust, mantle, core, inner core!",1.32,Impulsive
+400,How does the human digestive system work?,Food goes in your mouth and gets broken down. I was thinking about how weird it is that we eat every day. What did people do before farms existed?,11.76,Distracted
+401,Can you summarise the water cycle in your own words?,"The water cycle involves evaporation of water from oceans, condensation into clouds, and precipitation back to Earth as rain or snow.",8.72,Focused
+402,What is the significance of the Magna Carta?,"It was a really old document. It had something to do with rights. I was thinking about how old paper gets all yellow, like the documents in museums.",23.46,Distracted
+403,What is the difference between a simile and a metaphor?,Simile has 'like'!,2.12,Impulsive
+404,What does photosynthesis mean?,Sunlight makes food!,0.85,Impulsive
+405,What is the formula for calculating the area of a circle?,"The area of a circle is calculated using the formula A equals pi times r squared, where r is the radius.",5.74,Focused
+406,Describe the process of erosion in your own words.,Wind and water move rocks!,0.79,Impulsive
+407,What are the three branches of government?,"The three branches of government are the legislative branch, which makes laws, the executive branch, which enforces laws, and the judicial branch, which interprets laws.",10.99,Focused
+408,How do you solve a two-step equation?,You add something and then divide maybe? I forgot what we did yesterday because I was thinking about lunch. Can we use a calculator for this?,14.61,Distracted
+409,What do you know about the Civil Rights Movement?,"It was in America and there were marches and Martin Luther King, and I watched a video about it once. There was a bus thing too, I think.",19.4,Distracted
+410,How do vaccines work?,"Vaccines work by introducing a weakened or inactive form of a pathogen, training the immune system to recognise and fight the real disease in the future.",9.27,Focused
+411,Can you name the layers of the Earth?,"There's the crust where we live, and then there's the core which is really hot. I was wondering, could you dig to the centre of the Earth theoretically?",15.13,Distracted
+412,How do vaccines work?,Vaccines have something that fights the disease. My mum made me get a flu shot last year and I really didn't want to go. But I didn't get flu so maybe it worked.,20.35,Distracted
+413,What is the difference between conduction and convection?,"Conduction is when things touch, right? Convection I'm less sure. Is that why the sea breeze happens at the beach? I love the beach actually.",15.05,Distracted
+414,What does photosynthesis mean?,Sunlight makes food!,2.58,Impulsive
+415,How does the human digestive system work?,Breaks down food!,1.52,Impulsive
+416,How does gravity affect the motion of planets?,Gravity causes planets to follow elliptical orbits around the Sun because the Sun's gravitational pull continuously curves their path.,3.29,Focused
+417,What do you know about the Civil Rights Movement?,Marches and protests!,1.04,Impulsive
+418,What is the significance of the Magna Carta?,It gave people rights!,2.88,Impulsive
+419,Can you explain what a food chain is?,"A food chain shows how energy passes from one organism to another, starting with a producer like a plant and moving through herbivores and carnivores.",6.26,Focused
+420,Can you explain what a prime number is?,Only divisible by one and itself!,1.42,Impulsive
+421,What is the difference between conduction and convection?,"Conduction transfers heat through direct contact between objects, while convection transfers heat through the movement of fluids or gases.",11.8,Focused
+422,What do you know about the Civil Rights Movement?,Marches and protests!,0.65,Impulsive
+423,How does gravity affect the motion of planets?,Gravity causes planets to follow elliptical orbits around the Sun because the Sun's gravitational pull continuously curves their path.,4.71,Focused
+424,What does photosynthesis mean?,"Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",11.54,Focused
+425,What is the Pythagorean theorem?,A squared plus B squared equals C squared!,1.64,Impulsive
+426,Can you explain what a prime number is?,"A prime number is a number greater than one that has no positive divisors other than one and itself, like 2, 3, 5, 7, and 11.",4.91,Focused
+427,What is osmosis?,"Water goes through a membrane? I think we did an experiment. Oh wait, that was with the egg in vinegar. Was that osmosis or something different?",18.15,Distracted
+428,Can you tell me what the main cause of World War I was?,"I think it was something about an assassination... oh, speaking of which, did you watch that new documentary? It was really good. Anyway, there were some countries involved.",8.86,Distracted
+429,Can you describe what happens during mitosis?,"The cell splits and makes copies... I think. Is mitosis the same as meiosis? I always mix those two up. Also, when does meiosis happen again?",12.14,Distracted
+430,How do you solve a two-step equation?,You add something and then divide maybe? I forgot what we did yesterday because I was thinking about lunch. Can we use a calculator for this?,21.38,Distracted
+431,Can you explain what a metaphor is and give me an example?,It's a comparison!,0.67,Impulsive
+432,What is the role of the mitochondria in a cell?,"The mitochondria is the powerhouse of the cell, responsible for producing ATP through cellular respiration to fuel all cell activities.",7.99,Focused
+433,What is the difference between weather and climate?,Weather changes every day like rain and sun. Climate is more... permanent? My mum was saying the weather has been strange lately. Is that climate change?,11.67,Distracted
+434,Can you explain what a food chain is?,"A food chain shows how energy passes from one organism to another, starting with a producer like a plant and moving through herbivores and carnivores.",5.1,Focused
+435,What is the role of the mitochondria in a cell?,"Mitochondria produces energy. Oh, is that the powerhouse of the cell thing? I saw that as a meme once. It's funny that a meme taught me biology.",10.51,Distracted
+436,What is the difference between conduction and convection?,"Conduction transfers heat through direct contact between objects, while convection transfers heat through the movement of fluids or gases.",8.36,Focused
+437,How does gravity affect the motion of planets?,"Gravity pulls things down, right? I always think about the moon when we talk about gravity. Also, is it true astronauts float in space because of gravity?",22.59,Distracted
+438,How do you solve a two-step equation?,You add something and then divide maybe? I forgot what we did yesterday because I was thinking about lunch. Can we use a calculator for this?,24.79,Distracted
+439,Can you name the layers of the Earth?,"Crust, mantle, core, inner core!",1.13,Impulsive
+440,What was the significance of the Industrial Revolution?,"The Industrial Revolution transformed society by shifting from agricultural economies to industrial manufacturing, leading to urbanisation and new labour systems.",3.99,Focused
+441,Can you explain what a food chain is?,Producers and consumers!,0.56,Impulsive
+442,Can you tell me what the main cause of World War I was?,"World War I was mainly caused by a combination of nationalism, imperialism, militarism, and the alliance system, triggered by the assassination of Archduke Franz Ferdinand.",6.22,Focused
+443,Describe the plot of the story we read yesterday.,There was a character who found something and it changed things. I don't remember all of it. I was kind of distracted during the reading part. Can you remind me?,12.04,Distracted
+444,Can you describe what happens during mitosis?,"The cell splits and makes copies... I think. Is mitosis the same as meiosis? I always mix those two up. Also, when does meiosis happen again?",8.27,Distracted
+445,How does gravity affect the motion of planets?,It pulls things!,0.63,Impulsive
+446,How do vaccines work?,Vaccines have something that fights the disease. My mum made me get a flu shot last year and I really didn't want to go. But I didn't get flu so maybe it worked.,15.16,Distracted
+447,What does photosynthesis mean?,"Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",9.71,Focused
+448,Describe the process of erosion in your own words.,"Water moves rocks around and stuff like that. Oh, is this why the Grand Canyon exists? I saw pictures of it and it looked incredible. I want to go there.",15.62,Distracted
+449,What do you know about the Civil Rights Movement?,Marches and protests!,1.78,Impulsive
+450,What does photosynthesis mean?,Sunlight makes food!,1.63,Impulsive
+451,What are the three branches of government?,"There's a president and some other parts. Oh wait, is this about America? Because I was thinking about how I want to visit Washington D.C. someday.",24.07,Distracted
+452,What is the formula for calculating the area of a circle?,Pi r squared!,2.32,Impulsive
+453,How does democracy differ from monarchy?,"Democracy gives power to the people through elected representatives, while in a monarchy, power is held by a single ruler who usually inherits the position.",10.8,Focused
+454,What are the properties of a parallelogram?,"A parallelogram has two pairs of parallel sides, opposite sides that are equal in length, and opposite angles that are equal.",5.71,Focused
+455,What is osmosis?,Water through a membrane!,2.91,Impulsive
+456,What is the formula for calculating the area of a circle?,"I know it has pi in it... my older brother is studying engineering and he uses pi a lot. Wait, is pi 3.14 or something? I think it's a circle thing.",24.98,Distracted
+457,Can you explain what a food chain is?,Producers and consumers!,1.5,Impulsive
+458,Can you explain what a prime number is?,Only divisible by one and itself!,0.77,Impulsive
+459,What caused the fall of the Roman Empire?,"The fall of the Roman Empire was caused by military pressures from barbarian invasions, economic troubles, political instability, and the overextension of the empire.",11.19,Focused
+460,Can you summarise the water cycle in your own words?,Rain!,2.75,Impulsive
+461,Can you describe what happens during mitosis?,The cell splits!,2.02,Impulsive
+462,Can you summarise the water cycle in your own words?,"The water cycle involves evaporation of water from oceans, condensation into clouds, and precipitation back to Earth as rain or snow.",4.14,Focused
+463,How does the human digestive system work?,Breaks down food!,2.08,Impulsive
+464,Can you name the layers of the Earth?,"Crust, mantle, core, inner core!",2.28,Impulsive
+465,How do we find the greatest common factor of two numbers?,"To find the greatest common factor, I list the factors of each number and then identify the largest factor they share.",11.95,Focused
+466,What are the properties of a parallelogram?,"It has parallel sides... I think four sides. Wait, is a rectangle a parallelogram? I always get confused between all the different quadrilateral names.",13.01,Distracted
+467,What are the properties of a parallelogram?,"It has parallel sides... I think four sides. Wait, is a rectangle a parallelogram? I always get confused between all the different quadrilateral names.",18.29,Distracted
+468,What does photosynthesis mean?,"Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",10.14,Focused
+469,What does photosynthesis mean?,"Plants make their own food, right? I was wondering, do cacti also do photosynthesis? Because they are in the desert. And I saw a cactus once on a trip.",22.5,Distracted
+470,What is osmosis?,Water through a membrane!,2.69,Impulsive
+471,Can you name the layers of the Earth?,"Crust, mantle, core, inner core!",2.3,Impulsive
+472,Can you explain what a metaphor is and give me an example?,A metaphor is like... a comparison? I think? We did this last week and I had it written down but I left my notebook at home today.,15.31,Distracted
+473,What is the difference between conduction and convection?,Contact versus movement!,1.07,Impulsive
+474,Can you describe what happens during mitosis?,"During mitosis, the cell duplicates its chromosomes and then divides into two identical daughter cells through phases called prophase, metaphase, anaphase, and telophase.",10.45,Focused
+475,How do we find the greatest common factor of two numbers?,You find numbers that both go into... I think? I remember doing factor trees but then I get confused. Can we do an example? I like when we do examples.,15.07,Distracted
+476,What does photosynthesis mean?,"Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",5.81,Focused
+477,Can you describe what happens during mitosis?,"The cell splits and makes copies... I think. Is mitosis the same as meiosis? I always mix those two up. Also, when does meiosis happen again?",19.31,Distracted
+478,What do you know about the Civil Rights Movement?,"It was in America and there were marches and Martin Luther King, and I watched a video about it once. There was a bus thing too, I think.",24.21,Distracted
+479,Can you explain what a prime number is?,"A prime number is a number greater than one that has no positive divisors other than one and itself, like 2, 3, 5, 7, and 11.",11.31,Focused
+480,Can you summarise the water cycle in your own words?,"The water cycle involves evaporation of water from oceans, condensation into clouds, and precipitation back to Earth as rain or snow.",3.82,Focused
+481,Can you summarise the water cycle in your own words?,"The water cycle involves evaporation of water from oceans, condensation into clouds, and precipitation back to Earth as rain or snow.",3.84,Focused
+482,What does photosynthesis mean?,"Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",9.7,Focused
+483,What do you know about the Civil Rights Movement?,"The Civil Rights Movement was a struggle for racial equality in the United States, led by figures like Martin Luther King Jr., fighting against segregation and discrimination.",10.31,Focused
+484,Can you name the layers of the Earth?,"There's the crust where we live, and then there's the core which is really hot. I was wondering, could you dig to the centre of the Earth theoretically?",9.02,Distracted
+485,Can you name the layers of the Earth?,"There's the crust where we live, and then there's the core which is really hot. I was wondering, could you dig to the centre of the Earth theoretically?",17.55,Distracted
+486,Can you explain what a prime number is?,"A prime number is a number greater than one that has no positive divisors other than one and itself, like 2, 3, 5, 7, and 11.",4.1,Focused
+487,What do you know about the Civil Rights Movement?,"It was in America and there were marches and Martin Luther King, and I watched a video about it once. There was a bus thing too, I think.",22.85,Distracted
+488,What is the role of the mitochondria in a cell?,Energy production!,1.56,Impulsive
+489,How does democracy differ from monarchy?,People vote in democracy!,2.3,Impulsive
+490,What is the difference between a simile and a metaphor?,Simile has 'like'!,2.0,Impulsive
+491,What do you know about the Civil Rights Movement?,"The Civil Rights Movement was a struggle for racial equality in the United States, led by figures like Martin Luther King Jr., fighting against segregation and discrimination.",3.93,Focused
+492,What are the properties of a parallelogram?,It has parallel sides!,1.03,Impulsive
+493,Can you explain what a prime number is?,"A prime number is a number greater than one that has no positive divisors other than one and itself, like 2, 3, 5, 7, and 11.",7.34,Focused
+494,Can you explain what a food chain is?,"A food chain shows how energy passes from one organism to another, starting with a producer like a plant and moving through herbivores and carnivores.",3.97,Focused
+495,Can you explain what a food chain is?,"A food chain shows how energy passes from one organism to another, starting with a producer like a plant and moving through herbivores and carnivores.",8.01,Focused
+496,What does photosynthesis mean?,"Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",9.86,Focused
+497,What is the difference between weather and climate?,"Weather is short, climate is long!",1.07,Impulsive
+498,Can you explain Newton's first law of motion?,Newton's first law states that an object at rest stays at rest and an object in motion stays in motion unless acted upon by an external force.,10.61,Focused
+499,What is the role of the mitochondria in a cell?,"The mitochondria is the powerhouse of the cell, responsible for producing ATP through cellular respiration to fuel all cell activities.",10.37,Focused
+500,How does the human digestive system work?,Food goes in your mouth and gets broken down. I was thinking about how weird it is that we eat every day. What did people do before farms existed?,19.47,Distracted
