@@ -7,11 +7,11 @@ import {
 } from "lucide-react";
 
 const METRICS = [
-  { label: "Dataset Size",   value: "500",   suffix: " samples", color: "from-purple-600 to-purple-400" },
-  { label: "Accuracy",       value: "78",    suffix: "%",        color: "from-cyan-600 to-cyan-400" },
-  { label: "Macro F1",       value: "0.764", suffix: "",         color: "from-emerald-600 to-emerald-400" },
-  { label: "States Modeled", value: "3",     suffix: "",         color: "from-amber-600 to-amber-400" },
-  { label: "Agents",         value: "5",     suffix: "",         color: "from-rose-600 to-rose-400" },
+  { label: "Dataset Size",   value: "500",   suffix: " samples", color: "from-primary to-primary-light" },
+  { label: "Accuracy",       value: "78",    suffix: "%",        color: "from-sky-500 to-sky-400" },
+  { label: "Macro F1",       value: "0.764", suffix: "",         color: "from-focused to-emerald-400" },
+  { label: "States Modeled", value: "3",     suffix: "",         color: "from-distracted to-amber-400" },
+  { label: "Agents",         value: "5",     suffix: "",         color: "from-accent to-pink-400" },
 ];
 
 const WHY = [
@@ -19,38 +19,42 @@ const WHY = [
     icon: Brain,
     title: "ADHD Attentional Variability",
     desc: "ADHD is characterised by intra-individual variability (IIV) — moment-to-moment fluctuations in attention that standard assessments miss. Our framework models this dynamic instability in real time.",
-    color: "text-purple-400",
-    bg: "bg-purple-400/10",
+    color: "text-primary",
+    bg: "bg-primary/10",
+    border: "border-primary/20",
   },
   {
     icon: BookOpen,
     title: "Educational Support",
     desc: "Teachers face the challenge of detecting disengagement before it compounds. BAS provides turn-level attention labels with evidence-based intervention recommendations, actionable within the classroom.",
-    color: "text-cyan-400",
-    bg: "bg-cyan-400/10",
+    color: "text-sky-500",
+    bg: "bg-sky-500/10",
+    border: "border-sky-500/20",
   },
   {
     icon: Activity,
     title: "Behavioral Modeling",
     desc: "By operationalising the Behavioural Activation System as a continuous reward-driven score, we connect computational neuroscience theory with practical educational support tools.",
-    color: "text-emerald-400",
-    bg: "bg-emerald-400/10",
+    color: "text-focused",
+    bg: "bg-focused/10",
+    border: "border-focused/20",
   },
   {
     icon: Layers,
     title: "AI for Health",
     desc: "Multi-agent LangGraph architectures open new avenues for neurodevelopmental health monitoring — interpretable, modular, and extensible to clinical settings beyond the classroom.",
-    color: "text-rose-400",
-    bg: "bg-rose-400/10",
+    color: "text-accent",
+    bg: "bg-accent/10",
+    border: "border-accent/20",
   },
 ];
 
 const PIPELINE = [
-  { name: "Signal Extractor",   desc: "Feature extraction from interaction", color: "#7C3AED" },
-  { name: "State Classifier",   desc: "Focused / Distracted / Impulsive",   color: "#8B5CF6" },
-  { name: "Reward Modeler",     desc: "RL-inspired transition rewards",      color: "#06B6D4" },
-  { name: "BAS Tracker",        desc: "Cumulative score with MA smoothing",  color: "#10B981" },
-  { name: "Intervention Gen.",  desc: "Pedagogical recommendations",         color: "#F59E0B" },
+  { name: "Signal Extractor",   desc: "Feature extraction from interaction", color: "#4A9FD8" },
+  { name: "State Classifier",   desc: "Focused / Distracted / Impulsive",   color: "#6DB8E8" },
+  { name: "Reward Modeler",     desc: "RL-inspired transition rewards",      color: "#3CB48A" },
+  { name: "BAS Tracker",        desc: "Cumulative score with MA smoothing",  color: "#E8A020" },
+  { name: "Intervention Gen.",  desc: "Pedagogical recommendations",         color: "#E891B0" },
 ];
 
 const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0 } };
@@ -58,12 +62,15 @@ const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0 } };
 export default function LandingPage() {
   return (
     <div className="pt-16 overflow-hidden">
-      {/* Hero */}
-      <section className="relative min-h-[92vh] flex items-center justify-center">
-        {/* Background glow */}
-        <div className="absolute inset-0 bg-hero-glow pointer-events-none" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
+
+      {/* ── Hero ─────────────────────────────────────────────────── */}
+      <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
+        {/* Sky gradient background */}
+        <div className="absolute inset-0 bg-hero-sky" />
+        {/* Soft decorative blobs */}
+        <div className="absolute top-16 right-16 w-72 h-72 bg-primary/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-24 left-12 w-56 h-56 bg-accent/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-sky-200/40 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 text-center">
           {/* Badge */}
@@ -71,7 +78,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-semibold mb-8"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-white/70 text-primary text-xs font-semibold mb-8 shadow-sm"
           >
             <Zap className="w-3 h-3" />
             AI for Health · NLP · Educational Technology
@@ -82,10 +89,10 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-tight tracking-tight"
+            className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-800 leading-tight tracking-tight"
           >
             Behavioral{" "}
-            <span className="bg-gradient-to-r from-primary-light via-accent to-emerald-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary via-sky-400 to-accent bg-clip-text text-transparent">
               Attention
             </span>{" "}
             Score
@@ -95,10 +102,10 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-6 text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed"
+            className="mt-6 text-lg sm:text-xl text-slate-500 max-w-3xl mx-auto leading-relaxed"
           >
             A LangGraph-Based Multi-Agent Framework for Modeling{" "}
-            <span className="text-slate-200">ADHD Attentional Variability</span> Through
+            <span className="text-slate-700 font-semibold">ADHD Attentional Variability</span> Through
             Educational Interactions
           </motion.p>
 
@@ -131,7 +138,7 @@ export default function LandingPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.55 + i * 0.07 }}
-                className="glass rounded-2xl p-4 text-center hover:border-border-light transition-all duration-300 group"
+                className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center border border-white/60 shadow-sm hover:shadow-md transition-all duration-300 group"
               >
                 <div className={`text-2xl font-black bg-gradient-to-r ${m.color} bg-clip-text text-transparent group-hover:scale-110 transition-transform`}>
                   {m.value}{m.suffix}
@@ -143,7 +150,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Pipeline mini-diagram */}
+      {/* ── 5-Agent Pipeline ─────────────────────────────────────── */}
       <section className="py-20 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <motion.div
@@ -173,7 +180,7 @@ export default function LandingPage() {
                 className="w-full max-w-lg"
               >
                 <div
-                  className="glass rounded-xl px-6 py-4 flex items-center gap-4 hover:border-border-light transition-all cursor-default"
+                  className="bg-white rounded-xl px-6 py-4 flex items-center gap-4 border border-border hover:border-primary/30 hover:shadow-md transition-all cursor-default"
                   style={{ borderLeft: `3px solid ${node.color}` }}
                 >
                   <div
@@ -183,13 +190,13 @@ export default function LandingPage() {
                     {i + 1}
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-white">{node.name}</div>
+                    <div className="text-sm font-semibold text-slate-800">{node.name}</div>
                     <div className="text-xs text-slate-500">{node.desc}</div>
                   </div>
                 </div>
                 {i < PIPELINE.length - 1 && (
                   <div className="flex justify-center my-1">
-                    <div className="w-px h-4 bg-border-light" />
+                    <div className="w-px h-4 bg-border" />
                   </div>
                 )}
               </motion.div>
@@ -204,8 +211,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Why This Matters */}
-      <section className="py-20 px-4 sm:px-6 bg-surface/50">
+      {/* ── Why This Matters ─────────────────────────────────────── */}
+      <section className="py-20 px-4 sm:px-6 bg-surface-2">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial="hidden"
@@ -214,7 +221,7 @@ export default function LandingPage() {
             variants={{ show: { transition: { staggerChildren: 0.1 } } }}
             className="text-center mb-14"
           >
-            <motion.div variants={fade} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-semibold mb-4">
+            <motion.div variants={fade} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-semibold mb-4 border border-accent/20">
               <Target className="w-3 h-3" /> Research Motivation
             </motion.div>
             <motion.h2 variants={fade} className="section-title">Why This Matters</motion.h2>
@@ -230,13 +237,13 @@ export default function LandingPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="card hover:border-border-light transition-all duration-300 group"
+                  className={`card border ${item.border}`}
                 >
                   <div className={`w-10 h-10 rounded-xl ${item.bg} flex items-center justify-center mb-4`}>
                     <Icon className={`w-5 h-5 ${item.color}`} />
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                  <h3 className="text-lg font-bold text-slate-800 mb-2">{item.title}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
                 </motion.div>
               );
             })}
@@ -244,22 +251,22 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA strip */}
+      {/* ── CTA strip ────────────────────────────────────────────── */}
       <section className="py-20 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="card border-primary/30 bg-gradient-to-br from-primary/10 to-accent/5"
+            className="bg-gradient-to-br from-primary/8 via-white to-accent/8 rounded-3xl p-10 border border-primary/15 shadow-md"
           >
-            <div className="w-14 h-14 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-xl shadow-primary/30">
+            <div className="w-14 h-14 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/25">
               <BarChart2 className="w-7 h-7 text-white" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-3">
               Try the Live Demo
             </h2>
-            <p className="text-slate-400 mb-8 leading-relaxed">
+            <p className="text-slate-500 mb-8 leading-relaxed">
               Enter a teacher prompt and student response. The 5-agent pipeline will classify
               attention, compute reward, update the BAS score and generate an intervention
               recommendation — all in real time.

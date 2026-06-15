@@ -9,23 +9,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#0A0A0F",
-        surface: "#12121A",
-        "surface-2": "#1A1A28",
-        border: "#1E1E30",
-        "border-light": "#2A2A40",
+        background: "#EDF5FF",
+        surface: "#FFFFFF",
+        "surface-2": "#F0F7FF",
+        border: "#BDD4EC",
+        "border-light": "#D4E6F5",
         primary: {
-          DEFAULT: "#7C3AED",
-          light: "#9F67FF",
-          dark: "#5B21B6",
+          DEFAULT: "#4A9FD8",
+          light: "#6DB8E8",
+          dark: "#2E7DB5",
         },
         accent: {
-          DEFAULT: "#06B6D4",
-          light: "#22D3EE",
+          DEFAULT: "#E891B0",
+          light: "#F4A8C5",
         },
-        focused: "#10B981",
-        distracted: "#F59E0B",
-        impulsive: "#EF4444",
+        focused: "#3CB48A",
+        distracted: "#E8A020",
+        impulsive: "#E86060",
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
@@ -33,24 +33,24 @@ const config: Config = {
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "hero-glow":
-          "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124,58,237,0.35), transparent)",
-        "card-glass":
-          "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
+        "hero-sky":
+          "linear-gradient(160deg, #CCEAFF 0%, #EDF5FF 50%, #FFF0F7 100%)",
+        "card-soft":
+          "linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,247,255,0.7))",
       },
       animation: {
         "pulse-slow": "pulse 4s cubic-bezier(0.4,0,0.6,1) infinite",
         float: "float 6s ease-in-out infinite",
-        glow: "glow 2s ease-in-out infinite alternate",
+        "fade-up": "fadeUp 0.5s ease-out forwards",
       },
       keyframes: {
         float: {
           "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-12px)" },
+          "50%": { transform: "translateY(-10px)" },
         },
-        glow: {
-          from: { boxShadow: "0 0 20px rgba(124,58,237,0.3)" },
-          to: { boxShadow: "0 0 40px rgba(124,58,237,0.6)" },
+        fadeUp: {
+          from: { opacity: "0", transform: "translateY(16px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
         },
       },
     },
