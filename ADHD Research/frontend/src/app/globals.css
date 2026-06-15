@@ -5,11 +5,11 @@
 @tailwind utilities;
 
 :root {
-  --background: #0A0A0F;
-  --surface: #12121A;
-  --border: #1E1E30;
-  --primary: #7C3AED;
-  --accent: #06B6D4;
+  --background: #EDF5FF;
+  --surface: #FFFFFF;
+  --border: #BDD4EC;
+  --primary: #4A9FD8;
+  --accent: #E891B0;
 }
 
 * {
@@ -24,70 +24,79 @@ html {
 
 body {
   background-color: var(--background);
-  color: #E2E8F0;
+  color: #334155;
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: rgba(124, 58, 237, 0.4);
-  color: #fff;
+  background: rgba(74, 159, 216, 0.25);
+  color: #1e3a5f;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--surface);
-}
-::-webkit-scrollbar-thumb {
-  background: #2A2A40;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
-}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #EDF5FF; }
+::-webkit-scrollbar-thumb { background: #BDD4EC; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
 @layer components {
+
+  /* ── Cards ──────────────────────────────────────────────────── */
   .glass {
-    @apply bg-surface border border-border backdrop-blur-sm;
-    background-image: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    @apply bg-white/90 border border-border backdrop-blur-sm rounded-2xl;
+    box-shadow: 0 2px 16px rgba(74,159,216,0.08);
   }
 
   .glass-hover {
-    @apply glass transition-all duration-300 hover:border-border-light hover:shadow-lg;
-  }
-
-  .btn-primary {
-    @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm
-           bg-primary hover:bg-primary-light text-white transition-all duration-200
-           shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0;
-  }
-
-  .btn-secondary {
-    @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm
-           border border-border-light text-slate-300 hover:text-white hover:border-primary/50
-           transition-all duration-200 hover:-translate-y-0.5;
-  }
-
-  .label-focused    { @apply bg-focused/15 text-focused border border-focused/30; }
-  .label-distracted { @apply bg-distracted/15 text-distracted border border-distracted/30; }
-  .label-impulsive  { @apply bg-impulsive/15 text-impulsive border border-impulsive/30; }
-
-  .section-title {
-    @apply text-3xl md:text-4xl font-bold text-white;
-  }
-
-  .section-subtitle {
-    @apply text-slate-400 text-lg mt-3 max-w-2xl;
+    @apply glass transition-all duration-300 hover:shadow-md hover:border-primary/30;
   }
 
   .card {
-    @apply glass rounded-2xl p-6;
+    @apply bg-white rounded-2xl p-6 border border-border;
+    box-shadow: 0 2px 16px rgba(74,159,216,0.08);
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .card:hover {
+    box-shadow: 0 6px 28px rgba(74,159,216,0.14);
+    border-color: rgba(74,159,216,0.3);
+  }
+
+  /* ── Buttons ─────────────────────────────────────────────────── */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm
+           bg-primary hover:bg-primary-light text-white transition-all duration-200
+           shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/25
+           hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm
+           border border-border text-slate-600 hover:text-primary hover:border-primary/50
+           bg-white transition-all duration-200 hover:-translate-y-0.5
+           shadow-sm hover:shadow-md;
+  }
+
+  /* ── Attention labels ────────────────────────────────────────── */
+  .label-focused    { @apply bg-focused/10 text-focused border border-focused/25 rounded-full px-2.5 py-0.5 text-xs font-semibold; }
+  .label-distracted { @apply bg-distracted/10 text-distracted border border-distracted/25 rounded-full px-2.5 py-0.5 text-xs font-semibold; }
+  .label-impulsive  { @apply bg-impulsive/10 text-impulsive border border-impulsive/25 rounded-full px-2.5 py-0.5 text-xs font-semibold; }
+
+  /* ── Typography ──────────────────────────────────────────────── */
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-slate-800;
+  }
+
+  .section-subtitle {
+    @apply text-slate-500 text-lg mt-3 max-w-2xl;
   }
 
   .tag {
-    @apply text-xs font-semibold px-2.5 py-1 rounded-full;
+    @apply text-xs font-semibold px-3 py-1 rounded-full bg-primary/10 text-primary;
+  }
+
+  /* ── Badge / chip ────────────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold;
   }
 }

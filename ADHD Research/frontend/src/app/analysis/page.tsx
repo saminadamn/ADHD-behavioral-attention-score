@@ -25,10 +25,10 @@ function FeatureBar({ label, value, max = 1 }: { label: string; value: number; m
   return (
     <div>
       <div className="flex justify-between text-xs mb-1.5">
-        <span className="text-slate-400">{label}</span>
-        <span className="text-slate-200 font-mono">{value.toFixed(3)}</span>
+        <span className="text-slate-500">{label}</span>
+        <span className="text-slate-700 font-mono">{value.toFixed(3)}</span>
       </div>
-      <div className="h-1.5 bg-surface-2 rounded-full overflow-hidden">
+      <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${pct}%` }}
@@ -57,13 +57,10 @@ export default function AnalysisPage() {
     setLoading(true);
     setError(null);
     setResult(null);
-
-    // animate pipeline stages
     for (let i = 0; i < STAGES.length; i++) {
       setStage(i);
       await new Promise((r) => setTimeout(r, 350));
     }
-
     try {
       const res = await api.analyze({
         teacher_prompt:            prompt,
@@ -86,11 +83,8 @@ export default function AnalysisPage() {
   }
 
   function reset() {
-    setResult(null);
-    setBasHistory([]);
-    setPrevState(null);
-    setTurnCount(0);
-    setError(null);
+    setResult(null); setBasHistory([]); setPrevState(null);
+    setTurnCount(0); setError(null);
   }
 
   const currentBas = basHistory.length ? basHistory[basHistory.length - 1] : 50;
@@ -98,7 +92,6 @@ export default function AnalysisPage() {
   return (
     <div className="pt-24 pb-20 px-4 sm:px-6 min-h-screen">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-4">
             <Zap className="w-3 h-3" /> Live AI Analysis
@@ -115,22 +108,22 @@ export default function AnalysisPage() {
             {/* Session info */}
             <div className="flex items-center gap-3">
               <div className="flex-1 card py-3 text-center">
-                <div className="text-xl font-bold text-white">{turnCount}</div>
+                <div className="text-xl font-bold text-slate-800">{turnCount}</div>
                 <div className="text-xs text-slate-500">Turns</div>
               </div>
               <div className="flex-1 card py-3 text-center">
-                <div className="text-xl font-bold" style={{ color: currentBas > 50 ? "#10B981" : currentBas > 25 ? "#F59E0B" : "#EF4444" }}>
+                <div className="text-xl font-bold" style={{ color: currentBas > 50 ? "#3CB48A" : currentBas > 25 ? "#E8A020" : "#E86060" }}>
                   {formatBas(currentBas)}
                 </div>
                 <div className="text-xs text-slate-500">Current BAS</div>
               </div>
               <div className="flex-1 card py-3 text-center">
-                <div className={cn("text-sm font-bold", prevState ? "" : "text-slate-500")}>
+                <div className={cn("text-sm font-bold", prevState ? "text-slate-800" : "text-slate-400")}>
                   {prevState ?? "—"}
                 </div>
                 <div className="text-xs text-slate-500">Prev State</div>
               </div>
-              <button onClick={reset} className="p-3 rounded-xl border border-border hover:border-border-light text-slate-500 hover:text-white transition-all" title="Reset session">
+              <button onClick={reset} className="p-3 rounded-xl border border-border hover:border-primary/30 text-slate-400 hover:text-slate-700 transition-all" title="Reset session">
                 <RotateCcw className="w-4 h-4" />
               </button>
             </div>
@@ -143,7 +136,7 @@ export default function AnalysisPage() {
                   <button
                     key={i}
                     onClick={() => { setPrompt(s.prompt); setResponse(s.response); setLatency(s.latency); }}
-                    className="text-xs px-3 py-1.5 rounded-lg border border-border text-slate-400 hover:border-primary/40 hover:text-primary transition-all"
+                    className="text-xs px-3 py-1.5 rounded-lg border border-border text-slate-500 hover:border-primary/40 hover:text-primary bg-white transition-all"
                   >
                     Sample {i + 1}
                   </button>
@@ -154,18 +147,18 @@ export default function AnalysisPage() {
             {/* Form */}
             <div className="card space-y-4">
               <div>
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5 block">
+                <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5 block">
                   Teacher Prompt
                 </label>
                 <input
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   placeholder="What is photosynthesis?"
-                  className="w-full px-4 py-3 rounded-xl bg-surface-2 border border-border text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-colors"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-border text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-primary/50 transition-colors"
                 />
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5 block">
+                <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5 block">
                   Student Response
                 </label>
                 <textarea
@@ -173,24 +166,20 @@ export default function AnalysisPage() {
                   value={response}
                   onChange={(e) => setResponse(e.target.value)}
                   placeholder="Plants use sunlight..."
-                  className="w-full px-4 py-3 rounded-xl bg-surface-2 border border-border text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-colors resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-border text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-primary/50 transition-colors resize-none"
                 />
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5 flex justify-between">
+                <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5 flex justify-between">
                   <span>Response Latency (seconds)</span>
-                  <span className="font-mono text-white">{latency.toFixed(1)}s</span>
+                  <span className="font-mono text-slate-700">{latency.toFixed(1)}s</span>
                 </label>
                 <input
-                  type="range"
-                  min={0.1}
-                  max={30}
-                  step={0.1}
-                  value={latency}
+                  type="range" min={0.1} max={30} step={0.1} value={latency}
                   onChange={(e) => setLatency(Number(e.target.value))}
                   className="w-full accent-primary"
                 />
-                <div className="flex justify-between text-xs text-slate-600 mt-1">
+                <div className="flex justify-between text-xs text-slate-400 mt-1">
                   <span>0.1s (Impulsive)</span>
                   <span>30s (Distracted)</span>
                 </div>
@@ -202,7 +191,7 @@ export default function AnalysisPage() {
               >
                 {loading ? (
                   <span className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
                     Analyzing...
                   </span>
                 ) : (
@@ -216,7 +205,6 @@ export default function AnalysisPage() {
 
           {/* Right — pipeline + results */}
           <div className="lg:col-span-2 space-y-5">
-            {/* Pipeline stages */}
             <div className="card">
               <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Pipeline</div>
               <div className="space-y-2.5">
@@ -227,25 +215,24 @@ export default function AnalysisPage() {
                   return (
                     <div key={s} className={cn(
                       "flex items-center gap-3 py-2 px-3 rounded-xl transition-all",
-                      active  ? "bg-primary/10 border border-primary/30" : "",
-                      done    ? "opacity-70" : "",
-                      pending ? "opacity-40" : "",
+                      active  ? "bg-primary/8 border border-primary/20" : "",
+                      done    ? "opacity-60" : "",
+                      pending ? "opacity-30" : "",
                     )}>
                       {done ? (
                         <CheckCircle className="w-4 h-4 text-focused flex-shrink-0" />
                       ) : active ? (
-                        <div className="w-4 h-4 border-2 border-primary/40 border-t-primary rounded-full animate-spin flex-shrink-0" />
+                        <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin flex-shrink-0" />
                       ) : (
-                        <Circle className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                        <Circle className="w-4 h-4 text-slate-300 flex-shrink-0" />
                       )}
-                      <span className={cn("text-sm", active ? "text-white font-medium" : "text-slate-400")}>{s}</span>
+                      <span className={cn("text-sm", active ? "text-slate-800 font-semibold" : "text-slate-500")}>{s}</span>
                     </div>
                   );
                 })}
               </div>
             </div>
 
-            {/* Error */}
             {error && (
               <div className="card border-impulsive/30 flex items-start gap-3">
                 <AlertCircle className="w-4 h-4 text-impulsive flex-shrink-0 mt-0.5" />
@@ -253,15 +240,9 @@ export default function AnalysisPage() {
               </div>
             )}
 
-            {/* Results */}
             <AnimatePresence>
               {result && (
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="space-y-4"
-                >
-                  {/* Attention state */}
+                <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
                   <div className="card">
                     <div className="flex items-center justify-between mb-4">
                       <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Attention State</div>
@@ -277,7 +258,7 @@ export default function AnalysisPage() {
                         <div className="text-xs text-slate-500">confidence</div>
                       </div>
                       <div>
-                        <div className="text-3xl font-black text-white">{formatBas(result.current_bas)}</div>
+                        <div className="text-3xl font-black text-slate-800">{formatBas(result.current_bas)}</div>
                         <div className="text-xs text-slate-500">BAS score</div>
                       </div>
                       <div>
@@ -289,32 +270,29 @@ export default function AnalysisPage() {
                     </div>
                   </div>
 
-                  {/* Features */}
                   <div className="card space-y-3">
                     <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Extracted Features</div>
-                    <FeatureBar label="Sentiment"         value={(result.features.sentiment + 1) / 2} />
-                    <FeatureBar label="Topic Shift"       value={result.features.topic_shift_score} />
-                    <FeatureBar label="Engagement"        value={result.features.engagement_score} />
-                    <FeatureBar label="Latency Score"     value={result.features.latency_score} />
+                    <FeatureBar label="Sentiment"     value={(result.features.sentiment + 1) / 2} />
+                    <FeatureBar label="Topic Shift"   value={result.features.topic_shift_score} />
+                    <FeatureBar label="Engagement"    value={result.features.engagement_score} />
+                    <FeatureBar label="Latency Score" value={result.features.latency_score} />
                     <div className="flex justify-between text-xs text-slate-400 pt-1 border-t border-border">
                       <span>Response length</span>
-                      <span className="font-mono text-white">{result.features.response_length} words</span>
+                      <span className="font-mono text-slate-700">{result.features.response_length} words</span>
                     </div>
                   </div>
 
-                  {/* Intervention */}
                   <div className="card" style={{ borderLeft: `3px solid ${tierColor(result.tier)}` }}>
                     <div className="flex items-center justify-between mb-3">
                       <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Intervention</div>
-                      <span className="tag text-white" style={{ background: `${tierColor(result.tier)}25`, color: tierColor(result.tier) }}>
+                      <span className="tag" style={{ background: `${tierColor(result.tier)}18`, color: tierColor(result.tier) }}>
                         {result.tier}
                       </span>
                     </div>
-                    <p className="text-sm text-slate-200 leading-relaxed mb-3">{result.intervention}</p>
+                    <p className="text-sm text-slate-700 leading-relaxed mb-3">{result.intervention}</p>
                     <p className="text-xs text-slate-500 leading-relaxed">{result.rationale}</p>
                   </div>
 
-                  {/* BAS trajectory mini */}
                   {basHistory.length > 1 && (
                     <div className="card">
                       <div className="flex items-center gap-2 mb-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
@@ -322,22 +300,17 @@ export default function AnalysisPage() {
                       </div>
                       <div className="flex items-end gap-1 h-12">
                         {basHistory.map((b, i) => (
-                          <div
-                            key={i}
-                            className="flex-1 rounded-t transition-all"
-                            style={{
-                              height: `${(b / 100) * 100}%`,
-                              background: i === basHistory.length - 1
-                                ? `linear-gradient(to top, #7C3AED, #06B6D4)`
-                                : "#1E1E30",
-                              minHeight: "2px",
-                            }}
-                          />
+                          <div key={i} className="flex-1 rounded-t transition-all" style={{
+                            height: `${(b / 100) * 100}%`,
+                            background: i === basHistory.length - 1
+                              ? `linear-gradient(to top, #4A9FD8, #E891B0)`
+                              : "#D4E8F5",
+                            minHeight: "2px",
+                          }} />
                         ))}
                       </div>
-                      <div className="flex justify-between text-xs text-slate-600 mt-1">
-                        <span>Turn 1</span>
-                        <span>Turn {basHistory.length}</span>
+                      <div className="flex justify-between text-xs text-slate-400 mt-1">
+                        <span>Turn 1</span><span>Turn {basHistory.length}</span>
                       </div>
                     </div>
                   )}

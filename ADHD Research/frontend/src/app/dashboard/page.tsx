@@ -2,15 +2,14 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  LineChart, Line, BarChart, Bar, RadarChart, Radar, PolarGrid,
-  PolarAngleAxis, PolarRadiusAxis, XAxis, YAxis, CartesianGrid,
+  LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Cell, Legend,
 } from "recharts";
 import { api } from "@/lib/api";
 import type { ResultsData } from "@/lib/types";
 
 const LABEL_COLORS: Record<string, string> = {
-  Focused: "#10B981", Distracted: "#F59E0B", Impulsive: "#EF4444",
+  Focused: "#3CB48A", Distracted: "#E8A020", Impulsive: "#E86060",
 };
 
 const BAS_DEMO = [
@@ -29,11 +28,13 @@ const PERSIST_DEMO = [
   { state: "Impulsive",  runs: 1.2 },
 ];
 
-const RADAR_DEMO = [
-  { metric: "Precision", Focused: 0.74, Distracted: 0.63, Impulsive: 0.98 },
-  { metric: "Recall",    Focused: 0.74, Distracted: 0.52, Impulsive: 0.98 },
-  { metric: "F1",        Focused: 0.74, Distracted: 0.57, Impulsive: 0.98 },
-];
+const tooltipStyle = {
+  background: "#FFFFFF",
+  border: "1px solid #BDD4EC",
+  borderRadius: "10px",
+  fontSize: "12px",
+  boxShadow: "0 4px 16px rgba(74,159,216,0.12)",
+};
 
 export default function DashboardPage() {
   const [results, setResults] = useState<ResultsData | null>(null);
@@ -41,11 +42,11 @@ export default function DashboardPage() {
   useEffect(() => { api.results().then(setResults).catch(console.error); }, []);
 
   const kpis = results ? [
-    { label: "Accuracy",     value: `${(results.accuracy * 100).toFixed(0)}%`, color: "text-focused" },
-    { label: "Precision",    value: `${(results.precision * 100).toFixed(0)}%`, color: "text-primary-light" },
+    { label: "Accuracy",     value: `${(results.accuracy * 100).toFixed(0)}%`,  color: "text-focused" },
+    { label: "Precision",    value: `${(results.precision * 100).toFixed(0)}%`, color: "text-primary" },
     { label: "Recall",       value: `${(results.recall * 100).toFixed(0)}%`,    color: "text-accent" },
     { label: "Macro F1",     value: results.f1.toFixed(3),                       color: "text-distracted" },
-    { label: "Dataset Size", value: String(results.dataset_size),                color: "text-white" },
+    { label: "Dataset Size", value: String(results.dataset_size),                color: "text-slate-800" },
   ] : [];
 
   const classData = results
@@ -91,72 +92,68 @@ export default function DashboardPage() {
                   <div className="text-xs text-slate-500 mt-1">{k.label}</div>
                 </>
               ) : (
-                <div className="h-8 bg-surface-2 rounded animate-pulse mx-4" />
+                <div className="h-8 bg-slate-100 rounded animate-pulse mx-4" />
               )}
             </motion.div>
           ))}
         </div>
 
-        {/* Charts grid */}
+        {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          {/* BAS Timeline */}
           <div className="card">
-            <h3 className="text-sm font-semibold text-white mb-4">BAS Score Timeline (Demo Session)</h3>
+            <h3 className="text-sm font-semibold text-slate-700 mb-4">BAS Score Timeline (Demo Session)</h3>
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={BAS_DEMO}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1E1E30" />
-                <XAxis dataKey="turn" tick={{ fill: "#64748B", fontSize: 11 }} label={{ value: "Turn", position: "insideBottom", offset: -2, fill: "#64748B", fontSize: 11 }} />
-                <YAxis domain={[0, 100]} tick={{ fill: "#64748B", fontSize: 11 }} />
-                <Tooltip contentStyle={{ background: "#12121A", border: "1px solid #1E1E30", borderRadius: "8px", fontSize: "12px" }} />
-                <Line type="monotone" dataKey="bas" stroke="#7C3AED" strokeWidth={2.5} dot={{ fill: "#7C3AED", r: 3 }} name="BAS" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E2EAF0" />
+                <XAxis dataKey="turn" tick={{ fill: "#94A3B8", fontSize: 11 }} label={{ value: "Turn", position: "insideBottom", offset: -2, fill: "#94A3B8", fontSize: 11 }} />
+                <YAxis domain={[0, 100]} tick={{ fill: "#94A3B8", fontSize: 11 }} />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Line type="monotone" dataKey="bas" stroke="#4A9FD8" strokeWidth={2.5} dot={{ fill: "#4A9FD8", r: 3 }} name="BAS" />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
-          {/* Reward Trajectory */}
           <div className="card">
-            <h3 className="text-sm font-semibold text-white mb-4">Reward Trajectory (Demo Session)</h3>
+            <h3 className="text-sm font-semibold text-slate-700 mb-4">Reward Trajectory (Demo Session)</h3>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={REWARD_DEMO}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1E1E30" />
-                <XAxis dataKey="turn" tick={{ fill: "#64748B", fontSize: 11 }} />
-                <YAxis tick={{ fill: "#64748B", fontSize: 11 }} />
-                <Tooltip contentStyle={{ background: "#12121A", border: "1px solid #1E1E30", borderRadius: "8px", fontSize: "12px" }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E2EAF0" />
+                <XAxis dataKey="turn" tick={{ fill: "#94A3B8", fontSize: 11 }} />
+                <YAxis tick={{ fill: "#94A3B8", fontSize: 11 }} />
+                <Tooltip contentStyle={tooltipStyle} />
                 <Bar dataKey="reward" radius={[4, 4, 0, 0]} name="Reward">
                   {REWARD_DEMO.map((d, i) => (
-                    <Cell key={i} fill={d.reward >= 0 ? "#10B981" : "#EF4444"} />
+                    <Cell key={i} fill={d.reward >= 0 ? "#3CB48A" : "#E86060"} />
                   ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          {/* Precision / Recall / F1 */}
           <div className="card">
-            <h3 className="text-sm font-semibold text-white mb-4">Precision · Recall · F1 by Class</h3>
+            <h3 className="text-sm font-semibold text-slate-700 mb-4">Precision · Recall · F1 by Class</h3>
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={classData} barCategoryGap="25%">
-                <CartesianGrid strokeDasharray="3 3" stroke="#1E1E30" />
-                <XAxis dataKey="name" tick={{ fill: "#64748B", fontSize: 11 }} />
-                <YAxis domain={[0, 100]} tick={{ fill: "#64748B", fontSize: 11 }} unit="%" />
-                <Tooltip contentStyle={{ background: "#12121A", border: "1px solid #1E1E30", borderRadius: "8px", fontSize: "12px" }} formatter={(v: number) => `${v}%`} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E2EAF0" />
+                <XAxis dataKey="name" tick={{ fill: "#94A3B8", fontSize: 11 }} />
+                <YAxis domain={[0, 100]} tick={{ fill: "#94A3B8", fontSize: 11 }} unit="%" />
+                <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => `${v}%`} />
                 <Legend wrapperStyle={{ fontSize: "11px" }} />
-                <Bar dataKey="Precision" fill="#7C3AED" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="Recall"    fill="#06B6D4" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="F1"        fill="#10B981" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="Precision" fill="#4A9FD8" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="Recall"    fill="#3CB48A" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="F1"        fill="#E891B0" radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          {/* Confusion Matrix */}
           <div className="card">
-            <h3 className="text-sm font-semibold text-white mb-4">Confusion Matrix</h3>
+            <h3 className="text-sm font-semibold text-slate-700 mb-4">Confusion Matrix</h3>
             {confMatrix.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
                     <tr>
-                      <th className="p-2 text-slate-500 text-right">Pred →</th>
+                      <th className="p-2 text-slate-400 text-right">Pred</th>
                       {labels.map((l) => <th key={l} className="p-2 font-semibold" style={{ color: LABEL_COLORS[l] }}>{l}</th>)}
                     </tr>
                   </thead>
@@ -171,15 +168,12 @@ export default function DashboardPage() {
                             const isCorrect = ri === ci;
                             return (
                               <td key={ci} className="p-2">
-                                <div
-                                  className="w-14 h-10 rounded-lg flex items-center justify-center text-sm font-bold mx-auto"
-                                  style={{
-                                    background: isCorrect
-                                      ? `rgba(16,185,129,${0.15 + intensity * 0.5})`
-                                      : `rgba(239,68,68,${0.05 + intensity * 0.3})`,
-                                    color: isCorrect ? "#10B981" : "#EF4444",
-                                  }}
-                                >
+                                <div className="w-14 h-10 rounded-lg flex items-center justify-center text-sm font-bold mx-auto" style={{
+                                  background: isCorrect
+                                    ? `rgba(60,180,138,${0.12 + intensity * 0.4})`
+                                    : `rgba(232,96,96,${0.06 + intensity * 0.25})`,
+                                  color: isCorrect ? "#3CB48A" : "#E86060",
+                                }}>
                                   {v}
                                 </div>
                               </td>
@@ -192,13 +186,12 @@ export default function DashboardPage() {
                 </table>
               </div>
             ) : (
-              <div className="h-44 bg-surface-2 rounded-xl animate-pulse" />
+              <div className="h-44 bg-slate-100 rounded-xl animate-pulse" />
             )}
           </div>
 
-          {/* State Distribution */}
           <div className="card">
-            <h3 className="text-sm font-semibold text-white mb-4">State Distribution</h3>
+            <h3 className="text-sm font-semibold text-slate-700 mb-4">State Distribution</h3>
             <div className="space-y-3">
               {distData.map((d) => {
                 const total = distData.reduce((s, x) => s + x.value, 0);
@@ -207,10 +200,10 @@ export default function DashboardPage() {
                 return (
                   <div key={d.name}>
                     <div className="flex justify-between text-xs mb-1.5">
-                      <span className="font-medium" style={{ color }}>{d.name}</span>
-                      <span className="text-slate-400">{d.value} ({pct}%)</span>
+                      <span className="font-semibold" style={{ color }}>{d.name}</span>
+                      <span className="text-slate-500">{d.value} ({pct}%)</span>
                     </div>
-                    <div className="h-2 bg-surface-2 rounded-full overflow-hidden">
+                    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: `${pct}%` }}
@@ -226,15 +219,14 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* State Persistence */}
           <div className="card">
-            <h3 className="text-sm font-semibold text-white mb-4">Avg. State Persistence (turns)</h3>
+            <h3 className="text-sm font-semibold text-slate-700 mb-4">Avg. State Persistence (turns)</h3>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={PERSIST_DEMO} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="#1E1E30" horizontal={false} />
-                <XAxis type="number" tick={{ fill: "#64748B", fontSize: 11 }} domain={[0, 4]} />
-                <YAxis type="category" dataKey="state" tick={{ fill: "#64748B", fontSize: 11 }} width={70} />
-                <Tooltip contentStyle={{ background: "#12121A", border: "1px solid #1E1E30", borderRadius: "8px", fontSize: "12px" }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E2EAF0" horizontal={false} />
+                <XAxis type="number" tick={{ fill: "#94A3B8", fontSize: 11 }} domain={[0, 4]} />
+                <YAxis type="category" dataKey="state" tick={{ fill: "#94A3B8", fontSize: 11 }} width={70} />
+                <Tooltip contentStyle={tooltipStyle} />
                 <Bar dataKey="runs" radius={[0, 4, 4, 0]} name="Avg runs">
                   {PERSIST_DEMO.map((d, i) => (
                     <Cell key={i} fill={LABEL_COLORS[d.state]} />

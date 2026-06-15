@@ -7,31 +7,31 @@ const CONTRIBUTIONS = [
     number: "01",
     title: "Behavioral Attention Score (BAS)",
     desc: "A novel continuous 0–100 score that operationalises Gray & McNaughton's Behavioural Activation System as a real-time reward-driven motivational signal for classroom attention monitoring.",
-    color: "#7C3AED",
+    color: "#4A9FD8",
   },
   {
     number: "02",
     title: "LangGraph Multi-Agent Architecture",
     desc: "A modular, stateful 5-node LangGraph StateGraph pipeline — each node an independently testable agent — that processes classroom turn-by-turn rather than as a batch.",
-    color: "#06B6D4",
+    color: "#3CB48A",
   },
   {
     number: "03",
     title: "Reinforcement-Learning-Inspired Reward Modeling",
     desc: "A 16-entry transition-based reward table mapping (previous, current) attention state pairs to scalar rewards, capturing the trajectory dynamics that single-state approaches miss.",
-    color: "#10B981",
+    color: "#6DB8E8",
   },
   {
     number: "04",
     title: "Synthetic ADHD Educational Dataset",
     desc: "500 topic-aligned teacher–student interaction samples with per-label latency distributions based on ADHD literature norms, suitable for pipeline benchmarking.",
-    color: "#F59E0B",
+    color: "#E8A020",
   },
   {
     number: "05",
     title: "Adaptive Intervention Engine",
     desc: "A 16-entry catalogue of evidence-based pedagogical interventions indexed by BAS tier and attention state, providing context-sensitive teacher guidance at the turn level.",
-    color: "#EF4444",
+    color: "#E891B0",
   },
 ];
 
@@ -39,7 +39,7 @@ const SECTIONS = [
   {
     icon: Target,
     title: "Research Objectives",
-    color: "text-primary-light",
+    color: "text-primary",
     bg: "bg-primary/10",
     items: [
       "Model intra-individual variability (IIV) in ADHD using continuous BAS trajectories rather than discrete categorical labels.",
@@ -88,7 +88,7 @@ const SECTIONS = [
   {
     icon: Lightbulb,
     title: "Future Work",
-    color: "text-primary-light",
+    color: "text-primary",
     bg: "bg-primary/10",
     items: [
       "Replace rule-based classifier with fine-tuned DistilBERT trained on labelled classroom interactions.",
@@ -104,7 +104,6 @@ export default function ResearchPage() {
   return (
     <div className="pt-24 pb-20 px-4 sm:px-6 min-h-screen">
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-4">
             <Star className="w-3 h-3" /> Research Contributions
@@ -115,7 +114,6 @@ export default function ResearchPage() {
           </p>
         </motion.div>
 
-        {/* Contributions */}
         <div className="space-y-4 mb-16">
           {CONTRIBUTIONS.map((c, i) => (
             <motion.div
@@ -124,20 +122,20 @@ export default function ResearchPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
-              className="card flex gap-6 hover:border-border-light transition-all"
+              className="card flex gap-6 hover:border-primary/30 transition-all"
+              style={{ borderLeft: `3px solid ${c.color}` }}
             >
-              <div className="flex-shrink-0 text-4xl font-black opacity-20" style={{ color: c.color }}>
+              <div className="flex-shrink-0 text-4xl font-black opacity-15" style={{ color: c.color }}>
                 {c.number}
               </div>
               <div>
-                <div className="text-base font-bold text-white mb-1.5" style={{ color: c.color }}>{c.title}</div>
-                <p className="text-sm text-slate-400 leading-relaxed">{c.desc}</p>
+                <div className="text-base font-bold text-slate-800 mb-1.5" style={{ color: c.color }}>{c.title}</div>
+                <p className="text-sm text-slate-600 leading-relaxed">{c.desc}</p>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Deep sections */}
         <div className="space-y-6">
           {SECTIONS.map((s, i) => {
             const Icon = s.icon;
@@ -154,11 +152,11 @@ export default function ResearchPage() {
                   <div className={`w-9 h-9 rounded-xl ${s.bg} flex items-center justify-center`}>
                     <Icon className={`w-4 h-4 ${s.color}`} />
                   </div>
-                  <h3 className="text-lg font-bold text-white">{s.title}</h3>
+                  <h3 className="text-lg font-bold text-slate-800">{s.title}</h3>
                 </div>
                 <ul className="space-y-2.5">
                   {s.items.map((item) => (
-                    <li key={item} className="flex items-start gap-2.5 text-sm text-slate-400 leading-relaxed">
+                    <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600 leading-relaxed">
                       <span className={`${s.color} mt-0.5 flex-shrink-0`}>·</span>
                       {item}
                     </li>
@@ -169,7 +167,6 @@ export default function ResearchPage() {
           })}
         </div>
 
-        {/* Citation */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -177,7 +174,7 @@ export default function ResearchPage() {
           className="mt-12 card border-primary/20"
         >
           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Citation</div>
-          <pre className="text-xs font-mono text-slate-400 bg-surface-2 rounded-xl p-4 overflow-x-auto whitespace-pre-wrap">{`@software{parveen2024bas,
+          <pre className="text-xs font-mono text-slate-600 bg-slate-50 rounded-xl p-4 overflow-x-auto whitespace-pre-wrap">{`@software{parveen2024bas,
   author    = {Parveen, Samina},
   title     = {Behavioral Attention Score (BAS): A LangGraph-Based Multi-Agent
                Framework for Modeling ADHD Attentional Variability},

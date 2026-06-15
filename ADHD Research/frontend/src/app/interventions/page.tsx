@@ -9,17 +9,17 @@ import { cn, tierColor } from "@/lib/utils";
 const STATES = [null, "Focused", "Distracted", "Impulsive"] as const;
 
 const TIER_INFO = {
-  SUSTAIN:  { emoji: "🚀", label: "Sustain",   range: "BAS > 75",   desc: "Engagement is strong. Maintain or increase task difficulty." },
+  SUSTAIN:  { emoji: "🚀", label: "Sustain",   range: "BAS > 75",       desc: "Engagement is strong. Maintain or increase task difficulty." },
   ENCOURAGE:{ emoji: "✨", label: "Encourage",  range: "50 < BAS ≤ 75", desc: "Moderate activation. Reinforce momentum with praise and structure." },
   SIMPLIFY: { emoji: "🔄", label: "Simplify",   range: "25 < BAS ≤ 50", desc: "Disengagement risk. Reduce cognitive load and complexity." },
-  BREAK:    { emoji: "⏸️",  label: "Break",     range: "BAS ≤ 25",   desc: "Critical depletion. Rest before re-engagement is essential." },
+  BREAK:    { emoji: "⏸️",  label: "Break",     range: "BAS ≤ 25",       desc: "Critical depletion. Rest before re-engagement is essential." },
 };
 
 export default function InterventionsPage() {
-  const [bas,      setBas]      = useState(60);
-  const [state,    setState]    = useState<string | null>(null);
-  const [result,   setResult]   = useState<InterventionResponse | null>(null);
-  const [loading,  setLoading]  = useState(false);
+  const [bas,     setBas]     = useState(60);
+  const [state,   setState]   = useState<string | null>(null);
+  const [result,  setResult]  = useState<InterventionResponse | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(async () => {
@@ -36,7 +36,7 @@ export default function InterventionsPage() {
     return () => clearTimeout(t);
   }, [bas, state]);
 
-  const tier = result?.tier ?? "ENCOURAGE";
+  const tier  = result?.tier ?? "ENCOURAGE";
   const color = tierColor(tier);
   const info  = TIER_INFO[tier as keyof typeof TIER_INFO];
 
@@ -56,16 +56,14 @@ export default function InterventionsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Controls */}
           <div className="space-y-6">
-            {/* BAS slider */}
             <div className="card">
               <div className="flex justify-between items-center mb-2">
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">BAS Score</label>
+                <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">BAS Score</label>
                 <span className="text-2xl font-black" style={{ color }}>{bas}</span>
               </div>
-              {/* Gradient track */}
               <div className="relative mb-2">
                 <div className="h-3 rounded-full" style={{
-                  background: "linear-gradient(to right, #EF4444, #F59E0B, #7C3AED, #10B981)"
+                  background: "linear-gradient(to right, #E86060, #E8A020, #4A9FD8, #3CB48A)"
                 }} />
                 <input
                   type="range" min={0} max={100} value={bas}
@@ -73,7 +71,7 @@ export default function InterventionsPage() {
                   className="absolute inset-0 w-full opacity-0 cursor-pointer h-3"
                 />
               </div>
-              <div className="flex justify-between text-xs text-slate-600">
+              <div className="flex justify-between text-xs text-slate-500">
                 <span>0 · BREAK</span>
                 <span>25</span>
                 <span>50</span>
@@ -81,8 +79,7 @@ export default function InterventionsPage() {
                 <span>100 · SUSTAIN</span>
               </div>
 
-              {/* Tier indicator */}
-              <div className="mt-4 flex items-center gap-3 p-3 rounded-xl" style={{ background: `${color}15`, border: `1px solid ${color}30` }}>
+              <div className="mt-4 flex items-center gap-3 p-3 rounded-xl" style={{ background: `${color}12`, border: `1px solid ${color}30` }}>
                 <span className="text-xl">{info?.emoji}</span>
                 <div>
                   <div className="text-sm font-bold" style={{ color }}>{info?.label} — {info?.range}</div>
@@ -91,12 +88,11 @@ export default function InterventionsPage() {
               </div>
             </div>
 
-            {/* Attention state selector */}
             <div className="card">
-              <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Attention State</div>
+              <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Attention State</div>
               <div className="grid grid-cols-2 gap-2">
                 {STATES.map((s) => {
-                  const stateColor = s === "Focused" ? "#10B981" : s === "Distracted" ? "#F59E0B" : s === "Impulsive" ? "#EF4444" : "#7C3AED";
+                  const stateColor = s === "Focused" ? "#3CB48A" : s === "Distracted" ? "#E8A020" : s === "Impulsive" ? "#E86060" : "#4A9FD8";
                   const active = state === s;
                   return (
                     <button
@@ -104,9 +100,9 @@ export default function InterventionsPage() {
                       onClick={() => setState(s as never)}
                       className={cn(
                         "py-2.5 px-3 rounded-xl text-sm font-medium border transition-all",
-                        active ? "text-white" : "text-slate-400 border-border hover:border-border-light"
+                        active ? "" : "text-slate-500 border-border hover:border-primary/30 hover:text-slate-800"
                       )}
-                      style={active ? { borderColor: stateColor, background: `${stateColor}20`, color: stateColor } : {}}
+                      style={active ? { borderColor: stateColor, background: `${stateColor}15`, color: stateColor } : {}}
                     >
                       {s ?? "Auto"}
                     </button>
@@ -115,7 +111,6 @@ export default function InterventionsPage() {
               </div>
             </div>
 
-            {/* Quick presets */}
             <div>
               <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Quick Presets</div>
               <div className="flex flex-wrap gap-2">
@@ -128,7 +123,7 @@ export default function InterventionsPage() {
                   <button
                     key={p.label}
                     onClick={() => { setBas(p.bas); setState(p.state as never); }}
-                    className="text-xs px-3 py-1.5 rounded-lg border border-border text-slate-400 hover:text-white hover:border-border-light transition-all"
+                    className="text-xs px-3 py-1.5 rounded-lg border border-border text-slate-500 hover:text-slate-800 hover:border-primary/30 bg-white transition-all"
                   >
                     {p.label}
                   </button>
@@ -150,36 +145,36 @@ export default function InterventionsPage() {
                   <div className="card mb-4" style={{ borderLeft: `3px solid ${color}` }}>
                     <div className="flex items-center justify-between mb-4">
                       <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Recommendation</div>
-                      <span className="tag font-bold" style={{ background: `${color}20`, color }}>
+                      <span className="tag font-bold" style={{ background: `${color}15`, color }}>
                         {result.tier}
                       </span>
                     </div>
-                    <p className="text-slate-100 leading-relaxed">{result.intervention}</p>
+                    <p className="text-slate-700 leading-relaxed">{result.intervention}</p>
                   </div>
 
                   <div className="card">
                     <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Clinical Rationale</div>
-                    <p className="text-sm text-slate-400 leading-relaxed">{result.rationale}</p>
+                    <p className="text-sm text-slate-600 leading-relaxed">{result.rationale}</p>
                   </div>
 
                   <div className="card mt-4">
                     <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Behavioral Explanation</div>
                     <div className="grid grid-cols-2 gap-3 text-sm">
-                      <div className="bg-surface-2 rounded-xl p-3">
+                      <div className="bg-slate-50 rounded-xl p-3">
                         <div className="text-xs text-slate-500 mb-1">BAS Level</div>
                         <div className="font-bold" style={{ color }}>{bas}/100</div>
                       </div>
-                      <div className="bg-surface-2 rounded-xl p-3">
+                      <div className="bg-slate-50 rounded-xl p-3">
                         <div className="text-xs text-slate-500 mb-1">Attention State</div>
-                        <div className="font-bold text-white">{state ?? "Any"}</div>
+                        <div className="font-bold text-slate-800">{state ?? "Any"}</div>
                       </div>
-                      <div className="bg-surface-2 rounded-xl p-3">
+                      <div className="bg-slate-50 rounded-xl p-3">
                         <div className="text-xs text-slate-500 mb-1">Tier</div>
                         <div className="font-bold" style={{ color }}>{result.tier}</div>
                       </div>
-                      <div className="bg-surface-2 rounded-xl p-3">
+                      <div className="bg-slate-50 rounded-xl p-3">
                         <div className="text-xs text-slate-500 mb-1">Catalogue Entry</div>
-                        <div className="font-bold text-xs text-white font-mono">{result.label}</div>
+                        <div className="font-bold text-xs text-slate-800 font-mono">{result.label}</div>
                       </div>
                     </div>
                   </div>

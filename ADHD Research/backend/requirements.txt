@@ -2,7 +2,7 @@ fastapi==0.115.6
 uvicorn[standard]==0.32.1
 pydantic==2.10.5
 langgraph==1.2.5
-langchain-core==0.3.55
+langchain-core>=1.4.7,<2
 sentence-transformers==5.5.1
 textblob==0.18.0
 numpy==2.2.6
