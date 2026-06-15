@@ -1,0 +1,12 @@
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+pydantic==2.10.5
+langgraph==1.2.5
+langchain-core==0.3.55
+sentence-transformers==5.5.1
+textblob==0.18.0
+numpy==2.2.6
+pandas==2.2.3
+python-multipart==0.0.20
+python-dotenv==1.1.0
+httpx==0.28.1
