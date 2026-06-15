@@ -1,0 +1,2 @@
+participant_id,age,diagnosis,medication_status,bas_sensitivity,bis_sensitivity
+P001,24,ADHD,unmedicated,0.82,0.45
