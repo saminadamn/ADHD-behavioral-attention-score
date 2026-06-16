@@ -1,102 +1,135 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #EDF5FF;
-  --surface: #FFFFFF;
-  --border: #BDD4EC;
-  --primary: #4A9FD8;
-  --accent: #E891B0;
-}
+@layer base {
+  html {
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  body {
+    background: #ffffff;
+    color: #111827;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.7;
+  }
 
-html {
-  scroll-behavior: smooth;
-}
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.25;
+    color: #111827;
+    letter-spacing: -0.015em;
+  }
 
-body {
-  background-color: var(--background);
-  color: #334155;
-  font-family: 'Inter', system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
+  a {
+    color: #2563EB;
+    text-decoration: none;
+  }
 
-::selection {
-  background: rgba(74, 159, 216, 0.25);
-  color: #1e3a5f;
-}
+  a:hover {
+    text-decoration: underline;
+  }
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #EDF5FF; }
-::-webkit-scrollbar-thumb { background: #BDD4EC; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+  ::selection {
+    background: #DBEAFE;
+    color: #1D4ED8;
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #F9FAFB; }
+  ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
+}
 
 @layer components {
 
-  /* ── Cards ──────────────────────────────────────────────────── */
-  .glass {
-    @apply bg-white/90 border border-border backdrop-blur-sm rounded-2xl;
-    box-shadow: 0 2px 16px rgba(74,159,216,0.08);
+  /* ── Typography ───────────────────────────────── */
+
+  .page-title {
+    @apply text-[2rem] sm:text-[2.5rem] font-bold tracking-tight text-text leading-tight;
   }
 
-  .glass-hover {
-    @apply glass transition-all duration-300 hover:shadow-md hover:border-primary/30;
-  }
-
-  .card {
-    @apply bg-white rounded-2xl p-6 border border-border;
-    box-shadow: 0 2px 16px rgba(74,159,216,0.08);
-    transition: box-shadow 0.2s, border-color 0.2s;
-  }
-
-  .card:hover {
-    box-shadow: 0 6px 28px rgba(74,159,216,0.14);
-    border-color: rgba(74,159,216,0.3);
-  }
-
-  /* ── Buttons ─────────────────────────────────────────────────── */
-  .btn-primary {
-    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm
-           bg-primary hover:bg-primary-light text-white transition-all duration-200
-           shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/25
-           hover:-translate-y-0.5 active:translate-y-0;
-  }
-
-  .btn-secondary {
-    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm
-           border border-border text-slate-600 hover:text-primary hover:border-primary/50
-           bg-white transition-all duration-200 hover:-translate-y-0.5
-           shadow-sm hover:shadow-md;
-  }
-
-  /* ── Attention labels ────────────────────────────────────────── */
-  .label-focused    { @apply bg-focused/10 text-focused border border-focused/25 rounded-full px-2.5 py-0.5 text-xs font-semibold; }
-  .label-distracted { @apply bg-distracted/10 text-distracted border border-distracted/25 rounded-full px-2.5 py-0.5 text-xs font-semibold; }
-  .label-impulsive  { @apply bg-impulsive/10 text-impulsive border border-impulsive/25 rounded-full px-2.5 py-0.5 text-xs font-semibold; }
-
-  /* ── Typography ──────────────────────────────────────────────── */
   .section-title {
-    @apply text-3xl md:text-4xl font-bold text-slate-800;
+    @apply text-xl font-semibold tracking-tight text-text;
   }
 
-  .section-subtitle {
-    @apply text-slate-500 text-lg mt-3 max-w-2xl;
+  /* Small uppercase section label */
+  .label {
+    @apply text-[11px] font-semibold uppercase tracking-[0.08em] text-text-muted;
+  }
+
+  /* ── Layout ────────────────────────────────────── */
+
+  .section {
+    @apply border-t border-border pt-10 mt-10;
+  }
+
+  /* ── Tables ────────────────────────────────────── */
+
+  .data-table {
+    @apply w-full text-sm border-collapse;
+  }
+
+  .data-table th {
+    @apply text-left py-2 px-3 label border-b border-border-strong bg-surface whitespace-nowrap;
+  }
+
+  .data-table td {
+    @apply py-2.5 px-3 border-b border-border text-text align-top;
+  }
+
+  .data-table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  .data-table tbody tr:hover td {
+    @apply bg-surface;
+  }
+
+  /* ── Metric block (accent left-border stat) ────── */
+
+  .metric {
+    @apply border-l-2 border-accent pl-3 py-0.5;
+  }
+
+  /* ── Badges / Tags ─────────────────────────────── */
+
+  .badge {
+    @apply inline-flex items-center text-[11px] font-medium px-2 py-0.5 rounded
+           border border-border text-text-muted bg-surface whitespace-nowrap;
   }
 
   .tag {
-    @apply text-xs font-semibold px-3 py-1 rounded-full bg-primary/10 text-primary;
+    @apply inline-flex items-center text-[11px] font-semibold px-1.5 py-0.5 rounded;
   }
 
-  /* ── Badge / chip ────────────────────────────────────────────── */
-  .badge {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold;
+  /* ── Buttons ───────────────────────────────────── */
+
+  .btn {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium
+           border border-border rounded text-text bg-white hover:bg-surface transition-colors;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold
+           bg-accent text-white rounded hover:bg-accent-dark transition-colors;
+  }
+
+  /* ── Form controls ─────────────────────────────── */
+
+  .input {
+    @apply w-full px-3 py-2 text-sm border border-border rounded bg-white text-text
+           placeholder-text-subtle focus:outline-none focus:border-accent
+           focus:ring-1 focus:ring-accent/20 transition-colors;
+  }
+
+  /* ── Code block ────────────────────────────────── */
+
+  .code-block {
+    @apply font-mono text-xs bg-surface border border-border rounded p-4
+           overflow-x-auto whitespace-pre text-text leading-relaxed;
   }
 }

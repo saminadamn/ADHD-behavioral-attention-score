@@ -9,53 +9,35 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#EDF5FF",
-        surface: "#FFFFFF",
-        "surface-2": "#F0F7FF",
-        border: "#BDD4EC",
-        "border-light": "#D4E6F5",
-        primary: {
-          DEFAULT: "#4A9FD8",
-          light: "#6DB8E8",
-          dark: "#2E7DB5",
+        background:      "#FFFFFF",
+        surface:         "#F9FAFB",
+        "surface-2":     "#F3F4F6",
+        border:          "#E5E7EB",
+        "border-strong": "#D1D5DB",
+        text: {
+          DEFAULT: "#111827",
+          muted:   "#6B7280",
+          subtle:  "#9CA3AF",
         },
         accent: {
-          DEFAULT: "#E891B0",
-          light: "#F4A8C5",
+          DEFAULT: "#2563EB",
+          muted:   "#DBEAFE",
+          dark:    "#1D4ED8",
         },
-        focused: "#3CB48A",
-        distracted: "#E8A020",
-        impulsive: "#E86060",
+        focused:    "#16A34A",
+        distracted: "#B45309",
+        impulsive:  "#DC2626",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        mono: ["JetBrains Mono", "monospace"],
+        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "hero-sky":
-          "linear-gradient(160deg, #CCEAFF 0%, #EDF5FF 50%, #FFF0F7 100%)",
-        "card-soft":
-          "linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,247,255,0.7))",
-      },
-      animation: {
-        "pulse-slow": "pulse 4s cubic-bezier(0.4,0,0.6,1) infinite",
-        float: "float 6s ease-in-out infinite",
-        "fade-up": "fadeUp 0.5s ease-out forwards",
-      },
-      keyframes: {
-        float: {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
-        fadeUp: {
-          from: { opacity: "0", transform: "translateY(16px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
-        },
+      maxWidth: {
+        content: "780px",
+        wide:    "1060px",
       },
     },
   },
   plugins: [],
 };
-
 export default config;
