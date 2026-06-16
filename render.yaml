@@ -2,6 +2,7 @@ services:
   - type: web
     name: adhd-bas-api
     runtime: python
+    pythonVersion: "3.11.9"
     rootDir: "ADHD Research/backend"
     buildCommand: >-
       pip install --prefer-binary -r requirements.txt &&
