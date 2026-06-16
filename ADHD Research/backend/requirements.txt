@@ -5,8 +5,8 @@ langgraph==1.2.5
 langchain-core>=1.4.7,<2
 sentence-transformers==5.5.1
 textblob==0.18.0
-numpy==2.2.6
-pandas==2.2.3
+numpy>=1.26,<3
+pandas>=2.2.3,<3
 python-multipart==0.0.20
 python-dotenv==1.1.0
 httpx==0.28.1
