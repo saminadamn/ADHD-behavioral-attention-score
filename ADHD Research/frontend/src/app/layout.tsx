@@ -8,15 +8,17 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "BAS — Behavioral Attention Score",
+  title: "BAS Research — Behavioral Attention Score",
   description:
-    "A LangGraph multi-agent framework for modeling ADHD attentional variability through educational interactions.",
+    "A LangGraph-Based Framework for Modeling Attentional Variability in ADHD Through Educational Interactions. BIT Mesra, 2026.",
   openGraph: {
-    title: "Behavioral Attention Score (BAS)",
-    description: "AI for Health research — ADHD attentional variability modeling via LangGraph.",
+    title: "Behavioral Attention Score (BAS) — BIT Mesra Research, 2026",
+    description:
+      "AI for Health research project modeling ADHD attentional variability via multi-agent LangGraph pipeline.",
     type: "website",
   },
 };
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="bg-white text-text min-h-screen antialiased">
+      <body className="bg-background text-text min-h-screen antialiased">
         <Navbar />
         <main className="min-h-screen">{children}</main>
         <Footer />
