@@ -9,24 +9,24 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background:      "#FFFFFF",
-        surface:         "#F9FAFB",
-        "surface-2":     "#F3F4F6",
-        border:          "#E5E7EB",
-        "border-strong": "#D1D5DB",
+        background:      "#FCFBFF",
+        surface:         "#FFFFFF",
+        "surface-2":     "#F5F2FF",
+        border:          "#E7E0F3",
+        "border-strong": "#D4C9EB",
         text: {
-          DEFAULT: "#111827",
-          muted:   "#6B7280",
-          subtle:  "#9CA3AF",
+          DEFAULT: "#2D2438",
+          muted:   "#6E617D",
+          subtle:  "#9D90AC",
         },
         accent: {
-          DEFAULT: "#2563EB",
-          muted:   "#DBEAFE",
-          dark:    "#1D4ED8",
+          DEFAULT: "#8B5CF6",
+          light:   "#EDE9FE",
+          dark:    "#7C3AED",
         },
-        focused:    "#16A34A",
-        distracted: "#B45309",
-        impulsive:  "#DC2626",
+        focused:    "#7C9A6D",
+        distracted: "#C08457",
+        impulsive:  "#B4534D",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
@@ -35,6 +35,10 @@ const config: Config = {
       maxWidth: {
         content: "780px",
         wide:    "1060px",
+      },
+      boxShadow: {
+        card: "0 1px 3px rgba(45,36,56,0.06), 0 1px 2px rgba(45,36,56,0.04)",
+        "card-hover": "0 4px 12px rgba(45,36,56,0.10), 0 1px 4px rgba(45,36,56,0.06)",
       },
     },
   },

@@ -12,69 +12,81 @@
   }
 
   body {
-    background: #ffffff;
-    color: #111827;
+    background: #FCFBFF;
+    color: #2D2438;
     font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     line-height: 1.7;
   }
 
   h1, h2, h3, h4, h5, h6 {
     line-height: 1.25;
-    color: #111827;
+    color: #2D2438;
     letter-spacing: -0.015em;
   }
 
   a {
-    color: #2563EB;
+    color: #8B5CF6;
     text-decoration: none;
   }
 
   a:hover {
     text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   ::selection {
-    background: #DBEAFE;
-    color: #1D4ED8;
+    background: #EDE9FE;
+    color: #7C3AED;
   }
 
   ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: #F9FAFB; }
-  ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
+  ::-webkit-scrollbar-track { background: #FCFBFF; }
+  ::-webkit-scrollbar-thumb { background: #D4C9EB; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #8B5CF6; }
 }
 
 @layer components {
 
-  /* ── Typography ───────────────────────────────── */
+  /* ── Typography ─────────────────────────────── */
 
   .page-title {
-    @apply text-[2rem] sm:text-[2.5rem] font-bold tracking-tight text-text leading-tight;
+    @apply text-[2rem] sm:text-[2.4rem] font-bold tracking-tight text-text leading-tight;
   }
 
   .section-title {
     @apply text-xl font-semibold tracking-tight text-text;
   }
 
-  /* Small uppercase section label */
+  /* Small caps section label */
   .label {
-    @apply text-[11px] font-semibold uppercase tracking-[0.08em] text-text-muted;
+    @apply text-[11px] font-semibold uppercase tracking-[0.09em] text-text-muted;
   }
 
-  /* ── Layout ────────────────────────────────────── */
+  /* ── Layout ─────────────────────────────────── */
 
+  /* Paper section divider */
   .section {
-    @apply border-t border-border pt-10 mt-10;
+    @apply border-t border-border pt-10 mt-12;
   }
 
-  /* ── Tables ────────────────────────────────────── */
+  /* ── Cards ──────────────────────────────────── */
+
+  .card {
+    @apply bg-surface border border-border rounded-lg shadow-card;
+  }
+
+  .card-body {
+    @apply p-6;
+  }
+
+  /* ── Tables ─────────────────────────────────── */
 
   .data-table {
     @apply w-full text-sm border-collapse;
   }
 
   .data-table th {
-    @apply text-left py-2 px-3 label border-b border-border-strong bg-surface whitespace-nowrap;
+    @apply text-left py-2 px-3 label border-b border-border-strong bg-surface-2 whitespace-nowrap;
   }
 
   .data-table td {
@@ -86,50 +98,61 @@
   }
 
   .data-table tbody tr:hover td {
-    @apply bg-surface;
+    @apply bg-surface-2;
   }
 
-  /* ── Metric block (accent left-border stat) ────── */
+  /* ── Metric block ────────────────────────────── */
 
   .metric {
-    @apply border-l-2 border-accent pl-3 py-0.5;
+    @apply border-l-2 border-accent pl-4 py-0.5;
   }
 
-  /* ── Badges / Tags ─────────────────────────────── */
+  /* ── Badges / Tags ───────────────────────────── */
 
   .badge {
     @apply inline-flex items-center text-[11px] font-medium px-2 py-0.5 rounded
-           border border-border text-text-muted bg-surface whitespace-nowrap;
+           border border-border text-text-muted bg-surface-2 whitespace-nowrap;
   }
 
   .tag {
     @apply inline-flex items-center text-[11px] font-semibold px-1.5 py-0.5 rounded;
   }
 
-  /* ── Buttons ───────────────────────────────────── */
+  /* ── Buttons ─────────────────────────────────── */
 
   .btn {
-    @apply inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium
-           border border-border rounded text-text bg-white hover:bg-surface transition-colors;
+    @apply inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium
+           border border-border rounded-md text-text bg-surface
+           hover:bg-surface-2 transition-colors;
   }
 
   .btn-primary {
     @apply inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold
-           bg-accent text-white rounded hover:bg-accent-dark transition-colors;
+           bg-accent text-white rounded-md hover:bg-accent-dark transition-colors;
   }
 
-  /* ── Form controls ─────────────────────────────── */
+  /* ── Form controls ────────────────────────────── */
 
   .input {
-    @apply w-full px-3 py-2 text-sm border border-border rounded bg-white text-text
+    @apply w-full px-3 py-2 text-sm border border-border rounded-md bg-surface text-text
            placeholder-text-subtle focus:outline-none focus:border-accent
-           focus:ring-1 focus:ring-accent/20 transition-colors;
+           focus:ring-2 focus:ring-accent/15 transition-colors;
   }
 
-  /* ── Code block ────────────────────────────────── */
+  /* ── Code blocks ─────────────────────────────── */
 
   .code-block {
-    @apply font-mono text-xs bg-surface border border-border rounded p-4
+    @apply font-mono text-xs bg-surface-2 border border-border rounded-md p-4
            overflow-x-auto whitespace-pre text-text leading-relaxed;
+  }
+
+  /* ── Pipeline flow ───────────────────────────── */
+
+  .pipeline-node {
+    @apply bg-surface border border-border rounded-md px-4 py-3 flex items-start gap-4;
+  }
+
+  .pipeline-node-io {
+    @apply bg-surface-2 border border-border-strong rounded-md px-4 py-3;
   }
 }

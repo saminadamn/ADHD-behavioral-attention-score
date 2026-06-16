@@ -4,35 +4,31 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/",              label: "Overview"      },
-  { href: "/architecture",  label: "Architecture"  },
-  { href: "/analysis",      label: "Demo"          },
-  { href: "/dashboard",     label: "Results"       },
-  { href: "/dataset",       label: "Dataset"       },
-  { href: "/simulator",     label: "Simulator"     },
-  { href: "/interventions", label: "Interventions" },
-  { href: "/research",      label: "Research"      },
-  { href: "/about",         label: "About"         },
+  { href: "/",             label: "Home"        },
+  { href: "/analysis",     label: "Live Demo"   },
+  { href: "/simulator",    label: "Simulation"  },
+  { href: "/dashboard",    label: "Results"     },
+  { href: "/methodology",  label: "Methodology" },
+  { href: "/about",        label: "About"       },
 ];
 
 export function Navbar() {
   const path = usePathname();
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-border">
-      <div className="max-w-wide mx-auto px-6 h-12 flex items-center gap-6">
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+      <div className="max-w-wide mx-auto px-6 h-[52px] flex items-center gap-8">
+
         {/* Brand */}
         <Link
           href="/"
-          className="flex-shrink-0 text-sm font-semibold text-text tracking-tight no-underline hover:no-underline"
+          className="flex-shrink-0 font-semibold text-sm text-text tracking-tight no-underline hover:no-underline"
         >
-          BAS<span className="text-accent font-bold">·</span>Research
+          BAS<span className="text-accent font-bold mx-0.5">·</span>Research
         </Link>
 
-        <span className="text-border-strong text-xs select-none">|</span>
-
-        {/* Nav links */}
-        <nav className="flex items-center gap-0.5 overflow-x-auto flex-1" style={{ scrollbarWidth: "none" }}>
+        {/* Nav */}
+        <nav className="flex items-center gap-0.5 flex-1 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
           {NAV.map((item) => {
             const active = item.href === "/" ? path === "/" : path.startsWith(item.href);
             return (
@@ -40,10 +36,10 @@ export function Navbar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "px-2 py-1 text-[13px] rounded transition-colors whitespace-nowrap no-underline hover:no-underline",
+                  "px-2.5 py-1.5 text-[13px] rounded-md transition-colors whitespace-nowrap no-underline hover:no-underline",
                   active
-                    ? "text-accent font-semibold"
-                    : "text-text-muted hover:text-text"
+                    ? "text-accent font-semibold bg-accent/8"
+                    : "text-text-muted hover:text-text hover:bg-surface-2"
                 )}
               >
                 {item.label}

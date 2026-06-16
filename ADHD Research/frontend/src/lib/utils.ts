@@ -8,10 +8,10 @@ export function cn(...inputs: ClassValue[]) {
 
 export function labelColor(label: AttentionLabel | string): string {
   switch (label) {
-    case "Focused":    return "#16A34A";
-    case "Distracted": return "#B45309";
-    case "Impulsive":  return "#DC2626";
-    default:           return "#2563EB";
+    case "Focused":    return "#7C9A6D";
+    case "Distracted": return "#C08457";
+    case "Impulsive":  return "#B4534D";
+    default:           return "#8B5CF6";
   }
 }
 
@@ -26,11 +26,11 @@ export function labelBg(label: AttentionLabel | string): string {
 
 export function tierColor(tier: string): string {
   switch (tier) {
-    case "SUSTAIN":   return "#16A34A";
-    case "ENCOURAGE": return "#2563EB";
-    case "SIMPLIFY":  return "#B45309";
-    case "BREAK":     return "#DC2626";
-    default:          return "#6B7280";
+    case "SUSTAIN":   return "#7C9A6D";
+    case "ENCOURAGE": return "#8B5CF6";
+    case "SIMPLIFY":  return "#C08457";
+    case "BREAK":     return "#B4534D";
+    default:          return "#6E617D";
   }
 }
 

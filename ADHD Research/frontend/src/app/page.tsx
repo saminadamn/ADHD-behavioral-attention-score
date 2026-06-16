@@ -1,187 +1,204 @@
 import Link from "next/link";
 
 const METRICS = [
-  { label: "Overall accuracy",       value: "78.0%",    note: "500-sample synthetic dataset" },
-  { label: "Macro F1",               value: "0.764",    note: "3-class weighted" },
-  { label: "Impulsive F1",           value: "0.982",    note: "highest signal discrimination" },
-  { label: "Distracted F1",          value: "0.570",    note: "class overlap with Focused" },
-  { label: "Pipeline nodes",         value: "5",        note: "LangGraph StateGraph agents" },
-  { label: "Dataset size",           value: "500",      note: "synthetic interaction turns" },
-  { label: "Intervention entries",   value: "16",       note: "BAS tier × attention state" },
-  { label: "BAS range",              value: "[0, 100]", note: "clamped cumulative score" },
+  { value: "500",   label: "Synthetic Interactions" },
+  { value: "78.0%", label: "Accuracy" },
+  { value: "0.764", label: "Macro F1" },
+  { value: "5",     label: "LangGraph Agents" },
+  { value: "16",    label: "Intervention Rules" },
 ];
 
 const PIPELINE = [
-  { step: "1", name: "Behavioral Signal Extractor", desc: "Extracts 5 normalised features: response length, TextBlob sentiment, topic-shift score (all-MiniLM-L6-v2), engagement composite, and latency score." },
-  { step: "2", name: "Attention State Classifier",  desc: "Rule-based priority classifier maps features to Focused | Distracted | Impulsive with margin-derived confidence. Priority: Impulsive > Distracted > Focused." },
-  { step: "3", name: "RL Reward Modeler",           desc: "Computes scalar reward from a 4×3 transition table (previous_state → current_state). Range: −8 to +10. First-turn cold-start handled via None row." },
-  { step: "4", name: "BAS Tracker",                 desc: "Updates cumulative score: BAS_t = clamp(BAS_{t−1} + r, 0, 100). Maintains 5-turn moving average and IIV (reward std dev)." },
-  { step: "5", name: "Intervention Generator",      desc: "Indexes a 16-entry evidence-based catalogue by (tier, state) pair. Tiers: SUSTAIN (>75), ENCOURAGE (50–75), SIMPLIFY (25–50), BREAK (≤25)." },
+  { step: null,  label: "Input",                           desc: "Teacher Prompt · Student Response · Response Latency", io: true },
+  { step: "A1",  label: "Behavioral Signal Extractor",     desc: "5 NLP features: sentiment, engagement, topic shift, latency score, word count" },
+  { step: "A2",  label: "Attention State Classifier",      desc: "Priority rule-based: Focused | Distracted | Impulsive  ·  + confidence" },
+  { step: "A3",  label: "RL Reward Modeler",               desc: "4×3 transition reward table  ·  r ∈ [−8, +10]  ·  first-turn cold-start" },
+  { step: "A4",  label: "BAS Tracker",                     desc: "BAS_t = clamp(BAS_{t−1} + r, 0, 100)  ·  5-turn moving avg  ·  IIV" },
+  { step: "A5",  label: "Intervention Generator",          desc: "16-entry evidence-based catalogue  ·  indexed by (BAS tier, state)" },
+  { step: null,  label: "Output",                          desc: "Pedagogical Intervention · Clinical Rationale · Updated BAS", io: true },
+];
+
+const FINDINGS = [
+  {
+    tag: "F1",
+    title: "Impulsive behaviour is highly separable",
+    body: "The Impulsive class achieves F1 = 0.982, driven by a near-perfect discrimination rule: word count ≤ 3 AND response latency ≥ 0.7 (normalised). This produces virtually no false positives against the Focused class.",
+  },
+  {
+    tag: "F2",
+    title: "Distracted responses overlap with Focused",
+    body: "Distracted F1 = 0.570, reflecting genuine class boundary ambiguity. High-engagement distracted responses — off-topic but verbose and positive — are classified as Focused due to high engagement and sentiment scores.",
+  },
+  {
+    tag: "F3",
+    title: "BAS captures longitudinal attentional variability",
+    body: "ADHD-HI phenotype simulations collapse to mean BAS = 19.3 (critical tier), while Neurotypical profiles sustain mean BAS = 72.4. Combined-type profiles counter-intuitively score higher than Inattentive due to Impulsive→Focused recovery transitions (+8 reward).",
+  },
 ];
 
 export default function HomePage() {
   return (
-    <div className="max-w-content mx-auto px-6 pt-14 pb-20">
+    <div className="max-w-content mx-auto px-6 pt-12 pb-20">
 
-      {/* Paper header */}
-      <div className="mb-10">
-        <p className="label mb-3">Preprint · 2024 · BIT Mesra</p>
+      {/* ── Hero ───────────────────────────────────────── */}
+      <div className="mb-12 pb-12 border-b border-border">
+        <p className="label mb-4">Research Project · 2026 · BIT Mesra</p>
+
         <h1 className="page-title mb-4">
-          Behavioral Attention Score (BAS): A LangGraph Multi-Agent Framework
-          for Modeling ADHD Attentional Variability
+          Behavioral Attention Score (BAS)
         </h1>
-        <p className="text-sm text-text-muted">
-          <span className="text-text font-medium">Samina Parveen</span>
-          {" "}·{" "}B.Tech Information Technology, BIT Mesra, Ranchi, India
-          <br />
-          Supervisor:{" "}
-          <span className="text-text">Dr. Itu Snigdh</span>{" "}
-          · Associate Professor, Department of CSE
+
+        <p className="text-[1.05rem] text-text-muted leading-relaxed mb-8 max-w-prose">
+          A LangGraph-Based Framework for Modeling Attentional Variability
+          in ADHD Through Educational Interactions
         </p>
+
+        {/* Authors */}
+        <div className="flex flex-wrap gap-10 mb-8 text-sm">
+          <div>
+            <p className="font-semibold text-text">Samina Parveen</p>
+            <p className="text-text-muted">B.Tech Information Technology</p>
+            <p className="text-text-muted">BIT Mesra, Ranchi, India</p>
+          </div>
+          <div>
+            <p className="label mb-1">Supervisor</p>
+            <p className="font-semibold text-text">Dr. Itu Snigdh</p>
+            <p className="text-text-muted">Associate Professor, Dept. of CSE</p>
+            <p className="text-text-muted">BIT Mesra</p>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="flex flex-wrap gap-3">
+          <Link href="/analysis" className="btn-primary">Live Demo →</Link>
+          <a
+            href="https://github.com/saminadamn/ADHD-behavioral-attention-score"
+            target="_blank" rel="noopener noreferrer"
+            className="btn"
+          >
+            GitHub ↗
+          </a>
+          <Link href="/dashboard" className="btn">Results</Link>
+          <Link href="/methodology" className="btn">Methodology</Link>
+        </div>
       </div>
 
-      {/* Links */}
-      <div className="flex flex-wrap gap-2 mb-10">
-        <Link href="/analysis" className="btn-primary">Live Demo →</Link>
-        <a
-          href="https://github.com/saminadamn/ADHD-behavioral-attention-score"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn"
-        >
-          GitHub ↗
-        </a>
-        <Link href="/dashboard" className="btn">Results</Link>
-        <Link href="/architecture" className="btn">Architecture</Link>
-        <Link href="/dataset" className="btn">Dataset</Link>
-        <Link href="/research" className="btn">Paper</Link>
-      </div>
-
-      {/* Abstract */}
-      <div className="section">
+      {/* ── Abstract ───────────────────────────────────── */}
+      <div className="mb-12">
         <p className="label mb-4">Abstract</p>
-        <div className="space-y-3 text-sm leading-[1.8] text-text">
+        <div className="space-y-3 text-[0.9375rem] leading-[1.8] text-text max-w-prose">
           <p>
-            Attention Deficit Hyperactivity Disorder (ADHD) is characterised by pronounced intra-individual
-            variability (IIV) in attentional capacity — moment-to-moment fluctuations that static psychometric
-            instruments cannot capture in real time. We present the{" "}
-            <strong>Behavioral Attention Score (BAS)</strong>, a continuous 0–100 computational proxy that
-            operationalises Gray &amp; McNaughton&apos;s Behavioural Activation System theory as a real-time,
-            reward-driven motivational signal for monitoring attention during classroom interactions.
+            Attention Deficit Hyperactivity Disorder (ADHD) is characterised by pronounced
+            intra-individual variability (IIV) in attentional capacity — moment-to-moment
+            fluctuations that standard psychometric instruments fail to capture in real time.
+            We introduce the <strong>Behavioral Attention Score (BAS)</strong>, a continuous
+            0–100 computational proxy that operationalises Gray &amp; McNaughton&apos;s
+            Behavioural Activation System theory as a real-time, reward-driven signal for
+            monitoring student attention during classroom interactions.
           </p>
           <p>
-            The BAS is computed by a five-node{" "}
-            <strong>LangGraph 1.x StateGraph</strong> pipeline in which each node is an independently
-            testable agent: (1) a feature extractor leveraging Sentence-Transformers and TextBlob,
-            (2) a rule-based attention state classifier, (3) a reinforcement-learning-inspired reward
-            modeler with a 4×3 transition table, (4) a stateful BAS tracker with moving-average smoothing,
-            and (5) an adaptive intervention generator indexing a 16-entry evidence-based catalogue.
+            The BAS is computed by a five-node <strong>LangGraph 1.x StateGraph</strong> pipeline
+            in which each node is an independently testable agent: a feature extractor leveraging
+            Sentence-Transformers and TextBlob, a rule-based attention state classifier, a
+            reinforcement-learning-inspired reward modeler with a 4×3 transition table, a stateful
+            BAS tracker with moving-average smoothing, and an adaptive intervention generator
+            indexing a 16-entry evidence-based pedagogical catalogue.
           </p>
           <p>
-            Evaluated on a 500-sample synthetic dataset of teacher–student interaction turns, the pipeline
-            achieves 78% accuracy and macro F1 = 0.764. Phenotype simulation reveals that ADHD-HI sequences
-            collapse to mean BAS = 19.3 under 73% impulsive inputs, while Combined-type profiles exhibit
-            paradoxical resilience due to high-value Impulsive→Focused recovery transitions (+8 reward).
+            Evaluated on a 500-sample synthetic dataset of teacher–student interaction turns, the
+            pipeline achieves 78% accuracy and macro F1 = 0.764. Phenotype simulation reveals that
+            ADHD-HI sequences collapse to mean BAS = 19.3 under 73% impulsive inputs, while
+            Combined-type profiles exhibit paradoxical resilience due to high-value
+            Impulsive→Focused recovery transitions.
           </p>
         </div>
       </div>
 
-      {/* Key metrics */}
+      {/* ── Key Metrics ────────────────────────────────── */}
       <div className="section">
-        <p className="label mb-4">Key Metrics</p>
-        <div className="overflow-x-auto">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Metric</th>
-                <th>Value</th>
-                <th>Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {METRICS.map((m) => (
-                <tr key={m.label}>
-                  <td className="font-medium">{m.label}</td>
-                  <td className="font-mono font-semibold text-accent">{m.value}</td>
-                  <td className="text-text-muted text-xs">{m.note}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <p className="label mb-6">Key Metrics</p>
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-5">
+          {METRICS.map((m) => (
+            <div key={m.label} className="metric">
+              <div className="text-2xl font-bold text-accent tabular-nums">{m.value}</div>
+              <div className="label mt-1">{m.label}</div>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Pipeline */}
+      {/* ── Architecture Overview ──────────────────────── */}
       <div className="section">
-        <p className="label mb-4">Pipeline — Five Agents in Sequence</p>
-        <div className="space-y-0">
-          {PIPELINE.map((p) => (
-            <div key={p.step} className="flex gap-5 py-4 border-b border-border last:border-0">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full border border-accent text-accent text-xs font-bold flex items-center justify-center mt-0.5">
-                {p.step}
+        <p className="label mb-2">Architecture Overview</p>
+        <p className="text-sm text-text-muted mb-6">
+          Five-node LangGraph StateGraph — each node is an independently testable agent.
+          State is carried across turns via Pydantic v2 WorkflowState.
+        </p>
+
+        <div className="max-w-lg">
+          {PIPELINE.map((p, i) => (
+            <div key={i}>
+              {p.io ? (
+                <div className="pipeline-node-io">
+                  <p className="text-xs font-semibold text-text-muted uppercase tracking-wide">{p.label}</p>
+                  <p className="text-xs text-text-muted mt-0.5">{p.desc}</p>
+                </div>
+              ) : (
+                <div className="pipeline-node shadow-card">
+                  <div className="flex-shrink-0 w-7 h-7 rounded border border-accent/30 bg-accent/8
+                                  flex items-center justify-center text-[10px] font-bold text-accent mt-0.5">
+                    {p.step}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-text">{p.label}</p>
+                    <p className="text-xs text-text-muted mt-0.5 leading-relaxed">{p.desc}</p>
+                  </div>
+                </div>
+              )}
+              {i < PIPELINE.length - 1 && (
+                <div className="flex justify-center py-0.5">
+                  <div className="w-px h-4 bg-border-strong" />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Key Findings ──────────────────────────────── */}
+      <div className="section">
+        <p className="label mb-6">Key Findings</p>
+        <div className="space-y-6">
+          {FINDINGS.map((f) => (
+            <div key={f.tag} className="flex gap-5">
+              <div className="flex-shrink-0">
+                <span className="inline-flex w-7 h-7 rounded border border-accent/30 bg-accent/8
+                                 items-center justify-center text-[10px] font-bold text-accent">
+                  {f.tag}
+                </span>
               </div>
               <div>
-                <p className="text-sm font-semibold text-text">{p.name}</p>
-                <p className="text-sm text-text-muted mt-0.5 leading-relaxed">{p.desc}</p>
+                <p className="text-sm font-semibold text-text mb-1">{f.title}</p>
+                <p className="text-sm text-text-muted leading-relaxed">{f.body}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Contributions */}
+      {/* ── Citation ──────────────────────────────────── */}
       <div className="section">
-        <p className="label mb-4">Contributions</p>
-        <ol className="space-y-2 text-sm">
-          {[
-            "Novel BAS score operationalising BAS/BIS theory as a continuous classroom attention signal.",
-            "Modular LangGraph multi-agent architecture with independently testable nodes.",
-            "RL-inspired 16-entry reward table capturing attentional trajectory dynamics.",
-            "500-sample synthetic ADHD educational interaction dataset with latency distributions.",
-            "Adaptive 16-entry intervention catalogue indexed by (BAS tier, attention state).",
-          ].map((c, i) => (
-            <li key={i} className="flex gap-3">
-              <span className="text-text-subtle flex-shrink-0 font-mono text-xs pt-0.5">C{i+1}</span>
-              <span className="text-text">{c}</span>
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      {/* Deployment */}
-      <div className="section">
-        <p className="label mb-4">Deployment</p>
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Component</th>
-              <th>Platform</th>
-              <th>Stack</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="font-medium">Frontend</td>
-              <td>Vercel</td>
-              <td className="font-mono text-xs text-text-muted">Next.js 16 · TypeScript · Tailwind</td>
-            </tr>
-            <tr>
-              <td className="font-medium">Backend API</td>
-              <td>Render</td>
-              <td className="font-mono text-xs text-text-muted">FastAPI · Uvicorn · Python 3.11</td>
-            </tr>
-            <tr>
-              <td className="font-medium">NLP Models</td>
-              <td>Render disk cache</td>
-              <td className="font-mono text-xs text-text-muted">all-MiniLM-L6-v2 · TextBlob</td>
-            </tr>
-            <tr>
-              <td className="font-medium">Orchestration</td>
-              <td>—</td>
-              <td className="font-mono text-xs text-text-muted">LangGraph 1.x · LangChain Core</td>
-            </tr>
-          </tbody>
-        </table>
+        <p className="label mb-4">Citation</p>
+        <pre className="code-block">{`@software{parveen2026bas,
+  author      = {Parveen, Samina},
+  title       = {Behavioral Attention Score (BAS): A LangGraph-Based Framework
+                 for Modeling Attentional Variability in ADHD Through
+                 Educational Interactions},
+  year        = {2026},
+  url         = {https://github.com/saminadamn/ADHD-behavioral-attention-score},
+  institution = {BIT Mesra, Ranchi, India},
+  supervisor  = {Dr. Itu Snigdh}
+}`}</pre>
       </div>
 
     </div>
