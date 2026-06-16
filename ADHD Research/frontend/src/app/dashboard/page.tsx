@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Cell, Legend,
@@ -9,7 +8,7 @@ import { api } from "@/lib/api";
 import type { ResultsData } from "@/lib/types";
 
 const LABEL_COLORS: Record<string, string> = {
-  Focused: "#3CB48A", Distracted: "#E8A020", Impulsive: "#E86060",
+  Focused: "#16A34A", Distracted: "#B45309", Impulsive: "#DC2626",
 };
 
 const BAS_DEMO = [
@@ -28,26 +27,14 @@ const PERSIST_DEMO = [
   { state: "Impulsive",  runs: 1.2 },
 ];
 
-const tooltipStyle = {
-  background: "#FFFFFF",
-  border: "1px solid #BDD4EC",
-  borderRadius: "10px",
-  fontSize: "12px",
-  boxShadow: "0 4px 16px rgba(74,159,216,0.12)",
+const TT = {
+  contentStyle: { background: "#fff", border: "1px solid #E5E7EB", borderRadius: "4px", fontSize: "12px", boxShadow: "none" },
 };
 
 export default function DashboardPage() {
   const [results, setResults] = useState<ResultsData | null>(null);
 
   useEffect(() => { api.results().then(setResults).catch(console.error); }, []);
-
-  const kpis = results ? [
-    { label: "Accuracy",     value: `${(results.accuracy * 100).toFixed(0)}%`,  color: "text-focused" },
-    { label: "Precision",    value: `${(results.precision * 100).toFixed(0)}%`, color: "text-primary" },
-    { label: "Recall",       value: `${(results.recall * 100).toFixed(0)}%`,    color: "text-accent" },
-    { label: "Macro F1",     value: results.f1.toFixed(3),                       color: "text-distracted" },
-    { label: "Dataset Size", value: String(results.dataset_size),                color: "text-slate-800" },
-  ] : [];
 
   const classData = results
     ? Object.entries(results.per_class).map(([name, v]) => ({
@@ -58,176 +45,191 @@ export default function DashboardPage() {
       }))
     : [];
 
-  const distData = results
-    ? Object.entries(results.per_class).map(([name]) => {
-        const counts: Record<string, number> = { Focused: 167, Distracted: 133, Impulsive: 200 };
-        return { name, value: counts[name] ?? 0 };
-      })
-    : [];
-
   const confMatrix = results?.confusion_matrix ?? [];
   const labels     = results?.label_names ?? ["Focused", "Distracted", "Impulsive"];
 
   return (
-    <div className="pt-24 pb-20 px-4 sm:px-6 min-h-screen">
-      <div className="max-w-6xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-4">
-            Results Dashboard
+    <div className="max-w-wide mx-auto px-6 pt-14 pb-20">
+
+      {/* Header */}
+      <div className="mb-10">
+        <p className="label mb-3">Evaluation Results</p>
+        <h1 className="page-title mb-2">Results Dashboard</h1>
+        <p className="text-sm text-text-muted">
+          Pipeline evaluated on 500 synthetic ADHD interaction samples. Hover charts for exact values.
+        </p>
+      </div>
+
+      {/* KPI table */}
+      <div className="section">
+        <p className="label mb-4">Summary Metrics</p>
+        {results ? (
+          <div className="overflow-x-auto">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th>Overall</th>
+                  <th>Focused</th>
+                  <th>Distracted</th>
+                  <th>Impulsive</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="font-medium">Accuracy</td>
+                  <td className="font-mono font-semibold text-accent">{(results.accuracy*100).toFixed(1)}%</td>
+                  <td>—</td><td>—</td><td>—</td>
+                </tr>
+                <tr>
+                  <td className="font-medium">Precision</td>
+                  <td className="font-mono">{(results.precision*100).toFixed(1)}%</td>
+                  {labels.map(l => (
+                    <td key={l} className="font-mono">{(results.per_class[l]?.precision*100).toFixed(1)}%</td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="font-medium">Recall</td>
+                  <td className="font-mono">{(results.recall*100).toFixed(1)}%</td>
+                  {labels.map(l => (
+                    <td key={l} className="font-mono">{(results.per_class[l]?.recall*100).toFixed(1)}%</td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="font-medium">F1 Score</td>
+                  <td className="font-mono font-semibold text-accent">{results.f1.toFixed(3)}</td>
+                  {labels.map(l => (
+                    <td key={l} className="font-mono">{results.per_class[l]?.f1.toFixed(3)}</td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <h1 className="section-title">Evaluation Results</h1>
-          <p className="section-subtitle mt-3">
-            Pipeline evaluated on 500 synthetic ADHD interaction samples. Charts are interactive — hover for details.
-          </p>
-        </motion.div>
+        ) : (
+          <div className="space-y-2">
+            {[1,2,3,4].map(i => (
+              <div key={i} className="h-8 bg-surface rounded animate-pulse" />
+            ))}
+          </div>
+        )}
+      </div>
 
-        {/* KPIs */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-8">
-          {(results ? kpis : Array(5).fill(null)).map((k, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}
-              className="card text-center py-5">
-              {k ? (
-                <>
-                  <div className={`text-2xl font-black ${k.color}`}>{k.value}</div>
-                  <div className="text-xs text-slate-500 mt-1">{k.label}</div>
-                </>
-              ) : (
-                <div className="h-8 bg-slate-100 rounded animate-pulse mx-4" />
-              )}
-            </motion.div>
-          ))}
-        </div>
+      {/* Confusion matrix */}
+      <div className="section">
+        <p className="label mb-4">Confusion Matrix</p>
+        {confMatrix.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="data-table max-w-sm">
+              <thead>
+                <tr>
+                  <th className="text-right">Predicted →</th>
+                  {labels.map(l => (
+                    <th key={l} style={{ color: LABEL_COLORS[l] }}>{l}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {confMatrix.map((row, ri) => {
+                  const total = row.reduce((s, v) => s + v, 0);
+                  return (
+                    <tr key={ri}>
+                      <td className="font-semibold text-right pr-4 text-xs" style={{ color: LABEL_COLORS[labels[ri]] }}>
+                        {labels[ri]}
+                      </td>
+                      {row.map((v, ci) => {
+                        const pct = total ? v / total : 0;
+                        const isCorrect = ri === ci;
+                        return (
+                          <td key={ci} className="text-center">
+                            <span
+                              className="inline-block w-14 py-1.5 rounded text-xs font-semibold"
+                              style={{
+                                background: isCorrect
+                                  ? `rgba(22,163,74,${0.1 + pct*0.4})`
+                                  : `rgba(220,38,38,${0.05 + pct*0.2})`,
+                                color: isCorrect ? "#16A34A" : pct > 0.1 ? "#DC2626" : "#9CA3AF",
+                              }}
+                            >
+                              {v}
+                            </span>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="h-32 bg-surface rounded animate-pulse" />
+        )}
+      </div>
 
-        {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <div className="card">
-            <h3 className="text-sm font-semibold text-slate-700 mb-4">BAS Score Timeline (Demo Session)</h3>
+      {/* Charts grid */}
+      <div className="section">
+        <p className="label mb-6">Charts</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+          {/* BAS timeline */}
+          <div>
+            <p className="text-sm font-semibold text-text mb-4">BAS Score Timeline — Demo Session</p>
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={BAS_DEMO}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E2EAF0" />
-                <XAxis dataKey="turn" tick={{ fill: "#94A3B8", fontSize: 11 }} label={{ value: "Turn", position: "insideBottom", offset: -2, fill: "#94A3B8", fontSize: 11 }} />
-                <YAxis domain={[0, 100]} tick={{ fill: "#94A3B8", fontSize: 11 }} />
-                <Tooltip contentStyle={tooltipStyle} />
-                <Line type="monotone" dataKey="bas" stroke="#4A9FD8" strokeWidth={2.5} dot={{ fill: "#4A9FD8", r: 3 }} name="BAS" />
+                <CartesianGrid strokeDasharray="2 4" stroke="#E5E7EB" />
+                <XAxis dataKey="turn" tick={{ fill: "#9CA3AF", fontSize: 11 }} />
+                <YAxis domain={[0,100]} tick={{ fill: "#9CA3AF", fontSize: 11 }} />
+                <Tooltip {...TT} />
+                <Line type="monotone" dataKey="bas" stroke="#2563EB" strokeWidth={2} dot={{ fill: "#2563EB", r: 3 }} name="BAS" />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="card">
-            <h3 className="text-sm font-semibold text-slate-700 mb-4">Reward Trajectory (Demo Session)</h3>
+          {/* Reward trajectory */}
+          <div>
+            <p className="text-sm font-semibold text-text mb-4">Reward Trajectory — Demo Session</p>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={REWARD_DEMO}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E2EAF0" />
-                <XAxis dataKey="turn" tick={{ fill: "#94A3B8", fontSize: 11 }} />
-                <YAxis tick={{ fill: "#94A3B8", fontSize: 11 }} />
-                <Tooltip contentStyle={tooltipStyle} />
-                <Bar dataKey="reward" radius={[4, 4, 0, 0]} name="Reward">
+                <CartesianGrid strokeDasharray="2 4" stroke="#E5E7EB" />
+                <XAxis dataKey="turn" tick={{ fill: "#9CA3AF", fontSize: 11 }} />
+                <YAxis tick={{ fill: "#9CA3AF", fontSize: 11 }} />
+                <Tooltip {...TT} />
+                <Bar dataKey="reward" radius={[2,2,0,0]} name="Reward">
                   {REWARD_DEMO.map((d, i) => (
-                    <Cell key={i} fill={d.reward >= 0 ? "#3CB48A" : "#E86060"} />
+                    <Cell key={i} fill={d.reward >= 0 ? "#16A34A" : "#DC2626"} />
                   ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="card">
-            <h3 className="text-sm font-semibold text-slate-700 mb-4">Precision · Recall · F1 by Class</h3>
+          {/* Per-class bar chart */}
+          <div>
+            <p className="text-sm font-semibold text-text mb-4">Precision · Recall · F1 by Class</p>
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={classData} barCategoryGap="25%">
-                <CartesianGrid strokeDasharray="3 3" stroke="#E2EAF0" />
-                <XAxis dataKey="name" tick={{ fill: "#94A3B8", fontSize: 11 }} />
-                <YAxis domain={[0, 100]} tick={{ fill: "#94A3B8", fontSize: 11 }} unit="%" />
-                <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => `${v}%`} />
+                <CartesianGrid strokeDasharray="2 4" stroke="#E5E7EB" />
+                <XAxis dataKey="name" tick={{ fill: "#9CA3AF", fontSize: 11 }} />
+                <YAxis domain={[0,100]} tick={{ fill: "#9CA3AF", fontSize: 11 }} unit="%" />
+                <Tooltip {...TT} formatter={(v: number) => `${v}%`} />
                 <Legend wrapperStyle={{ fontSize: "11px" }} />
-                <Bar dataKey="Precision" fill="#4A9FD8" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="Recall"    fill="#3CB48A" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="F1"        fill="#E891B0" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="Precision" fill="#2563EB"  radius={[2,2,0,0]} />
+                <Bar dataKey="Recall"    fill="#111827"  radius={[2,2,0,0]} />
+                <Bar dataKey="F1"        fill="#6B7280"  radius={[2,2,0,0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="card">
-            <h3 className="text-sm font-semibold text-slate-700 mb-4">Confusion Matrix</h3>
-            {confMatrix.length > 0 ? (
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs">
-                  <thead>
-                    <tr>
-                      <th className="p-2 text-slate-400 text-right">Pred</th>
-                      {labels.map((l) => <th key={l} className="p-2 font-semibold" style={{ color: LABEL_COLORS[l] }}>{l}</th>)}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {confMatrix.map((row, ri) => {
-                      const total = row.reduce((s, v) => s + v, 0);
-                      return (
-                        <tr key={ri}>
-                          <td className="p-2 font-semibold text-right pr-3" style={{ color: LABEL_COLORS[labels[ri]] }}>{labels[ri]}</td>
-                          {row.map((v, ci) => {
-                            const intensity = total ? v / total : 0;
-                            const isCorrect = ri === ci;
-                            return (
-                              <td key={ci} className="p-2">
-                                <div className="w-14 h-10 rounded-lg flex items-center justify-center text-sm font-bold mx-auto" style={{
-                                  background: isCorrect
-                                    ? `rgba(60,180,138,${0.12 + intensity * 0.4})`
-                                    : `rgba(232,96,96,${0.06 + intensity * 0.25})`,
-                                  color: isCorrect ? "#3CB48A" : "#E86060",
-                                }}>
-                                  {v}
-                                </div>
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div className="h-44 bg-slate-100 rounded-xl animate-pulse" />
-            )}
-          </div>
-
-          <div className="card">
-            <h3 className="text-sm font-semibold text-slate-700 mb-4">State Distribution</h3>
-            <div className="space-y-3">
-              {distData.map((d) => {
-                const total = distData.reduce((s, x) => s + x.value, 0);
-                const pct   = total ? (d.value / total * 100).toFixed(0) : "0";
-                const color = LABEL_COLORS[d.name];
-                return (
-                  <div key={d.name}>
-                    <div className="flex justify-between text-xs mb-1.5">
-                      <span className="font-semibold" style={{ color }}>{d.name}</span>
-                      <span className="text-slate-500">{d.value} ({pct}%)</span>
-                    </div>
-                    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${pct}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="h-full rounded-full"
-                        style={{ background: color }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="card">
-            <h3 className="text-sm font-semibold text-slate-700 mb-4">Avg. State Persistence (turns)</h3>
+          {/* State persistence */}
+          <div>
+            <p className="text-sm font-semibold text-text mb-4">Avg. State Persistence (turns)</p>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={PERSIST_DEMO} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="#E2EAF0" horizontal={false} />
-                <XAxis type="number" tick={{ fill: "#94A3B8", fontSize: 11 }} domain={[0, 4]} />
-                <YAxis type="category" dataKey="state" tick={{ fill: "#94A3B8", fontSize: 11 }} width={70} />
-                <Tooltip contentStyle={tooltipStyle} />
-                <Bar dataKey="runs" radius={[0, 4, 4, 0]} name="Avg runs">
+                <CartesianGrid strokeDasharray="2 4" stroke="#E5E7EB" horizontal={false} />
+                <XAxis type="number" tick={{ fill: "#9CA3AF", fontSize: 11 }} domain={[0,4]} />
+                <YAxis type="category" dataKey="state" tick={{ fill: "#9CA3AF", fontSize: 11 }} width={72} />
+                <Tooltip {...TT} />
+                <Bar dataKey="runs" radius={[0,2,2,0]} name="Avg runs">
                   {PERSIST_DEMO.map((d, i) => (
                     <Cell key={i} fill={LABEL_COLORS[d.state]} />
                   ))}
@@ -235,8 +237,10 @@ export default function DashboardPage() {
               </BarChart>
             </ResponsiveContainer>
           </div>
+
         </div>
       </div>
+
     </div>
   );
 }

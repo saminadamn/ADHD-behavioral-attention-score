@@ -1,196 +1,238 @@
 "use client";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, Database, Cpu, GitBranch, BarChart2, Lightbulb, ArrowDown } from "lucide-react";
 
 const NODES = [
   {
     id: "input",
-    label: "Teacher Prompt",
-    sublabel: "Student Response · Latency",
-    icon: Database,
-    color: "#64748B",
-    description: "Each classroom turn provides three inputs: the teacher's question, the student's verbatim response, and the measured response latency in seconds.",
-    input: "Raw text strings + latency float",
-    output: "WorkflowState initialization",
-    algorithms: ["String processing", "Turn ingestion"],
+    step: "0",
+    label: "Input",
+    sublabel: "WorkflowState initialisation",
+    desc: "Each classroom turn provides three inputs: the teacher's question, the student's verbatim response, and the measured response latency in seconds.",
+    input: "teacher_prompt: str, student_response: str, response_latency: float",
+    output: "WorkflowState (Pydantic model, all fields Optional initially)",
+    algorithms: ["String ingestion", "Pydantic v2 state construction", "Turn-level stateful carry-forward"],
   },
   {
     id: "extractor",
+    step: "1",
     label: "Behavioral Signal Extractor",
     sublabel: "Agent 1",
-    icon: Cpu,
-    color: "#4A9FD8",
-    description: "Extracts five normalised feature scores from the raw interaction turn using NLP and semantic similarity models.",
+    desc: "Extracts five normalised feature scores from the raw interaction using NLP and semantic similarity models.",
     input: "teacher_prompt, student_response, response_latency",
-    output: "FeatureScores(response_length, sentiment, topic_shift_score, engagement_score, latency_score)",
-    algorithms: ["Sentence-Transformers (all-MiniLM-L6-v2)", "TextBlob sentiment analysis", "Min-max latency normalisation"],
+    output: "FeatureScores: {response_length, sentiment, topic_shift_score, engagement_score, latency_score}",
+    algorithms: [
+      "Sentence-Transformers (all-MiniLM-L6-v2) — cosine distance for topic shift",
+      "TextBlob sentiment polarity normalised to [0, 1]",
+      "Min-max latency normalisation, inverted (short = high score)",
+      "Engagement composite: 0.4×sentiment + 0.3×length_norm + 0.3×(1−topic_shift)",
+    ],
   },
   {
     id: "classifier",
+    step: "2",
     label: "Attention State Classifier",
     sublabel: "Agent 2",
-    icon: GitBranch,
-    color: "#6DB8E8",
-    description: "Applies a rule-based priority classifier to map feature scores to one of three ADHD attention states.",
+    desc: "Applies a rule-based priority classifier mapping feature scores to one of three ADHD attention states with a margin-derived confidence value.",
     input: "FeatureScores",
-    output: "attention_state (Focused | Distracted | Impulsive), confidence",
-    algorithms: ["Priority rules: Impulsive > Distracted > Focused", "Threshold-based discrimination", "Margin-derived confidence scoring"],
+    output: "attention_state: Literal['Focused','Distracted','Impulsive'], confidence: float",
+    algorithms: [
+      "Priority order: Impulsive > Distracted > Focused",
+      "Impulsive: word_count ≤ 3 AND latency_score ≥ 0.7",
+      "Distracted: topic_shift_score ≥ 0.6 OR engagement_score ≤ 0.3",
+      "Margin-derived confidence from discriminant feature gaps",
+    ],
   },
   {
     id: "reward",
+    step: "3",
     label: "RL Reward Modeler",
     sublabel: "Agent 3",
-    icon: BarChart2,
-    color: "#3CB48A",
-    description: "Computes a scalar reward from the transition between the previous and current attention state using a hand-designed reward table.",
-    input: "attention_state, previous_attention_state",
-    output: "reward (float, range -8 to +10)",
-    algorithms: ["Transition-based reward table (4x3)", "Memory-augmented stateful LangGraph node", "First-turn cold-start handling"],
+    desc: "Computes a scalar reward from the transition between the previous and current attention state using a hand-designed 4×3 reward table.",
+    input: "attention_state, previous_attention_state (None on first turn)",
+    output: "reward: float ∈ [−8, +10]",
+    algorithms: [
+      "4×3 transition reward table: (previous_state | None, Focused, Distracted, Impulsive) × (current_state)",
+      "Notable entries: Impulsive→Focused = +8, Focused→Focused = +10, Focused→Distracted = −6",
+      "First-turn cold-start: previous = None row (rewards attenuated)",
+      "Stateful LangGraph node — carries previous_attention_state across turns",
+    ],
   },
   {
     id: "bas",
+    step: "4",
     label: "BAS Tracker",
     sublabel: "Agent 4",
-    icon: BarChart2,
-    color: "#E8A020",
-    description: "Maintains the cumulative Behavioural Activation Score, clamped to [0, 100], with a 5-turn moving-average for trajectory smoothing.",
-    input: "current_bas, reward",
-    output: "current_bas (updated), bas_history",
-    algorithms: ["BAS update rule: BAS_t = clamp(BAS_{t-1} + r, 0, 100)", "Moving-average window = 5", "IIV computation (reward std dev)"],
+    desc: "Maintains the cumulative Behavioural Activation Score clamped to [0, 100], with a 5-turn moving average for trajectory smoothing and IIV computation.",
+    input: "current_bas: float, reward: float, bas_history: list[float]",
+    output: "current_bas (updated), bas_history (appended), moving_avg_5, iiv (reward std dev)",
+    algorithms: [
+      "BAS update rule: BAS_t = clamp(BAS_{t−1} + r_t, 0, 100)",
+      "Initial BAS = 50 (neutral)",
+      "Moving average window = 5 turns",
+      "IIV = standard deviation of reward sequence (oscillatory instability proxy)",
+    ],
   },
   {
     id: "intervention",
+    step: "5",
     label: "Intervention Generator",
     sublabel: "Agent 5",
-    icon: Lightbulb,
-    color: "#E891B0",
-    description: "Selects a pedagogical intervention from a 16-entry catalogue indexed by BAS tier and attention state.",
-    input: "current_bas, attention_state",
-    output: "intervention (str), rationale (str), tier (SUSTAIN | ENCOURAGE | SIMPLIFY | BREAK)",
-    algorithms: ["Four-tier BAS classification", "16-entry intervention catalogue", "State-specific refinement within tier"],
+    desc: "Selects a pedagogical intervention from a 16-entry catalogue indexed by the Cartesian product of BAS tier and current attention state.",
+    input: "current_bas: float, attention_state: str",
+    output: "intervention: str, rationale: str, tier: Literal['SUSTAIN','ENCOURAGE','SIMPLIFY','BREAK']",
+    algorithms: [
+      "Four-tier BAS classification: SUSTAIN (>75), ENCOURAGE (50–75), SIMPLIFY (25–50), BREAK (≤25)",
+      "16-entry catalogue: 4 tiers × 4 states (Focused, Distracted, Impulsive, Auto)",
+      "State-specific refinement within tier — e.g., ENCOURAGE+Impulsive vs ENCOURAGE+Distracted differ",
+    ],
   },
 ];
 
-const TECH = [
-  { name: "LangGraph 1.x",          desc: "StateGraph orchestration", color: "#4A9FD8" },
-  { name: "Pydantic v2",             desc: "State validation",         color: "#6DB8E8" },
-  { name: "Sentence-Transformers",   desc: "Semantic similarity",      color: "#3CB48A" },
-  { name: "TextBlob",                desc: "Sentiment analysis",       color: "#E8A020" },
-  { name: "FastAPI",                 desc: "REST API backend",         color: "#E86060" },
-  { name: "Next.js 16",             desc: "Frontend framework",       color: "#64748B" },
+const TECH_STACK = [
+  { name: "LangGraph 1.x",           role: "StateGraph orchestration, stateful edges, compile+invoke" },
+  { name: "Pydantic v2",             role: "WorkflowState schema, typed validation, partial updates" },
+  { name: "Sentence-Transformers",   role: "all-MiniLM-L6-v2 embeddings, cosine similarity" },
+  { name: "TextBlob",                role: "Sentiment polarity extraction" },
+  { name: "LangChain Core ≥1.4.7",   role: "Runnable primitives, message types" },
+  { name: "FastAPI",                 role: "REST API — /analyze, /simulate, /intervention, /dataset, /results" },
+  { name: "Uvicorn",                 role: "ASGI server (host=0.0.0.0, $PORT on Render)" },
+  { name: "Next.js 16",             role: "Frontend SSR/SSG, Vercel deployment" },
 ];
 
 export default function ArchitecturePage() {
-  const [selected, setSelected] = useState<(typeof NODES)[0] | null>(null);
+  const [selected, setSelected] = useState<string | null>("extractor");
+  const node = NODES.find(n => n.id === selected);
 
   return (
-    <div className="pt-24 pb-20 px-4 sm:px-6 min-h-screen">
-      <div className="max-w-5xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-4">
-            System Architecture
-          </div>
-          <h1 className="section-title">LangGraph Multi-Agent Pipeline</h1>
-          <p className="section-subtitle mx-auto mt-3">
-            Click any node to explore its purpose, inputs, outputs, and algorithms.
-          </p>
-        </motion.div>
+    <div className="max-w-wide mx-auto px-6 pt-14 pb-20">
 
-        {/* Pipeline */}
-        <div className="flex flex-col items-center gap-3 mb-16">
-          {NODES.map((node, i) => {
-            const Icon = node.icon;
-            return (
-              <motion.div key={node.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }} className="w-full max-w-xl">
-                <button
-                  onClick={() => setSelected(selected?.id === node.id ? null : node)}
-                  className="w-full bg-white rounded-2xl px-6 py-4 flex items-center gap-4 border border-border hover:border-primary/30 hover:shadow-md transition-all duration-200 text-left group"
-                  style={{ borderLeft: `3px solid ${node.color}` }}
+      {/* Header */}
+      <div className="mb-10">
+        <p className="label mb-3">System Architecture</p>
+        <h1 className="page-title mb-2">LangGraph Multi-Agent Pipeline</h1>
+        <p className="text-sm text-text-muted">
+          Five-node StateGraph. Click any row to expand its input/output contract and algorithms.
+        </p>
+      </div>
+
+      {/* Pipeline table — clickable rows */}
+      <div className="section">
+        <p className="label mb-4">Pipeline Nodes</p>
+        <div className="overflow-x-auto border border-border rounded">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th className="w-8">Step</th>
+                <th>Node</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              {NODES.map((n) => (
+                <tr
+                  key={n.id}
+                  onClick={() => setSelected(selected === n.id ? null : n.id)}
+                  className={`cursor-pointer transition-colors ${
+                    selected === n.id ? "bg-accent/5" : ""
+                  }`}
                 >
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
-                    style={{ background: `${node.color}15`, border: `1px solid ${node.color}30` }}
-                  >
-                    <Icon className="w-5 h-5" style={{ color: node.color }} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-slate-800 text-sm">{node.label}</div>
-                    <div className="text-xs text-slate-500">{node.sublabel}</div>
-                  </div>
-                  <div className="text-xs px-2.5 py-1 rounded-full font-semibold flex-shrink-0" style={{ background: `${node.color}15`, color: node.color }}>
-                    Details
-                  </div>
-                </button>
-                {i < NODES.length - 1 && (
-                  <div className="flex justify-center my-1.5">
-                    <ArrowDown className="w-4 h-4 text-slate-300" />
-                  </div>
-                )}
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* Detail panel */}
-        <AnimatePresence>
-          {selected && (
-            <motion.div
-              key={selected.id}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="card mb-12"
-              style={{ borderLeft: `3px solid ${selected.color}` }}
-            >
-              <div className="flex items-start justify-between mb-5">
-                <div>
-                  <h3 className="text-lg font-bold text-slate-800">{selected.label}</h3>
-                  <p className="text-slate-600 mt-1.5 text-sm leading-relaxed max-w-2xl">{selected.description}</p>
-                </div>
-                <button onClick={() => setSelected(null)} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors flex-shrink-0 ml-4">
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-slate-50 rounded-xl p-4">
-                  <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Input</div>
-                  <p className="text-sm text-slate-700 font-mono">{selected.input}</p>
-                </div>
-                <div className="bg-slate-50 rounded-xl p-4">
-                  <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Output</div>
-                  <p className="text-sm text-slate-700 font-mono">{selected.output}</p>
-                </div>
-                <div className="bg-slate-50 rounded-xl p-4">
-                  <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Algorithms</div>
-                  <ul className="space-y-1">
-                    {selected.algorithms.map((a) => (
-                      <li key={a} className="text-sm text-slate-600 flex items-start gap-1.5">
-                        <span className="text-primary mt-0.5 flex-shrink-0">·</span>
-                        {a}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Tech stack */}
-        <div>
-          <h2 className="text-xl font-bold text-slate-800 mb-6 text-center">Technology Stack</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {TECH.map((t) => (
-              <div key={t.name} className="bg-white rounded-xl p-4 text-center border border-border shadow-sm">
-                <div className="text-sm font-bold text-slate-800 mb-1">{t.name}</div>
-                <div className="text-xs text-slate-500">{t.desc}</div>
-                <div className="mt-2 h-0.5 rounded-full mx-auto w-8" style={{ background: t.color }} />
-              </div>
-            ))}
-          </div>
+                  <td className="font-mono text-accent text-xs font-bold">{n.step}</td>
+                  <td className="font-medium">{n.label}</td>
+                  <td className="text-text-muted text-xs">{n.sublabel} — {n.desc.substring(0, 80)}…</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
+
+      {/* Detail panel */}
+      {node && (
+        <div className="section">
+          <div className="flex items-baseline gap-3 mb-5">
+            <span className="font-mono text-xs font-bold text-accent">Step {node.step}</span>
+            <h2 className="text-lg font-semibold text-text">{node.label}</h2>
+          </div>
+          <p className="text-sm text-text-muted mb-6 leading-relaxed max-w-prose">{node.desc}</p>
+          <div className="grid md:grid-cols-3 gap-5">
+            <div>
+              <p className="label mb-2">Input</p>
+              <pre className="code-block text-xs">{node.input}</pre>
+            </div>
+            <div>
+              <p className="label mb-2">Output</p>
+              <pre className="code-block text-xs">{node.output}</pre>
+            </div>
+            <div>
+              <p className="label mb-2">Algorithms</p>
+              <ul className="space-y-1.5">
+                {node.algorithms.map((a) => (
+                  <li key={a} className="flex gap-2 text-xs text-text-muted leading-relaxed">
+                    <span className="text-accent flex-shrink-0">·</span>
+                    {a}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* State schema */}
+      <div className="section">
+        <p className="label mb-4">WorkflowState Schema</p>
+        <pre className="code-block">{`class WorkflowState(BaseModel):
+    # Inputs
+    teacher_prompt:           str
+    student_response:         str
+    response_latency:         float
+    previous_attention_state: Optional[str]   = None
+    current_bas:              float           = 50.0
+    bas_history:              list[float]     = []
+
+    # Agent 1 outputs
+    features: Optional[FeatureScores]         = None
+
+    # Agent 2 outputs
+    attention_state:          Optional[str]   = None
+    confidence:               float           = 0.0
+
+    # Agent 3 outputs
+    reward:                   float           = 0.0
+
+    # Agent 4 outputs
+    bas_history:              list[float]     = []
+
+    # Agent 5 outputs
+    intervention:             Optional[str]   = None
+    rationale:                Optional[str]   = None
+    tier:                     Optional[str]   = None`}
+        </pre>
+      </div>
+
+      {/* Tech stack table */}
+      <div className="section">
+        <p className="label mb-4">Technology Stack</p>
+        <div className="overflow-x-auto">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Library / Framework</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              {TECH_STACK.map((t) => (
+                <tr key={t.name}>
+                  <td className="font-mono text-xs font-medium">{t.name}</td>
+                  <td className="text-xs text-text-muted">{t.role}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   );
 }
