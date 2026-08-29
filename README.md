@@ -23,25 +23,64 @@ Each stage is an independent, testable function wired into a single **LangGraph*
 
 ## Architecture
 
+### Pipeline Overview
+
+The backend implements a **directed graph** of five specialised agents, each responsible for one discrete stage of turning a single classroom exchange into a scored, actionable recommendation. State is passed immutably between nodes via LangGraph's `StateGraph`.
+
 ```
-Teacher prompt + student response + latency
-                 │
-                 ▼
-   ┌─────────────────────────┐
-   │ signal_extractor         │  five behavioral features
-   ├─────────────────────────┤
-   │ state_classifier         │  Focused / Distracted / Impulsive
-   ├─────────────────────────┤
-   │ reward_modeler           │  reward from state transition
-   ├─────────────────────────┤
-   │ bas_tracker              │  updates running BAS + history
-   ├─────────────────────────┤
-   │ intervention_generator   │  BAS → intervention tier
-   └─────────────────────────┘
-                 │
-                 ▼
-         FastAPI JSON response
+ ┌─────────────────────────────────────────────────────────────────────┐
+ │                       ADHD-BAS Pipeline                             │
+ │                                                                     │
+ │  ┌────────────┐   ┌────────────┐   ┌────────────┐   ┌───────────┐ │
+ │  │            │   │            │   │            │   │           │ │
+ │  │  signal    │──►│   state    │──►│   reward   │──►│    bas    │ │
+ │  │ extractor  │   │ classifier │   │  modeler   │   │  tracker  │ │
+ │  │            │   │            │   │            │   │           │ │
+ │  └────────────┘   └────────────┘   └────────────┘   └─────┬─────┘ │
+ │   similarity ·      Focused /       reward from            │       │
+ │   topic shift ·     Distracted /    state transition        │       │
+ │   sentiment ·       Impulsive                               │       │
+ │   latency                                                    │       │
+ │                                                    ┌──────────▼────┐ │
+ │                                                    │               │ │
+ │                                                    │ intervention  │ │
+ │                                                    │  generator    │ │
+ │                                                    │               │ │
+ │                                                    └───────────────┘ │
+ │                                                    running BAS (0–100)│
+ │                                                    → tiered response  │
+ └─────────────────────────────────────────────────────────────────────┘
 ```
+
+### State Schema
+
+All nodes share a single `WorkflowState` (Pydantic `BaseModel`, `backend/models/state.py`) that propagates through the graph:
+
+```
+WorkflowState
+├── teacher_prompt, student_response, response_latency    (this turn's input)
+├── features                : FeatureScores                (signal_extractor output)
+├── attention_state, confidence                            (state_classifier output)
+├── reward                                                 (reward_modeler output)
+├── current_bas, bas_history                               (bas_tracker output)
+├── intervention, rationale, tier                          (intervention_generator output)
+├── previous_attention_state, previous_reward, previous_bas    (turn-to-turn memory)
+└── error                                                  (propagated error signal)
+```
+
+### Agent Responsibilities
+
+```
+backend/agents/
+├── signal_extractor.py       Sentence-transformer similarity, topic shift,
+│                              sentiment, response-length bucket, latency score
+├── state_classifier.py       Rule-based: Impulsive > Distracted > Focused
+├── reward_modeler.py         Reward signal from the attention-state transition
+├── bas_tracker.py            Clamped running BAS update + moving average
+└── intervention_generator.py BAS → one of four intervention tiers
+```
+
+`backend/core/pipeline.py` wires these into a `StateGraph`; each conditional edge aborts the run early if an upstream node sets `error`.
 
 `backend/core/pipeline.py` wires these five agents into a `StateGraph`; `backend/models/state.py` defines the shared `WorkflowState` that flows between them.
 
