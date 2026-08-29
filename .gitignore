@@ -2,10 +2,10 @@
 .env
 .env.local
 .env.*.local
-.claude/
 
-# Python
+# Python (backend/)
 __pycache__/
+**/__pycache__/
 *.py[cod]
 *.pyo
 *.pyd
@@ -17,8 +17,10 @@ build/
 venv/
 env/
 
-# Outputs (generated artefacts)
-outputs/
+# Node / Next.js (frontend/)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
 
 # OS
 .DS_Store

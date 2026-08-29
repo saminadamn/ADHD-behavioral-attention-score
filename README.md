@@ -1,329 +1,124 @@
-<div align="center">
-
 # Behavioral Attention Score (BAS)
-### A LangGraph-Based Multi-Agent Framework for Modeling ADHD Attentional Variability
 
-[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![LangGraph](https://img.shields.io/badge/LangGraph-1.x-FF6B35?style=flat-square)](https://github.com/langchain-ai/langgraph)
-[![LangChain](https://img.shields.io/badge/LangChain-1.x-1C3C3C?style=flat-square)](https://langchain.com)
-[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991?style=flat-square&logo=openai&logoColor=white)](https://openai.com)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Research%20Prototype-orange?style=flat-square)]()
+A LangGraph multi-agent backend + Next.js frontend that scores a student's attention state from a single classroom-style interaction (a teacher prompt, a student response, and the response latency) and recommends a tiered intervention in real time.
 
-*A computational neuroscience research prototype for quantifying and interpreting attentional variability in ADHD through multi-agent AI pipelines.*
+**Live demo:** frontend on Vercel, API on Render (see [Deployment](#deployment)).
+**Author:** Samina Parveen · BIT Mesra · Supervisor: Dr. Itu Snigdh
 
-</div>
+> Research prototype trained on synthetic classroom data. It does not diagnose or assess ADHD in real individuals.
 
 ---
 
-## Abstract
+## What it does
 
-Attention-Deficit/Hyperactivity Disorder (ADHD) is characterised not merely by inattention but by **intra-individual variability (IIV)** — moment-to-moment fluctuations in cognitive performance that are absent in neurotypical populations. This variability is hypothesised to reflect dysregulation of the **Behavioural Activation System (BAS)**, a neurobiological reward-sensitivity circuit that drives impulsive attention shifts toward salient stimuli.
+Given one teacher–student exchange, the API:
 
-The **Behavioral Attention Score (BAS)** framework introduces a modular, LangGraph-based multi-agent pipeline that:
+1. Extracts five behavioral signals from the exchange (semantic similarity, topic shift, sentiment, response-length bucket, latency).
+2. Classifies the turn into an attention state — **Focused**, **Distracted**, or **Impulsive**.
+3. Computes a reward signal from the transition between the previous and current attention state.
+4. Updates a running **Behavioral Attention Score (BAS)**, a 0–100 score with memory across turns.
+5. Recommends one of four intervention tiers based on the current BAS.
 
-1. Ingests Continuous Performance Task (CPT)-style trial data (real or synthetic)
-2. Computes established IIV metrics: coefficient of variation, attention lapses, and BAS influence scores
-3. Invokes a large language model (GPT-4o-mini via LangChain) to generate structured, clinically interpretable BAS narratives using Pydantic-validated output schemas
-4. Produces publication-ready visualisations of attentional dynamics
-
-This prototype serves as a foundation for scalable, AI-augmented cognitive profiling in clinical and research settings.
-
----
-
-## Research Motivation
-
-> *"The single most consistent neuropsychological finding in ADHD is not mean-level performance deficits, but the abnormal variability of performance."*
-> — Castellanos & Tannock (2002), *Nature Reviews Neuroscience*
-
-Traditional ADHD assessment relies on clinical observation and static psychometric scores. These approaches fail to capture the **temporal dynamics** of attentional fluctuation — the very signature that most strongly distinguishes ADHD from neurotypical profiles.
-
-The **BAS framework** is motivated by three converging lines of evidence:
-
-| Evidence Stream | Key Finding | Implication |
-|---|---|---|
-| Neuropsychology | IIV in RT is the strongest ADHD biomarker (Fuermaier et al., 2021) | IIV should be the primary modelled outcome |
-| Motivational theory | Elevated BAS sensitivity drives reward-oriented attention shifts (Gray & McNaughton, 2000) | BAS score must modulate trial generation |
-| AI interpretability | LLMs can generate structured clinical narratives from numeric biomarkers (Thirunavukarasu et al., 2023) | Chain-of-thought prompting enables explainable outputs |
-
----
+Each stage is an independent, testable function wired into a single **LangGraph** pipeline — not a monolithic script — so any stage can be inspected, replaced, or unit-tested on its own.
 
 ## Architecture
 
-### Pipeline Overview
-
-The framework implements a **directed acyclic graph** of four specialised agents, each responsible for a discrete processing stage. State is passed immutably between nodes via LangGraph's `StateGraph`.
-
 ```
- ┌─────────────────────────────────────────────────────────────────┐
- │                     ADHD-BAS Pipeline                          │
- │                                                                 │
- │  ┌─────────────┐    ┌─────────────┐    ┌──────────────────┐   │
- │  │             │    │             │    │                  │   │
- │  │ data_loader │───►│  analysis   │───►│ llm_interpreter  │   │
- │  │             │    │             │    │                  │   │
- │  └─────────────┘    └─────────────┘    └────────┬─────────┘   │
- │         │                  │                    │              │
- │    CSV / synthetic    IIV · lapses ·        GPT-4o-mini        │
- │    CPT trial data     BAS score ·           structured         │
- │    (80 trials)        mean RT · SD          BAS narrative      │
- │                                                 │              │
- │                                        ┌────────▼─────────┐   │
- │                                        │                  │   │
- │                                        │   visualiser     │   │
- │                                        │                  │   │
- │                                        └──────────────────┘   │
- │                                        RT time-series ·        │
- │                                        histogram ·             │
- │                                        accuracy plot           │
- └─────────────────────────────────────────────────────────────────┘
+Teacher prompt + student response + latency
+                 │
+                 ▼
+   ┌─────────────────────────┐
+   │ signal_extractor         │  five behavioral features
+   ├─────────────────────────┤
+   │ state_classifier         │  Focused / Distracted / Impulsive
+   ├─────────────────────────┤
+   │ reward_modeler           │  reward from state transition
+   ├─────────────────────────┤
+   │ bas_tracker              │  updates running BAS + history
+   ├─────────────────────────┤
+   │ intervention_generator   │  BAS → intervention tier
+   └─────────────────────────┘
+                 │
+                 ▼
+         FastAPI JSON response
 ```
 
-### State Schema
+`backend/core/pipeline.py` wires these five agents into a `StateGraph`; `backend/models/state.py` defines the shared `WorkflowState` that flows between them.
 
-All nodes share a single `PipelineState` (Pydantic `BaseModel`) that propagates through the graph:
-
-```
-PipelineState
-├── participant       : ParticipantProfile   (ID, age, diagnosis, BAS/BIS scores)
-├── raw_samples       : list[AttentionSample] (per-trial RT, accuracy, inattention)
-├── analysis          : AnalysisResult        (IIV, mean RT, SD, lapses, BAS score)
-├── report            : str                   (formatted LLM narrative)
-├── messages          : list[AnyMessage]      (LangGraph message history)
-└── error             : str                   (propagated error signal)
-```
-
-### Agent Responsibilities
+## Repository structure
 
 ```
-agents/
-├── data_loader.py       Reads participants.csv or synthesises 80 BAS-modulated CPT trials
-│                        BAS sensitivity directly scales RT noise amplitude
-│
-├── analysis.py          Computes IIV (coefficient of variation), attention lapses (RT > 600 ms),
-│                        mean RT, SD, and BAS influence score (inattention × BAS sensitivity)
-│
-├── llm_interpreter.py   Constructs a LangChain prompt chain:
-│                        ChatPromptTemplate | ChatOpenAI | PydanticOutputParser → BASInterpretation
-│                        Gracefully degrades without OPENAI_API_KEY
-│
-└── visualiser.py        Matplotlib 3-panel figure:
-                         [0,:] RT time-series with mean and lapse threshold
-                         [1,0] RT histogram
-                         [1,1] Rolling accuracy (window = n_trials / 10)
+backend/                   FastAPI service (deployed to Render)
+    agents/                 the five pipeline stages above
+        signal_extractor.py     sentence-transformer similarity, sentiment, topic shift
+        state_classifier.py     rule-based attention-state classifier
+        reward_modeler.py       transition-based reward signal
+        bas_tracker.py          running BAS score + turn memory
+        intervention_generator.py   BAS → tiered intervention
+    api/routes/             FastAPI routers
+        analysis.py              POST /analyze — run one turn through the pipeline
+        dataset.py               GET  /dataset  — browse the synthetic dataset
+        phenotype.py             POST /simulate — simulate a student phenotype
+        intervention.py          POST /intervention, GET /results
+    core/pipeline.py        LangGraph StateGraph construction + run_turn()
+    models/state.py         Pydantic WorkflowState shared across agents
+    scripts/generate_large_dataset.py   synthetic dataset generator
+    data/synthetic_adhd.csv             generated dataset used by /dataset
+    main.py                 FastAPI app, CORS, startup pre-warm
+
+frontend/                  Next.js 15 app (deployed to Vercel)
+    src/app/                 one page per route: dashboard, simulator, dataset,
+                              analysis, interventions, methodology, architecture,
+                              research, about
+    src/lib/api.ts           typed client for the backend API
+    src/lib/types.ts         shared request/response types
+
+render.yaml                 Render Blueprint (rootDir: backend)
 ```
 
----
+## Running locally
 
-## Folder Structure
-
-```
-adhd-bas/
-│
-├── data/
-│   └── participants.csv          # Participant demographics and BAS/BIS scores
-│
-├── outputs/
-│   └── adhd_bas_<pid>.png        # Generated variability plots (gitignored)
-│
-├── agents/
-│   ├── __init__.py
-│   ├── data_loader.py            # Node 1 — data ingestion and synthesis
-│   ├── analysis.py               # Node 2 — variability metric computation
-│   ├── llm_interpreter.py        # Node 3 — LLM-driven BAS interpretation
-│   └── visualiser.py             # Node 4 — publication-ready plots
-│
-├── graphs/
-│   ├── __init__.py
-│   └── pipeline.py               # StateGraph definition and edge routing
-│
-├── models/
-│   ├── __init__.py
-│   ├── state.py                  # PipelineState, ParticipantProfile, AnalysisResult
-│   └── schemas.py                # Pydantic schemas for LLM structured output
-│
-├── main.py                       # Entry point
-├── requirements.txt
-├── .env.example
-└── README.md
-```
-
----
-
-## Installation
-
-### Prerequisites
-
-- Python 3.11 or higher
-- An OpenAI API key (optional — pipeline runs in offline mode without one)
-
-### Setup
+### Backend
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/saminadamn/ADHD-behavioral-attention-score.git
-cd ADHD-behavioral-attention-score
-
-# 2. Create a virtual environment
-python -m venv .venv
-
-# Activate — Windows
-.venv\Scripts\activate
-
-# Activate — macOS / Linux
-source .venv/bin/activate
-
-# 3. Install dependencies
-pip install --prefer-binary -r requirements.txt
-
-# 4. Configure environment
-copy .env.example .env        # Windows
-# cp .env.example .env        # macOS / Linux
+cd backend
+python -m pip install -r requirements.txt
+python -c "import textblob; textblob.download_corpora()"   # first time only
+cp .env.example .env
+python -m uvicorn main:app --reload --port 8000
+# API docs: http://localhost:8000/docs
 ```
 
-Edit `.env` and add your OpenAI key:
-
-```env
-OPENAI_API_KEY=sk-...
-```
-
-### Run
+### Frontend
 
 ```bash
-python main.py
+cd frontend
+cp .env.example .env.local
+# set NEXT_PUBLIC_API_URL=http://localhost:8000 in .env.local
+npm install
+npm run dev
+# http://localhost:3000
 ```
 
-Expected output:
+### Regenerating the dataset
 
-```
-============================================================
-  ADHD-BAS  |  Attentional Variability Research Prototype
-============================================================
-[visualiser] Plot saved -> outputs/adhd_bas_P001.png
-
-=== ADHD-BAS Report | Participant P001 ===
-
-[Metrics] Participant P001 | IIV=0.314 | mean RT=363.2 ms | SD=114.2 ms | lapses=2 | BAS influence=0.186
-
---- BAS Interpretation ---
-Reward sensitivity: Elevated BAS sensitivity in this participant suggests heightened
-                    reactivity to reward cues, producing abrupt attentional reorienting.
-...
-
-[Done] Check outputs/ for visualisation plots.
+```bash
+cd backend
+python scripts/generate_large_dataset.py --samples 10000 --out data/synthetic_adhd.csv
 ```
 
----
+## Deployment
 
-## Participant Data Format
+- **Backend → Render.** `render.yaml` at the repo root is a Render Blueprint with `rootDir: backend`; Render installs `backend/requirements.txt`, pre-downloads the sentence-transformer model at build time, and runs `uvicorn main:app`.
+- **Frontend → Vercel.** Set the project's **Root Directory** to `frontend` in the Vercel dashboard (this isn't stored in `vercel.json`), and set `NEXT_PUBLIC_API_URL` to the deployed Render URL.
 
-Add rows to `data/participants.csv` to process real participants:
+## Tech stack
 
-| Column | Type | Description |
-|---|---|---|
-| `participant_id` | `str` | Unique identifier (e.g. `P001`) |
-| `age` | `int` | Age in years |
-| `diagnosis` | `str` | `ADHD` or `control` |
-| `medication_status` | `str` | `medicated`, `unmedicated`, or `none` |
-| `bas_sensitivity` | `float` | BAS sensitivity score, 0.0–1.0 |
-| `bis_sensitivity` | `float` | BIS sensitivity score, 0.0–1.0 |
+Python 3.11, FastAPI, LangGraph, Pydantic, Sentence-Transformers, TextBlob · Next.js 15, TypeScript, Tailwind CSS.
 
-When no CSV is present, the pipeline synthesises a default ADHD participant (`P001`, BAS=0.82).
+## Limitations
 
----
-
-## Key Metrics
-
-| Metric | Formula | Interpretation |
-|---|---|---|
-| **IIV** | `SD(RT) / mean(RT)` | Coefficient of variation; elevated in ADHD |
-| **Attention lapses** | `count(RT > 600 ms)` | Trials indicating complete attentional disengagement |
-| **BAS influence score** | `mean(inattention) × BAS sensitivity` | Proxy for reward-sensitivity contribution to variability |
-| **Mean RT** | `mean(RT)` | Overall processing speed |
-
----
-
-## Future Work
-
-- [ ] **Real CPT integration** — ingest `.csv` exports from Conners' CPT-3 and TOVA
-- [ ] **Group-level analysis** — ADHD vs. control IIV comparison with Cohen's d effect sizes
-- [ ] **Medication moderation** — model medicated vs. unmedicated BAS influence trajectories
-- [ ] **Temporal modelling** — replace synthetic noise with a Hidden Markov Model of attention states (on-task / mind-wandering / lapse)
-- [ ] **Multi-participant graphs** — extend StateGraph to fan-out across participant cohorts in parallel
-- [ ] **Interactive dashboard** — Streamlit interface for clinicians to upload CPT data and receive real-time BAS reports
-- [ ] **Fine-tuned interpreter** — replace zero-shot GPT-4o-mini with a fine-tuned model trained on clinical ADHD case notes
-- [ ] **BIS/BAS dissociation** — extend the model to separately quantify inhibition-related and activation-related variability components
-
----
-
-## Dependencies
-
-| Package | Version | Role |
-|---|---|---|
-| `langgraph` | >=1.x | Multi-agent state graph orchestration |
-| `langchain` | >=1.x | Prompt chaining and output parsing |
-| `langchain-openai` | >=1.x | OpenAI chat model integration |
-| `openai` | >=2.x | GPT-4o-mini API client |
-| `pydantic` | >=2.7 | State and schema validation |
-| `pandas` | >=2.0 | Participant CSV ingestion |
-| `matplotlib` | >=3.8 | Attentional variability plots |
-| `numpy` | >=1.26 | Numerical metric computation |
-| `python-dotenv` | >=1.0 | Environment variable management |
-
----
-
-## Citation
-
-If you use this framework in your research, please cite:
-
-```bibtex
-@software{parveen2025adhdbas,
-  author       = {Parveen, Samina},
-  title        = {{Behavioral Attention Score (BAS): A LangGraph-Based
-                   Multi-Agent Framework for Modeling ADHD Attentional Variability}},
-  year         = {2025},
-  publisher    = {GitHub},
-  url          = {https://github.com/saminadamn/ADHD-behavioral-attention-score}
-}
-```
-
-### Key References
-
-```
-Castellanos, F. X., & Tannock, R. (2002).
-  Neuroscience of attention-deficit/hyperactivity disorder: The search for endophenotypes.
-  Nature Reviews Neuroscience, 3(8), 617–628.
-
-Gray, J. A., & McNaughton, N. (2000).
-  The Neuropsychology of Anxiety: An Enquiry into the Functions of the Septo-Hippocampal System.
-  Oxford University Press.
-
-Sonuga-Barke, E. J. S. (2005).
-  Causal heterogeneity in attention-deficit/hyperactivity disorder:
-  A double dissociation of temporal and motivational dysfunction.
-  Biological Psychiatry, 57(11), 1231–1238.
-
-Fuermaier, A. B. M., et al. (2021).
-  Intraindividual variability in inhibition as a neuropsychological marker of ADHD.
-  Psychological Medicine, 51(3), 436–444.
-
-Thirunavukarasu, A. J., et al. (2023).
-  Large language models in medicine.
-  Nature Medicine, 29, 1930–1940.
-```
-
----
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
-
----
-
-<div align="center">
-
-Developed as part of a computational neuroscience research initiative.
-
-*Behavioral Attention Score (BAS) — modeling the mind's variability, one trial at a time.*
-
-</div>
+- Trained and evaluated entirely on **synthetic** classroom data — no real student data is used or collected.
+- The attention-state classifier is rule-based over the extracted features, not a trained model; see `backend/agents/state_classifier.py`.
+- Intervention tiers are hand-designed thresholds on BAS, not learned from outcome data.
+- This is a research prototype, not a validated clinical or diagnostic tool.

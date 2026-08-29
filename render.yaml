@@ -3,7 +3,7 @@ services:
     name: adhd-bas-api
     runtime: python
     pythonVersion: "3.11.9"
-    rootDir: "ADHD Research/backend"
+    rootDir: "backend"
     buildCommand: >-
       pip install --prefer-binary -r requirements.txt &&
       HF_HOME=/opt/render/project/.cache
