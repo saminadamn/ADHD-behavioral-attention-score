@@ -46,6 +46,22 @@ class TestImpulsivityRegressions:
         )
         assert label != "Focused"
 
+    def test_answering_before_a_complex_question_is_finished_is_impulsive(self):
+        # A coherent, correct, complete answer -- repetition_score and
+        # completeness_score both stay low/high as they should -- but given
+        # in a fraction of a second to a long, multi-clause question. This
+        # is the case prematurity_score exists for; before it, this landed
+        # as a low-confidence, ambiguous call rather than a clear one.
+        label, conf = classify(
+            "Can you tell me what you think the answer to this long, "
+            "multi-part question about the area of a circle, given radius "
+            "five, might possibly be?",
+            "Twenty-five pi!",
+            0.6,
+        )
+        assert label == "Impulsive"
+        assert conf > 0.5
+
 
 class TestStillClassifiesCorrectly:
     """Make sure the fix didn't break the cases that already worked."""
@@ -101,6 +117,16 @@ class TestFeatureWiring:
         state = state.model_copy(update=behavioral_signal_extractor(state))
         state.features.repetition_score = 0.0
         state.features.completeness_score = 0.05
+        state.features.engagement_score = 0.9  # would be "Focused" on engagement alone
+        result = attention_state_classifier(state)
+        assert result["attention_state"] == "Impulsive"
+
+    def test_high_prematurity_alone_triggers_impulsive(self):
+        state = WorkflowState(teacher_prompt="How was your day?", student_response="fine", response_latency=5.0)
+        state = state.model_copy(update=behavioral_signal_extractor(state))
+        state.features.repetition_score = 0.0
+        state.features.completeness_score = 1.0
+        state.features.prematurity_score = 0.9
         state.features.engagement_score = 0.9  # would be "Focused" on engagement alone
         result = attention_state_classifier(state)
         assert result["attention_state"] == "Impulsive"

@@ -70,18 +70,50 @@ Focused classification just by also being short and topically adjacent.
 
 Both moved out of the dangerous "Focused + positive reward" failure mode.
 
+## Second fix: latency relative to question complexity
+
+A third test turn exposed a second gap, specifically on the "answers before
+the question is finished" pattern: a 2-word, correct, complete answer given
+in 0.6s to a long, multi-clause question (`"Twenty-five pi!"` to a
+rambling, comma-heavy question about the area of a circle). Neither
+`repetition_score` nor `completeness_score` fires here — the response is
+coherent and complete — so it moved only to a low-confidence Impulsive
+(40%) on the first fix, and to Distracted (59%) once engagement weights
+were rebalanced for that fix, rather than to a clearly-correct label either
+way.
+
+### Root cause
+
+`latency_score` was a flat normalization between 0.5s and 25s with no
+reference to the question it was answering. A 0.6s answer to "Six times
+seven?" and a 0.6s answer to a long, multi-part question score identically,
+even though only one of those is plausible.
+
+### Fix
+
+Added `prematurity_score` (`backend/agents/signal_extractor.py`):
+`_expected_response_time(prompt)` estimates a baseline from the prompt's
+word count (reading time) and number of comma/semicolon/"and"-separated
+clauses (thinking time); `_prematurity_score` scores how far the actual
+latency falls below that baseline. Deliberately *not* blended into
+`engagement_score` — a premature response can be otherwise coherent — so it
+reaches `attention_state_classifier` as its own signal, treated as
+impulsive on its own above a threshold, the same way `repetition_score`
+and `completeness_score` already are.
+
+### Result after this fix
+
+The same turn now classifies as **Impulsive, 88% confidence**, reward +0 —
+up from Distracted 59% (ambiguous) and, before the first fix, Focused 40%
+(wrong) and Impulsive 40% (right label, too low-confidence to trust).
+
 ## What's still a real limitation
 
-- **A fast-but-complete answer stays genuinely ambiguous.** A third test turn
-  — a 2-word, correct, complete answer given in 0.6s to a long question (a
-  textbook "answers before the question is finished" case) — moved from
-  low-confidence Impulsive (40%) to Distracted (59%) rather than to a
-  clearly-correct label. Neither `repetition_score` nor `completeness_score`
-  fires here, because the response is neither repetitive nor incomplete —
-  it's just abnormally fast relative to the question's complexity, which
-  none of the five signals measure. Fixing this needs a feature comparing
-  latency to the prompt's expected reading/processing time, not just a flat
-  0.5–25s normalization.
+- **The thinking-time baseline is a heuristic, not measured data.** The
+  reading-speed and per-clause constants in `_expected_response_time` are
+  reasonable estimates, not fit to any real response-time dataset — a
+  genuinely fast but momentarily lucky guess on a hard question could still
+  register as premature.
 - **The reward model is a flat lookup table** keyed only on
   `(previous_state, current_state)` (`backend/agents/reward_modeler.py`), not
   on classification confidence or feature magnitude. A 51%-confidence
@@ -93,11 +125,10 @@ Both moved out of the dangerous "Focused + positive reward" failure mode.
 ## Regression coverage
 
 `backend/tests/test_signal_extractor.py` and
-`backend/tests/test_state_classifier.py` cover both fixed cases above (run
-with `python -m pytest backend/tests/ -v` after installing
-`backend/requirements-dev.txt`), plus the three cases that already worked
-before the fix, to catch a future regression in either direction. Confirmed
-these tests actually catch the regression by reverting to the pre-fix
-`signal_extractor.py`/`state_classifier.py`/`state.py` and re-running —
-`test_signal_extractor.py` fails to even import, since the two new functions
-don't exist yet.
+`backend/tests/test_state_classifier.py` cover all three fixed cases above
+(run with `python -m pytest backend/tests/ -v` after installing
+`backend/requirements-dev.txt`), plus the cases that already worked before
+each fix, to catch a future regression in either direction. Confirmed each
+fix is actually caught by reverting the relevant files to their pre-fix
+version and re-running — the tests fail to even import, since the
+functions under test don't exist on that version.

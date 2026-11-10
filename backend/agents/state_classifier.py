@@ -12,6 +12,7 @@ _IMP_LATENCY  = 0.12
 _IMP_ENGAGE   = 0.45
 _IMP_REPEAT   = 0.5     # repetition_score at/above this is itself impulsive, regardless of engagement
 _IMP_INCOMPLETE = 0.3   # completeness_score at/below this is itself impulsive (trails off / blurted)
+_IMP_PREMATURE  = 0.65  # prematurity_score at/above this is itself impulsive (answered before the question warranted)
 _DIST_SHIFT   = 0.55
 _DIST_LATENCY = 0.60
 _DIST_ENGAGE  = 0.55
@@ -28,21 +29,27 @@ def attention_state_classifier(state) -> dict:
     latency      = f.latency_score
     repetition   = f.repetition_score
     completeness = f.completeness_score
+    prematurity  = f.prematurity_score
 
-    # Repetition (garbled/blurted text) and incompleteness (trails off mid-
-    # thought) are direct impulsivity signals on their own -- a short,
-    # low-latency response that *also* happens to score as "engaged" on the
-    # length/topic-shift blend is still impulsive if it's repetitive or
-    # incomplete, which engagement_score alone can't see.
+    # Repetition (garbled/blurted text), incompleteness (trails off
+    # mid-thought), and prematurity (answered far faster than the question's
+    # own length/complexity warranted) are each direct impulsivity signals on
+    # their own -- a short, low-latency response that *also* happens to score
+    # as "engaged" on the length/topic-shift blend is still impulsive if any
+    # one of these fires, none of which engagement_score alone can see.
+    # Prematurity is the only one of the three that can fire on an otherwise
+    # coherent, complete, on-topic response -- the "answered before the
+    # question was finished" pattern.
     is_impulsive_signal = (
         (words < _IMP_WORDS or latency < _IMP_LATENCY) and engage < _IMP_ENGAGE
-    ) or repetition >= _IMP_REPEAT or completeness <= _IMP_INCOMPLETE
+    ) or repetition >= _IMP_REPEAT or completeness <= _IMP_INCOMPLETE or prematurity >= _IMP_PREMATURE
 
     if is_impulsive_signal:
         severity = max(
             1.0 - (engage / _IMP_ENGAGE) if engage < _IMP_ENGAGE else 0.0,
             repetition,
             1.0 - completeness,
+            prematurity,
         )
         conf  = round(min(1.0, max(0.5, severity)), 4)
         label = "Impulsive"

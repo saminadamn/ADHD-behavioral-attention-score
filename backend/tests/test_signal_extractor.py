@@ -1,8 +1,14 @@
 """
-Unit tests for the two signals added to fix the impulsivity blind spot
-(see docs/model_limitations.md): repetition_score and completeness_score.
+Unit tests for the signals added to fix the impulsivity blind spot
+(see docs/model_limitations.md): repetition_score, completeness_score, and
+prematurity_score.
 """
-from agents.signal_extractor import _repetition_score, _completeness_score
+from agents.signal_extractor import (
+    _repetition_score,
+    _completeness_score,
+    _expected_response_time,
+    _prematurity_score,
+)
 
 
 class TestRepetitionScore:
@@ -53,3 +59,51 @@ class TestCompletenessScore:
     def test_longer_response_without_terminal_punctuation(self):
         score = _completeness_score("I think the answer involves several steps here")
         assert 0.0 < score < 1.0
+
+
+class TestExpectedResponseTime:
+    def test_longer_question_expects_more_time_than_shorter_one(self):
+        short_q = "What is two plus two?"
+        long_q = (
+            "Can you walk me through, step by step, how photosynthesis "
+            "converts sunlight and carbon dioxide into glucose, and explain "
+            "why chlorophyll specifically is required for that process?"
+        )
+        assert _expected_response_time(long_q) > _expected_response_time(short_q)
+
+    def test_more_clauses_expects_more_time_at_equal_length(self):
+        # Same word count, but one has comma-separated clauses.
+        plain = "Tell me about your weekend trip to the coast last summer"
+        clausal = "Tell me, in your own words, about your weekend trip please"
+        assert _expected_response_time(clausal) > _expected_response_time(plain)
+
+    def test_empty_prompt_has_nonzero_baseline(self):
+        assert _expected_response_time("") > 0.0
+
+
+class TestPrematurityScore:
+    def test_latency_at_or_above_expected_pace_is_not_premature(self):
+        prompt = "What is two plus two?"
+        expected = _expected_response_time(prompt)
+        assert _prematurity_score(prompt, latency=expected) == 0.0
+        assert _prematurity_score(prompt, latency=expected * 2) == 0.0
+
+    def test_near_instant_answer_to_a_complex_question_is_premature(self):
+        # The exact pattern that caused the Q16-style misclassification:
+        # a long, multi-clause question answered in well under a second.
+        prompt = (
+            "Can you tell me what you think the answer to this long, "
+            "multi-part question about the area of a circle, given radius "
+            "five, might possibly be?"
+        )
+        score = _prematurity_score(prompt, latency=0.6)
+        assert score > 0.6
+
+    def test_fast_answer_to_a_simple_question_is_not_flagged(self):
+        # Fast is fine when the question didn't demand much thinking time.
+        prompt = "Six times seven?"
+        score = _prematurity_score(prompt, latency=0.6)
+        assert score < 0.3
+
+    def test_empty_prompt_does_not_crash(self):
+        assert _prematurity_score("", latency=0.0) >= 0.0

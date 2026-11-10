@@ -127,6 +127,46 @@ def _completeness_score(text: str) -> float:
     return 0.5
 
 
+_READING_SECONDS_PER_WORD = 0.25  # ~240 words/minute silent reading
+_BASE_THINKING_SECONDS    = 0.5   # minimum processing time even for trivial recall ("6 x 7?")
+_PER_CLAUSE_SECONDS       = 0.6   # extra thinking time per comma / "and" / semicolon -- complexity
+                                   # matters far more than base time, so a simple short question
+                                   # answered instantly isn't flagged just for being answered fast
+_PREMATURITY_RATIO_FLOOR  = 0.6   # latency at/above this fraction of expected time is not premature
+
+
+def _expected_response_time(prompt: str) -> float:
+    """
+    Rough baseline for how long a question this long and this clausally
+    complex plausibly takes to read and think about, in seconds. Not a
+    precision estimate -- just enough to tell "fast because the question
+    was simple" apart from "fast given how much the question actually asked."
+    """
+    words = len(prompt.split())
+    reading_time = words * _READING_SECONDS_PER_WORD
+    clause_markers = prompt.count(",") + prompt.count(";") + prompt.count(" and ")
+    thinking_time = _BASE_THINKING_SECONDS + _PER_CLAUSE_SECONDS * clause_markers
+    return reading_time + thinking_time
+
+
+def _prematurity_score(prompt: str, latency: float) -> float:
+    """
+    How much faster the response came back than the question's own length
+    and complexity make plausible. 0.0 = at or above a normal pace for a
+    question this size, 1.0 = answered in essentially zero time relative to
+    what the question demanded (the "answered before the question was
+    finished" pattern -- distinct from repetition_score/completeness_score,
+    since this response can be perfectly coherent and still be premature).
+    """
+    expected = _expected_response_time(prompt)
+    if expected <= 0:
+        return 0.0
+    ratio = latency / expected
+    if ratio >= _PREMATURITY_RATIO_FLOOR:
+        return 0.0
+    return round(max(0.0, min(1.0, (_PREMATURITY_RATIO_FLOOR - ratio) / _PREMATURITY_RATIO_FLOOR)), 4)
+
+
 def behavioral_signal_extractor(state) -> dict:
     from models.state import FeatureScores
     prompt   = state.teacher_prompt
@@ -138,10 +178,15 @@ def behavioral_signal_extractor(state) -> dict:
     topic_shift        = _topic_shift(prompt, response)
     repetition         = _repetition_score(response)
     completeness       = _completeness_score(response)
+    prematurity        = _prematurity_score(prompt, latency)
 
     # Repetition and incompleteness both drag engagement down directly --
     # a fast, on-topic-looking response that is garbled or trails off is not
     # actually engaged, which the length/topic-shift blend alone can't see.
+    # prematurity is deliberately NOT blended in here: a premature response
+    # can otherwise be perfectly coherent (see docs/model_limitations.md), so
+    # it's surfaced as its own signal for the classifier rather than folded
+    # into a "how good is this response" score.
     engagement = (
         0.3 * _length_bucket(words)
         + 0.4 * (1.0 - topic_shift)
@@ -160,4 +205,5 @@ def behavioral_signal_extractor(state) -> dict:
         latency_score      = latency_score,
         repetition_score   = repetition,
         completeness_score = completeness,
+        prematurity_score  = prematurity,
     )}
