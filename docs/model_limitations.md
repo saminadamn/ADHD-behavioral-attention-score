@@ -107,6 +107,29 @@ The same turn now classifies as **Impulsive, 88% confidence**, reward +0 —
 up from Distracted 59% (ambiguous) and, before the first fix, Focused 40%
 (wrong) and Impulsive 40% (right label, too low-confidence to trust).
 
+## Third fix: confidence-weighted reward
+
+The reward model (`backend/agents/reward_modeler.py`) was a flat lookup
+table keyed only on `(previous_state, current_state)` — a 51%-confidence
+Distracted call and a 100%-confidence one moved BAS by exactly the same
+amount, even though the classification itself is far less trustworthy at
+51%.
+
+### Fix
+
+`compute_reward` now takes an optional `confidence` (default `1.0` for
+callers with no real confidence to pass, e.g. `simulate_bas_trajectory`'s
+synthetic label sequences) and scales the base reward by it, clamped to
+`[0.5, 1.0]` since `attention_state_classifier` never reports below 0.5 —
+so a transition classified at the classifier's own floor still carries half
+the reward rather than being scaled to near-zero. `rl_reward_modeler` now
+passes `state.confidence` through automatically.
+
+Re-running the same questionnaire-derived turns end to end: a 64%-confidence
+Distracted call now moves BAS by −3.87 instead of the flat −6.00; a
+52%-confidence one by −3.12 instead of −6.00; a 100%-confidence Impulsive
+call is unaffected (still the full −5.00).
+
 ## What's still a real limitation
 
 - **The thinking-time baseline is a heuristic, not measured data.** The
@@ -114,21 +137,18 @@ up from Distracted 59% (ambiguous) and, before the first fix, Focused 40%
   reasonable estimates, not fit to any real response-time dataset — a
   genuinely fast but momentarily lucky guess on a hard question could still
   register as premature.
-- **The reward model is a flat lookup table** keyed only on
-  `(previous_state, current_state)` (`backend/agents/reward_modeler.py`), not
-  on classification confidence or feature magnitude. A 51%-confidence
-  Distracted call and a 100%-confidence one produce the same reward.
 - **Still not a clinical tool.** None of the above makes this a substitute
   for the questionnaire it was stress-tested against — see the top-level
   README's limitations section.
 
 ## Regression coverage
 
-`backend/tests/test_signal_extractor.py` and
-`backend/tests/test_state_classifier.py` cover all three fixed cases above
-(run with `python -m pytest backend/tests/ -v` after installing
+`backend/tests/test_signal_extractor.py`, `test_state_classifier.py`, and
+`test_reward_modeler.py` cover all four fixed cases above (run with
+`python -m pytest backend/tests/ -v` after installing
 `backend/requirements-dev.txt`), plus the cases that already worked before
 each fix, to catch a future regression in either direction. Confirmed each
-fix is actually caught by reverting the relevant files to their pre-fix
-version and re-running — the tests fail to even import, since the
-functions under test don't exist on that version.
+fix is actually caught by reverting the relevant file to its pre-fix
+version and re-running — the tests fail (either an import error, since the
+functions under test don't exist yet, or a `TypeError` on the new
+`confidence` keyword argument).
