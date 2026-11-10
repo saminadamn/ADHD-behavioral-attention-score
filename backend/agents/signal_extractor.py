@@ -72,24 +72,92 @@ def _length_bucket(n_words: int) -> float:
     return 1.0
 
 
+def _repetition_score(text: str) -> float:
+    """
+    Proxy for garbled/blurted-out text: repeated whole words, or a word
+    containing a repeated sub-string inside itself (e.g. "canwegonowcanwegonow").
+    0.0 = no detectable repetition, 1.0 = heavily repetitive.
+    """
+    words = text.lower().split()
+    if len(words) < 2:
+        word_repeat = 0.0
+    else:
+        word_repeat = 1.0 - (len(set(words)) / len(words))
+
+    intra_word_repeat = 0.0
+    for w in words:
+        n = len(w)
+        if n < 8:
+            continue
+        half = n // 2
+        if w[:half] == w[half:half * 2]:
+            intra_word_repeat = 1.0
+            break
+
+    return round(max(word_repeat, intra_word_repeat), 4)
+
+
+def _completeness_score(text: str) -> float:
+    """
+    Proxy for a response that trails off mid-thought rather than one that is
+    just naturally short: ends on sentence-final punctuation (or a complete
+    short exclamation), penalized for ending mid-word, on a conjunction/
+    article, or with no terminal punctuation on a longer response.
+    1.0 = reads as complete, 0.0 = clearly trails off.
+    """
+    stripped = text.strip()
+    if not stripped:
+        return 0.0
+
+    words = stripped.split()
+    ends_with_punct = stripped[-1] in ".!?"
+    _TRAILING_OFF_WORDS = {
+        "is", "was", "are", "were", "the", "a", "an", "and", "but", "or",
+        "because", "so", "to", "of", "that", "my", "i",
+    }
+    trails_on_filler = words[-1].lower().strip(".,!?") in _TRAILING_OFF_WORDS
+
+    if ends_with_punct and not trails_on_filler:
+        return 1.0
+    if len(words) <= 2 and not trails_on_filler:
+        # Short but plausibly a complete one-word/two-word answer ("Yes.", "42").
+        return 0.8
+    if trails_on_filler:
+        return 0.1
+    return 0.5
+
+
 def behavioral_signal_extractor(state) -> dict:
     from models.state import FeatureScores
     prompt   = state.teacher_prompt
     response = state.student_response
     latency  = state.response_latency
 
-    words          = len(response.split())
-    sentiment      = _sentiment(response)
-    topic_shift    = _topic_shift(prompt, response)
-    engagement     = 0.4 * _length_bucket(words) + 0.6 * (1.0 - topic_shift)
+    words              = len(response.split())
+    sentiment          = _sentiment(response)
+    topic_shift        = _topic_shift(prompt, response)
+    repetition         = _repetition_score(response)
+    completeness       = _completeness_score(response)
+
+    # Repetition and incompleteness both drag engagement down directly --
+    # a fast, on-topic-looking response that is garbled or trails off is not
+    # actually engaged, which the length/topic-shift blend alone can't see.
+    engagement = (
+        0.3 * _length_bucket(words)
+        + 0.4 * (1.0 - topic_shift)
+        + 0.15 * completeness
+        + 0.15 * (1.0 - repetition)
+    )
     engagement     = round(max(0.0, min(1.0, engagement)), 4)
     latency_norm   = (latency - _MIN_LATENCY) / (_MAX_LATENCY - _MIN_LATENCY)
     latency_score  = round(max(0.0, min(1.0, latency_norm)), 4)
 
     return {"features": FeatureScores(
-        response_length   = words,
-        sentiment         = round(sentiment, 4),
-        topic_shift_score = round(topic_shift, 4),
-        engagement_score  = engagement,
-        latency_score     = latency_score,
+        response_length    = words,
+        sentiment          = round(sentiment, 4),
+        topic_shift_score  = round(topic_shift, 4),
+        engagement_score   = engagement,
+        latency_score      = latency_score,
+        repetition_score   = repetition,
+        completeness_score = completeness,
     )}

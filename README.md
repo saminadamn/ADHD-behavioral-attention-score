@@ -161,3 +161,4 @@ Python 3.11, FastAPI, LangGraph, Pydantic, Sentence-Transformers, TextBlob · Ne
 - The attention-state classifier is rule-based over the extracted features, not a trained model; see `backend/agents/state_classifier.py`.
 - Intervention tiers are hand-designed thresholds on BAS, not learned from outcome data.
 - This is a research prototype, not a validated clinical or diagnostic tool.
+- A fast-but-complete response and a genuinely impulsive one can still be hard to tell apart (latency isn't compared to the question's complexity); see [`docs/model_limitations.md`](docs/model_limitations.md) for the specific failure mode found, fixed, and still open.

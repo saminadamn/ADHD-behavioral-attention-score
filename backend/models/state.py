@@ -14,6 +14,8 @@ class FeatureScores(BaseModel):
     topic_shift_score: float = Field(ge=0.0, le=1.0)
     engagement_score: float = Field(ge=0.0, le=1.0)
     latency_score: float = Field(ge=0.0, le=1.0)
+    repetition_score: float = Field(default=0.0, ge=0.0, le=1.0)
+    completeness_score: float = Field(default=1.0, ge=0.0, le=1.0)
 
 
 class WorkflowState(BaseModel):
