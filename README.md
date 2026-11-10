@@ -136,6 +136,14 @@ python -m pip install -r requirements-dev.txt
 python -m pytest tests/ -v
 ```
 
+Ten of those tests (`tests/test_questionnaire_constructs.py`) check the
+pipeline against classroom turns written to embody constructs from a
+standard clinical ADHD assessment (careless mistakes, can't hold attention,
+answers before the question is finished, hyperfocus, ...). See
+[`docs/questionnaire_validation.md`](docs/questionnaire_validation.md) for
+the full results and what they are and aren't evidence of, or regenerate it
+with `python scripts/validate_against_assessment_questionnaire.py`.
+
 ### Frontend
 
 ```bash
@@ -169,4 +177,4 @@ Python 3.11, FastAPI, LangGraph, Pydantic, Sentence-Transformers, TextBlob · Ne
 - The attention-state classifier is rule-based over the extracted features, not a trained model; see `backend/agents/state_classifier.py`.
 - Intervention tiers are hand-designed thresholds on BAS, not learned from outcome data.
 - This is a research prototype, not a validated clinical or diagnostic tool.
-- A fast-but-complete response and a genuinely impulsive one can still be hard to tell apart (latency isn't compared to the question's complexity); see [`docs/model_limitations.md`](docs/model_limitations.md) for the specific failure mode found, fixed, and still open.
+- The thinking-time baseline used to flag an abnormally fast response is a hand-set heuristic, not fit to any measured response-time dataset; see [`docs/model_limitations.md`](docs/model_limitations.md) for this and other failure modes found, fixed, and still open.

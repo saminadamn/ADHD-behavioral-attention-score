@@ -12,7 +12,11 @@ questionnaire itself — the model takes one classroom turn
 (`teacher_prompt` + `student_response` + `response_latency`), not a 50-item
 self-report — but each test turn was constructed to isolate one clinical
 construct, to see whether the model's signals move the way that construct
-implies.
+implies. The current pass/fail results for all ten cases (not just the ones
+that originally broke) are in
+[`docs/questionnaire_validation.md`](questionnaire_validation.md), generated
+by `backend/scripts/validate_against_assessment_questionnaire.py` and
+asserted as regression tests in `backend/tests/test_questionnaire_constructs.py`.
 
 ## What broke
 
