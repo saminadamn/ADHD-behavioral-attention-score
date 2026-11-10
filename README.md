@@ -128,6 +128,14 @@ python -m uvicorn main:app --reload --port 8000
 # API docs: http://localhost:8000/docs
 ```
 
+Run the test suite:
+
+```bash
+cd backend
+python -m pip install -r requirements-dev.txt
+python -m pytest tests/ -v
+```
+
 ### Frontend
 
 ```bash

@@ -86,12 +86,18 @@ Both moved out of the dangerous "Focused + positive reward" failure mode.
   `(previous_state, current_state)` (`backend/agents/reward_modeler.py`), not
   on classification confidence or feature magnitude. A 51%-confidence
   Distracted call and a 100%-confidence one produce the same reward.
-- **No automated tests exist for this pipeline** (`backend/` has none at
-  the module level) — this limitation and its fix were verified manually
-  against a fixed set of constructed turns, not a regression suite. Adding
-  `backend/tests/test_signal_extractor.py` and
-  `backend/tests/test_state_classifier.py` covering at least the cases above
-  would catch a future regression on this exact failure mode.
 - **Still not a clinical tool.** None of the above makes this a substitute
   for the questionnaire it was stress-tested against — see the top-level
   README's limitations section.
+
+## Regression coverage
+
+`backend/tests/test_signal_extractor.py` and
+`backend/tests/test_state_classifier.py` cover both fixed cases above (run
+with `python -m pytest backend/tests/ -v` after installing
+`backend/requirements-dev.txt`), plus the three cases that already worked
+before the fix, to catch a future regression in either direction. Confirmed
+these tests actually catch the regression by reverting to the pre-fix
+`signal_extractor.py`/`state_classifier.py`/`state.py` and re-running —
+`test_signal_extractor.py` fails to even import, since the two new functions
+don't exist yet.
